@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect
+from flask import Blueprint, render_template, request, redirect, url_for
 import gspread
 import sqlite3
 import random
@@ -16,20 +16,18 @@ database_path = 'C:/Users/FrostingBunBun/Desktop/else/flask/db/users.db'
 
 
 
-def add_user():
+def add_user(username):
     password = generate_password(16)
     print("password: ", password)
 
-
     conn = sqlite3.connect(database_path)
     cursor = conn.cursor()
-    if request.method == 'POST':
-        username = request.form['username']
-        # Insert the user into the database
-        cursor.execute('INSERT INTO users (username, password) VALUES (?, ?)', (username, password))
-        conn.commit()
+    cursor.execute('INSERT INTO users (username, password) VALUES (?, ?)', (username, password))
+    conn.commit()
     cursor.close()
     conn.close()
+    
+    return password
 
 
 def generate_password(length):
@@ -54,14 +52,10 @@ def entry():
 
 @views.route("/register", methods=['GET', 'POST'])
 def register():
-    print("Register function is called")
     if request.method == 'POST':
         username = request.form['username']
-        print("==============")
-        print("username: ", username)
-        add_user()
-        print("==============")
-        return redirect("key")
+        password = add_user(username)
+        return redirect(url_for("views.key", password=password))
     return render_template("register.html")
 
 
@@ -79,4 +73,5 @@ def login():
 @views.route("/key")
 def key():
     password = request.args.get('password')
-    return render_template("key.html")
+    return render_template("key.html", password=password)
+
