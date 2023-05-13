@@ -45,5 +45,25 @@ function allowDrop(event) {
     console.log("Left Name: " + leftName);
     console.log("Right Name: " + rightName);
   }
+
+  
+  function filterNames() {
+    var input = document.getElementById("searchInput");
+    var filter = input.value.toUpperCase();
+    var ul = document.querySelector(".list ul");
+    var li = ul.getElementsByTagName("li");
+  
+    for (var i = 0; i < li.length; i++) {
+      var name = li[i].textContent || li[i].innerText;
+      if (name.toUpperCase().startsWith(filter)) {
+        li[i].style.display = "";
+      } else {
+        li[i].style.display = "none";
+      }
+    }
+  }
+  
+  var searchInput = document.getElementById("searchInput");
+  searchInput.addEventListener("input", filterNames);
   
   

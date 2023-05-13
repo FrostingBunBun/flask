@@ -11,12 +11,22 @@
     <div class="container">
 
         <div class="list" id="list">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search names...">
+            </div>
             <h2>List</h2>
             <ul>
                 {% for name in list %}
                     <li class="list-item" draggable="true" ondragstart="drag(event)">{{ name }}</li>
                 {% endfor %}
             </ul>
+            <script>
+                var listItems = document.querySelectorAll('.list-item');
+                listItems.forEach(function(item) {
+                    item.textContent = item.textContent.slice(2, -2);
+                });
+            </script>
+            
         </div>
 
         <div class="rightSide">
