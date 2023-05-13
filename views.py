@@ -9,12 +9,24 @@ wks_mmr = sh_mmr.worksheet("Leaderboards")
 
 test = wks_mmr.get("D4:D")
 
-@views.route("/home")
-def home():
-    return render_template("index.html", name="Tim")
-
 @views.route("/players")
 def get_players():
     print(test)
     return render_template("names.html", list=test)
+
+@views.route("/entry")
+def entry():
+    return render_template("entry.html")
+
+@views.route("/register")
+def register():
+    return render_template("register.html")
+
+@views.route("/login")
+def login():
+    return render_template("login.html")
+
+@views.route("/key")
+def key():
+    return render_template("key.html")
 

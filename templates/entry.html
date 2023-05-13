@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/entry.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Login Page</h1>
+        <button id="loginBtn" class="btn btn-primary">Login</button>
+        <button id="registerBtn" class="btn btn-secondary">Register</button>
+    </div>
+    
+    <script>
+        // Register button click event handler
+        var registerBtn = document.getElementById("registerBtn");
+        registerBtn.addEventListener("click", function() {
+            // Redirect to the registration page or perform necessary actions
+            window.location.href = "register";
+        });
+
+        // Login button click event handler
+        var loginBtn = document.getElementById("loginBtn");
+        loginBtn.addEventListener("click", function() {
+            // Redirect to the login page or perform necessary actions
+            window.location.href = "login";
+        });
+    </script>
+</body>
+</html>

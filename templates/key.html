@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Success</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/entry.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Registration Successful</h1>
+        <p>Your registration is complete. Below is your unique password:</p>
+        <p id="passwordDisplay"></p>
+        <button class="btn btn-primary" onclick="goToEntryPage()">Go to Entry Page</button>
+    </div>
+    
+    <script>
+        // Get the password from the URL or retrieve it from the server
+        var password = getPasswordFromURL();
+        
+        // Display the password on the page
+        var passwordDisplay = document.getElementById("passwordDisplay");
+        passwordDisplay.innerText = password;
+        
+        // Function to extract the password from the URL
+        function getPasswordFromURL() {
+            // Implement your logic to extract the password from the URL here
+            // You can use URL parameters or other mechanisms to pass the password value to this page
+            // For demonstration purposes, we'll assume the password is passed as a URL parameter named "password"
+            var urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get("password") || "N/A";
+        }
+        
+        // Function to navigate to the entry page
+        function goToEntryPage() {
+            window.location.href = "entry";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/entry.css') }}">
+</head>
+<body>
+    <div class="topper">
+        <button class="btn btn-secondary" onclick="goBack()">Back</button>
+    </div>
+    <div class="container">
+        <h1>Registration Page</h1>
+        <form id="registrationForm">
+            <label for="nickname">Nickname:</label>
+            <input type="text" id="nickname" name="nickname" placeholder="Enter your nickname" required>
+            <button type="submit" class="btn btn-primary" onclick="goKey(event)">Register</button>
+        </form>
+    </div>
+    
+    <script>
+        function goBack() {
+            window.location.href = "entry";
+        }
+
+        function goKey(event) {
+            event.preventDefault(); // Prevent form submission and page reload
+            window.location.href = "key";
+        }
+    </script>
+</body>
+</html>
