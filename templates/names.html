@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Players</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="list" id="list">
+            <h2>List</h2>
+            <ul>
+                {% for name in list %}
+                    <li class="list-item" draggable="true" ondragstart="drag(event)">{{ name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="field-container">
+            <div class="field" id="field1" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <h2>Player Left</h2>
+            </div>
+            <div class="field" id="field2" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <h2>Player Right</h2>
+            </div>
+        </div>
+        <div class="button-container">
+            <button class="my-button">Submit</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
+</body>
+</html>
