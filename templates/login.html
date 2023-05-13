@@ -4,8 +4,14 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Login</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/entry.css') }}">
+    <style>
+        .error-message {
+            color: red;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 <body>
     <div class="topper">
@@ -15,8 +21,13 @@
         <h1>Login Page</h1>
         <form id="registrationForm" method="post">
             <label for="nickname">Password:</label>
-            <input type="text" id="password" name="password" placeholder="Enter your password" required>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
             <button type="submit" class="btn btn-primary">Login</button>
+            {% if incorrect_password %}
+                <p class="error-message">Incorrect password. Please try again.</p>
+            {% elif not_confirmed %}
+                <p class="error-message">Your account is not confirmed.</p>
+            {% endif %}
         </form>
     </div>
     

@@ -58,9 +58,11 @@ def register():
         return redirect(url_for("views.key", password=password))
     return render_template("register.html")
 
-
 @views.route("/login", methods=['GET', 'POST'])
 def login():
+    incorrect_password = False
+    not_confirmed = False
+
     if request.method == 'POST':
         password = request.form['password']
         
@@ -72,16 +74,23 @@ def login():
         user = cursor.fetchone()
         
         if user:
-            # User with the provided password exists, redirect to a success page
-            return redirect(url_for("views.matchmaking"))
+            # User with the provided password exists
+            if user[3] == 1:  # Assuming is_confirmed is at index 2 in the user tuple
+                # Account is confirmed, redirect to success page
+                return redirect(url_for("views.matchmaking"))
+            else:
+                # Account is not confirmed
+                not_confirmed = True
+                incorrect_password = False
         else:
-            # User with the provided password doesn't exist, redirect to a failure page
-            return redirect(url_for("views.failure"))
-        
-        cursor.close()
-        conn.close()
+            # Incorrect password
+            incorrect_password = True
+            not_confirmed = False
 
-    return render_template("login.html")
+    return render_template("login.html", incorrect_password=incorrect_password, not_confirmed=not_confirmed)
+
+
+
 
 
 
