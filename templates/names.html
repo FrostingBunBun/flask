@@ -9,6 +9,7 @@
 </head>
 <body>
     <div class="container">
+
         <div class="list" id="list">
             <h2>List</h2>
             <ul>
@@ -17,17 +18,23 @@
                 {% endfor %}
             </ul>
         </div>
-        <div class="field-container">
-            <div class="field" id="field1" ondrop="drop(event)" ondragover="allowDrop(event)">
-                <h2>Player Left</h2>
+
+        <div class="rightSide">
+            <div class="field-container">
+                <div class="field" id="field1" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <h2>Player Left</h2>
+                </div>
+                <div class="field" id="field2" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <h2>Player Right</h2>
+                </div>
             </div>
-            <div class="field" id="field2" ondrop="drop(event)" ondragover="allowDrop(event)">
-                <h2>Player Right</h2>
+
+
+            <div class="button-container">
+                <button class="my-button">Submit</button>
             </div>
         </div>
-        <div class="button-container">
-            <button class="my-button">Submit</button>
-        </div>
+
     </div>
 
     <script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
