@@ -39,10 +39,10 @@ def generate_password(length):
     return password
 
 
-@views.route("/players")
-def get_players():
+@views.route("/matchmaking")
+def matchmaking():
     print(playersNames)
-    return render_template("names.html", list=playersNames)
+    return render_template("matchmaking.html", list=playersNames)
 
 
 @views.route("/entry")
@@ -59,15 +59,32 @@ def register():
     return render_template("register.html")
 
 
-@views.route("/login")
+@views.route("/login", methods=['GET', 'POST'])
 def login():
-    print("Login function is called")
     if request.method == 'POST':
         password = request.form['password']
+        
+        conn = sqlite3.connect(database_path)
+        cursor = conn.cursor()
+        
+        # Check if a user with the provided password exists
+        cursor.execute('SELECT * FROM users WHERE password = ?', (password,))
+        user = cursor.fetchone()
+        
+        if user:
+            # User with the provided password exists, redirect to a success page
+            return redirect(url_for("views.matchmaking"))
+        else:
+            # User with the provided password doesn't exist, redirect to a failure page
+            return redirect(url_for("views.failure"))
+        
+        cursor.close()
+        conn.close()
+
+    return render_template("login.html")
 
 
 
-    return render_template("login.html", methods=['GET', 'POST'])
 
 
 @views.route("/key")
