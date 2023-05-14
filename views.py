@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, session
 import gspread
 import sqlite3
 import random
 from threading import Lock
+from functools import wraps
 
 views = Blueprint(__name__, "views")
 
@@ -15,6 +16,14 @@ playersNames = wks_mmr.get("D4:D")
 database_path = 'C:/Users/FrostingBunBun/Desktop/else/flask/db/users.db'
 
 
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get('logged_in') or not session.get('confirmed'):
+            return redirect(url_for('views.login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
 
 def add_user(username):
     password = generate_password(16)
@@ -26,7 +35,7 @@ def add_user(username):
     conn.commit()
     cursor.close()
     conn.close()
-    
+
     return password
 
 
@@ -40,6 +49,7 @@ def generate_password(length):
 
 
 @views.route("/matchmaking")
+@login_required
 def matchmaking():
     print(playersNames)
     return render_template("matchmaking.html", list=playersNames)
@@ -75,8 +85,10 @@ def login():
         
         if user:
             # User with the provided password exists
-            if user[3] == 1:  # Assuming is_confirmed is at index 2 in the user tuple
-                # Account is confirmed, redirect to success page
+            if user[3] == 1:  # Assuming is_confirmed is at index 3 in the user tuple
+                # Account is confirmed, set the session and redirect to the protected page
+                session['logged_in'] = True
+                session['confirmed'] = True
                 return redirect(url_for("views.matchmaking"))
             else:
                 # Account is not confirmed
@@ -88,6 +100,8 @@ def login():
             not_confirmed = False
 
     return render_template("login.html", incorrect_password=incorrect_password, not_confirmed=not_confirmed)
+
+
 
 
 

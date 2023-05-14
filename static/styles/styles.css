@@ -11,6 +11,7 @@ body {
   gap: 30px;
   justify-content: center;
   align-items: flex-start;
+  height: 100vh;
 }
 
 .list {
@@ -20,7 +21,8 @@ body {
   border-radius: 30px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   max-width: 600px;
-  /* margin: 0 auto; */
+  opacity: 0;
+  animation: fadeIn 1s forwards;
 }
 
 .list h2 {
@@ -38,15 +40,13 @@ li {
   border-radius: 10px;
   margin-bottom: 10px;
   cursor: grab;
-  
 }
 
 li:hover {
-    background-color: #ececec;
-  }
+  background-color: #ececec;
+}
 
 .field {
-  /* flex: 1; */
   flex-direction: column;
   display: flex;
   align-items: center;
@@ -54,8 +54,6 @@ li:hover {
   gap: 5px;
   margin: 0 auto;
   width: 600px;
-
-
   background-color: #fff;
   padding: 25px;
   border-radius: 10px;
@@ -87,41 +85,160 @@ li:hover {
 }
 
 .field-container {
-    display: flex;
-    gap: 20px;
-    flex: 1;
+  display: flex;
+  gap: 20px;
+  flex: 1;
 }
+
 .button-container {
-    text-align: center;
+  text-align: center;
   margin-top: 20px;
 }
+
 .my-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    background-color: #f9f9f9;
-    color: #333;
-    border: none;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #f9f9f9;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
-  
+
 .my-button:hover {
-    background-color: #e7e7e7;
+  background-color: #e7e7e7;
+}
+
+.rightSide {
+  max-width: 600px;
+}
+
+.search-container {
+  margin-bottom: 20px;
+}
+
+#searchInput {
+  padding: 5px 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #888;
+  width: 300px;
+  text-align: center;
+  animation: slideIn 0.2s forwards;
+  position: relative;
+  top: 25px;
+  left: calc(100% - 740px); /* Adjust left position */
+}
+
+
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.modal-buttons {
+  margin-top: 20px;
+}
+
+.modal-buttons button {
+  margin: 0 10px;
+}
+
+.modal-buttons button:first-child {
+  margin-left: 0;
+}
+
+.list-hidden {
+  display: none;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 .rightSide {
-    max-width: 600px;
+  flex: 1;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 30px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  opacity: 0; /* Initially hide the right side */
+  animation: fadeIn 1s forwards; /* Apply the fade-in animation */
 }
-.search-container {
-    margin-bottom: 20px;
-  }
-  
-  #searchInput {
-    padding: 5px 10px;
-    font-size: 14px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    width: 100%;
-    box-sizing: border-box;
-  }
+
+.field-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  background-color: #f9f9f9;
+}
+
+.field h2 {
+  margin-top: 0;
+}
+
+.button-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.my-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #f9f9f9;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.my-button:hover {
+  background-color: #e7e7e7;
+}

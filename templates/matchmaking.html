@@ -15,18 +15,11 @@
                 <input type="text" id="searchInput" placeholder="Search names...">
             </div>
             <h2>List</h2>
-            <ul>
+            <ul id="nameList">
                 {% for name in list %}
                     <li class="list-item" draggable="true" ondragstart="drag(event)">{{ name }}</li>
                 {% endfor %}
             </ul>
-            <script>
-                var listItems = document.querySelectorAll('.list-item');
-                listItems.forEach(function(item) {
-                    item.textContent = item.textContent.slice(2, -2);
-                });
-            </script>
-            
         </div>
 
         <div class="rightSide">
@@ -39,9 +32,18 @@
                 </div>
             </div>
 
-
             <div class="button-container">
-                <button class="my-button">Submit</button>
+                <a href="#" class="my-button" id="submitButton">Pair</a>
+                <div id="confirmationModal" class="modal">
+                    <div class="modal-content">
+                        <h2>Confirmation</h2>
+                        <p>Are you sure you want to submit?</p>
+                        <div class="modal-buttons">
+                            <button id="confirmYes">Yes</button>
+                            <button id="confirmNo">No</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
