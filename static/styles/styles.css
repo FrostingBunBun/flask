@@ -61,14 +61,14 @@ li:hover {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 .vs{
-  position: absolute;
+  position:absolute;
   top: 10%;
   left: 50%;
-  -webkit-mask-image: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0) 100%);
-  mask-image: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0) 100%);
-  background: url("https://static.vecteezy.com/system/resources/thumbnails/007/166/964/small/versus-or-vs-logo-design-template-vector.jpg") no-repeat center center / cover;
   z-index: -1;
-  
+  user-select: none; /* Disable selection */
+  -moz-user-select: none; /* Firefox */
+  -webkit-user-select: none; /* Safari and Chrome */
+  -ms-user-select: none; /* Internet Explorer/Edge */
 }
 
 .field h2 {

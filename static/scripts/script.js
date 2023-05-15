@@ -3,11 +3,23 @@ function allowDrop(event) {
 }
 
 function drag(event) {
-  draggedElement = event.target;
-  event.dataTransfer.setData("text/plain", event.target.innerText);
+  var target = event.target;
+
+  // Check if the event target is a list item
+  if (!target.classList.contains("list-item")) {
+    // Cancel the drag operation
+    event.preventDefault();
+    return;
+  }
+
+  draggedElement = target;
+  event.dataTransfer.setData("text/plain", target.innerText);
 }
 
+
+
 function drop(event) {
+
   event.preventDefault();
   var name = event.dataTransfer.getData("text/plain");
   var droppedElement = document.createElement("p");
@@ -52,7 +64,7 @@ function drop(event) {
 
   targetField.appendChild(droppedElement);
   draggedElement.style.opacity = "1";
-  
+
 }
 
 function filterNames() {
@@ -191,3 +203,10 @@ clearButtonALL.addEventListener("click", function() {
 
 });
 
+// Disable dragstart event for selected elements
+document.addEventListener("dragstart", function(event) {
+  var selectedElements = window.getSelection().toString();
+  if (selectedElements !== "") {
+    event.preventDefault();
+  }
+});
