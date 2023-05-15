@@ -13,6 +13,9 @@ function drop(event) {
   var droppedElement = document.createElement("p");
   droppedElement.textContent = name;
 
+  // Add a class to the dropped element
+  droppedElement.classList.add("dragged-item");
+
   console.log("Dropped name: " + name);
 
   // Find the target field element
@@ -46,6 +49,10 @@ function drop(event) {
 
   // Show the list after items have been moved to the left
   document.getElementById("list").classList.remove("list-hidden");
+
+  targetField.appendChild(droppedElement);
+  draggedElement.style.opacity = "1";
+  
 }
 
 function filterNames() {

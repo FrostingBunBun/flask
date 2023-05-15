@@ -54,10 +54,21 @@ li:hover {
   gap: 5px;
   margin: 0 auto;
   width: 600px;
+  height: 250px;
   background-color: #fff;
   padding: 25px;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.vs{
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  -webkit-mask-image: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0) 100%);
+  mask-image: linear-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 1) 90%, rgba(0, 0, 0, 0) 100%);
+  background: url("https://static.vecteezy.com/system/resources/thumbnails/007/166/964/small/versus-or-vs-logo-design-template-vector.jpg") no-repeat center center / cover;
+  z-index: -1;
+  
 }
 
 .field h2 {
@@ -86,7 +97,7 @@ li:hover {
 
 .field-container {
   display: flex;
-  gap: 20px;
+  gap: 200px;
   flex: 1;
   justify-content: center;
   align-items: center;
@@ -122,7 +133,7 @@ li:hover {
   padding: 20px;
   border-radius: 30px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
+  max-width: 1000px;
   opacity: 0;
   animation: fadeIn 1s forwards;
 }
@@ -237,11 +248,11 @@ li:hover {
   transform: translateY(0);
 }
 .clear-button {
-  padding: 10px 20px;
+  padding: 6px 20px;
   font-size: 16px;
   font-weight: bold;
   background-color: #c0c0c0;
-  color: #fff;
+  color: #585858;
   border: none;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -250,4 +261,26 @@ li:hover {
 
 .clear-button:hover {
   background-color: #b1b1b1;
+}
+.clear-button-all{
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #c0c0c0;
+  color: #810707;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  margin-top: 30px; /* Adjust the value as per your requirement */
+}
+.clear-button-all:hover {
+  background-color: #b1b1b1;
+}
+.dragged-item {
+  background-color: #ffcc00;
+  color: #333;
+  border: 2px solid #ffcc00;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
