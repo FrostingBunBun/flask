@@ -210,3 +210,17 @@ li:hover {
 #cancelButton {
   display: none;
 }
+.error-message {
+  color: red;
+  margin-top: 10px;
+  font-weight: bold;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.error-message.show {
+  opacity: 1;
+  transform: translateY(0);
+}
