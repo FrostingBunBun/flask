@@ -28,7 +28,17 @@
       </div>
 
       <div class="rightSide" id="rightSide">
-        <img class="vs" src="https://static.vecteezy.com/system/resources/thumbnails/007/166/964/small/versus-or-vs-logo-design-template-vector.jpg" alt="VS">
+        <img class="vs" id=vsImg src="https://static.vecteezy.com/system/resources/thumbnails/007/166/964/small/versus-or-vs-logo-design-template-vector.jpg" alt="VS">
+        <div id="confirmationModal" class="modal">
+            <div class="modal-content">
+              <h2>Confirmation</h2>
+              <p>Are you sure you want to submit?</p>
+              <div class="modal-buttons">
+                <button id="confirmYes">Yes</button>
+                <button id="confirmNo">No</button>
+              </div>
+            </div>
+          </div>
         <div class="field-container" id="field-container">
           <div
             class="field"
@@ -68,17 +78,6 @@
         </div>
 
         <div id="error-message" class="error-message"></div>
-      </div>
-
-      <div id="confirmationModal" class="modal">
-        <div class="modal-content">
-          <h2>Confirmation</h2>
-          <p>Are you sure you want to submit?</p>
-          <div class="modal-buttons">
-            <button id="confirmYes">Yes</button>
-            <button id="confirmNo">No</button>
-          </div>
-        </div>
       </div>
     </div>
 

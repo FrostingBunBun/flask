@@ -169,6 +169,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     confirmationModal.style.display = "none";
     clearButtonALL.style.display = "none";
+    var vs = document.getElementById("vsImg");
+    vs.style.display = "none";
+
   });
 
   confirmNo.addEventListener("click", function () {

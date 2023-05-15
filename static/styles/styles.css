@@ -172,9 +172,8 @@ li:hover {
   text-align: center;
   animation: slideIn 0.2s forwards;
   position: absolute;
-  top: 12%; /* Adjust top position */
-  left: 61%; /* Adjust left position */
-  transform: translate(-50%, -50%); /* Center the modal */
+  top: 22.5%; /* Adjust top position */
+  left: 59%; /* Adjust left position */
 }
 
 
