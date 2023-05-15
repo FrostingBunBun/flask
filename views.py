@@ -13,6 +13,8 @@ wks_mmr = sh_mmr.worksheet("Leaderboards")
 
 playersNames = wks_mmr.get("D4:D")
 
+flat_names = [item for sublist in playersNames for item in sublist]
+
 database_path = 'C:/Users/FrostingBunBun/Desktop/else/flask/db/users.db'
 
 
@@ -51,8 +53,10 @@ def generate_password(length):
 @views.route("/matchmaking")
 @login_required
 def matchmaking():
-    print(playersNames)
-    return render_template("matchmaking.html", list=playersNames)
+
+    print(flat_names)
+    return render_template("matchmaking.html", list=flat_names)
+
 
 
 @views.route("/entry")

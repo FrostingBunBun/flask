@@ -1,69 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Players</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/styles.css') }}">
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/styles.css') }}"
+    />
+  </head>
+  <body>
     <div class="container">
-
-        <div class="list" id="list">
-            <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Search names...">
-            </div>
-            <h2>List</h2>
-            <ul id="nameList">
-                {% for name in list %}
-                    <li class="list-item" draggable="true" ondragstart="drag(event)">{{ name }}</li>
-                {% endfor %}
-            </ul>
+      <div class="list" id="list">
+        <div class="search-container">
+          <input type="text" id="searchInput" placeholder="Search names..." />
         </div>
+        <h2>List</h2>
+        <ul id="nameList">
+          {% for name in list %}
+          <li class="list-item" draggable="true" ondragstart="drag(event)">
+            {{ name }}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
 
-        <div class="rightSide" id="rightSide">
-            <div class="field-container" id="field-container">
-              <div class="field" id="field1" ondrop="drop(event)" ondragover="allowDrop(event)">
-                <h2>Player Left</h2>
-                <!-- <button class="clear-button" id="clearButton1">Clear</button> -->
-                <div class="player-info" id="playerInfo1">
-                  <p id="playerLeftInfo"></p>
-                </div>
-              </div>
-              <div class="field" id="field2" ondrop="drop(event)" ondragover="allowDrop(event)">
-                <h2>Player Right</h2>
-                <!-- <button class="clear-button" id="clearButton2">Clear</button> -->
-                <div class="player-info" id="playerInfo2">
-                  <p id="playerRightInfo"></p>
-                </div>
-              </div>
+      <div class="rightSide" id="rightSide">
+        <div class="field-container" id="field-container">
+          <div
+            class="field"
+            id="field1"
+            ondrop="drop(event)"
+            ondragover="allowDrop(event)"
+          >
+            <h2>Player Left</h2>
+            <div class="player-info" id="playerInfo1">
+              <p id="playerLeftInfo"></p>
             </div>
-            
             <div class="button-container">
-              <button class="my-button" id="cancelButton">Cancel</button>
-              <a href="#" class="my-button" id="submitButton">Pair</a>
-              <!-- <button class="my-button" id="clearAllButton">Clear All</button> -->
+              <button class="clear-button" id="clearButton1">Clear</button>
             </div>
-            
-            <div id="error-message" class="error-message"></div>
           </div>
-          
-        
 
-            <div id="confirmationModal" class="modal">
-                <div class="modal-content">
-                    <h2>Confirmation</h2>
-                    <p>Are you sure you want to submit?</p>
-                    <div class="modal-buttons">
-                        <button id="confirmYes">Yes</button>
-                        <button id="confirmNo">No</button>
-                    </div>
-                </div>
+          <div
+            class="field"
+            id="field2"
+            ondrop="drop(event)"
+            ondragover="allowDrop(event)"
+          >
+            <h2>Player Right</h2>
+            <div class="player-info" id="playerInfo2">
+              <p id="playerRightInfo"></p>
             </div>
+            <div class="button-container">
+              <button class="clear-button" id="clearButton2">Clear</button>
+            </div>
+          </div>
         </div>
 
+        <div class="button-container">
+          <button class="my-button" id="cancelButton">Cancel</button>
+          <a href="#" class="my-button" id="submitButton">Pair</a>
+          <!-- <button class="my-button" id="clearAllButton">Clear All</button> -->
+        </div>
+
+        <div id="error-message" class="error-message"></div>
+      </div>
+
+      <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+          <h2>Confirmation</h2>
+          <p>Are you sure you want to submit?</p>
+          <div class="modal-buttons">
+            <button id="confirmYes">Yes</button>
+            <button id="confirmNo">No</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
-</body>
+  </body>
 </html>

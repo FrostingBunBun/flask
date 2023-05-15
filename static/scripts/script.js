@@ -36,10 +36,10 @@ function drop(event) {
   draggedElement.style.opacity = "1";
 
   var leftField = document.getElementById("field1");
-  var leftName = leftField.textContent;
+  var leftName = leftField.querySelector("p").textContent.trim();
 
   var rightField = document.getElementById("field2");
-  var rightName = rightField.textContent;
+  var rightName = rightField.querySelector("p").textContent.trim();
 
   console.log("Left Name: " + leftName);
   console.log("Right Name: " + rightName);
@@ -82,10 +82,10 @@ document.addEventListener("DOMContentLoaded", function () {
     var errorMessage = document.getElementById("error-message");
 
     if (
-      leftField.textContent.trim() !== "" &&
-      leftField.textContent.trim() !== "Player Left" &&
-      rightField.textContent.trim() !== "" &&
-      rightField.textContent.trim() !== "Player Right"
+      leftField.querySelector("p").textContent.trim() !== "" &&
+      leftField.querySelector("p").textContent.trim() !== "Player Left" &&
+      rightField.querySelector("p").textContent.trim() !== "" &&
+      rightField.querySelector("p").textContent.trim() !== "Player Right"
     ) {
     confirmationModal.style.display = "block";
     }
