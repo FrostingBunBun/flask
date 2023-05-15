@@ -144,8 +144,8 @@ li:hover {
   display: none;
   position: fixed;
   z-index: 1;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   overflow: auto;
@@ -160,10 +160,13 @@ li:hover {
   width: 300px;
   text-align: center;
   animation: slideIn 0.2s forwards;
-  position: relative;
-  top: 25px;
-  left: calc(100% - 740px); /* Adjust left position */
+  position: absolute;
+  top: 12%; /* Adjust top position */
+  left: 61%; /* Adjust left position */
+  transform: translate(-50%, -50%); /* Center the modal */
 }
+
+
 
 @keyframes slideIn {
   from {
@@ -208,6 +211,15 @@ li:hover {
   font-size: 24px;
 }
 #cancelButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #f9f9f9;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
   display: none;
 }
 .error-message {
@@ -223,4 +235,19 @@ li:hover {
 .error-message.show {
   opacity: 1;
   transform: translateY(0);
+}
+.clear-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #c0c0c0;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.clear-button:hover {
+  background-color: #b1b1b1;
 }

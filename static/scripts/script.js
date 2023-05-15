@@ -65,6 +65,7 @@ function filterNames() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+
   var searchInput = document.getElementById("searchInput");
   searchInput.addEventListener("input", filterNames);
 
@@ -73,10 +74,9 @@ document.addEventListener("DOMContentLoaded", function () {
   var confirmationModal = document.getElementById("confirmationModal");
   var confirmYes = document.getElementById("confirmYes");
   var confirmNo = document.getElementById("confirmNo");
+  var clearButtonALL = document.getElementById("clearButtonALL");
 
-
-
-  submitButton.addEventListener("click", function() {
+  submitButton.addEventListener("click", function () {
     var leftField = document.getElementById("field1");
     var rightField = document.getElementById("field2");
     var errorMessage = document.getElementById("error-message");
@@ -87,23 +87,17 @@ document.addEventListener("DOMContentLoaded", function () {
       rightField.querySelector("p").textContent.trim() !== "" &&
       rightField.querySelector("p").textContent.trim() !== "Player Right"
     ) {
-    confirmationModal.style.display = "block";
-    }
-    else {
+      confirmationModal.style.display = "block";
+    } else {
       errorMessage.textContent = "Please enter names into both fields.";
       errorMessage.classList.add("show");
 
       // Remove the error class after 2 seconds
-      setTimeout(function() {
+      setTimeout(function () {
         errorMessage.classList.remove("show");
       }, 2000);
     }
   });
-
-  
-  
-  
-  
 
   // CSS STUFF FOR YES NO
   confirmYes.style.fontSize = "20px";
@@ -128,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
     item.textContent = item.textContent.slice(2, -2);
   });
 
-  confirmYes.addEventListener("click", function() {
+  confirmYes.addEventListener("click", function () {
     var leftField = document.getElementById("field1");
     var rightField = document.getElementById("field2");
 
@@ -140,6 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
     ) {
       var leftName = leftField.textContent;
       var rightName = rightField.textContent;
+      document.getElementById("submitButton").style.display = "none";
 
       var matchResult = document.createElement("p");
       matchResult.textContent = leftName + " VS " + rightName;
@@ -154,26 +149,38 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     confirmationModal.style.display = "none";
+    clearButtonALL.style.display = "none";
   });
-  
 
-  confirmNo.addEventListener("click", function() {
+  confirmNo.addEventListener("click", function () {
     confirmationModal.style.display = "none";
   });
-  
-  cancelButton.addEventListener("click", function() {
-    var leftField = document.getElementById("field1");
-    var rightField = document.getElementById("field2");
 
-    leftField.textContent = "Player Left";
-    rightField.textContent = "Player Right";
-
-    // Hide the cancel button
-    cancelButton.style.display = "none";
+  cancelButton.addEventListener("click", function () {
+    window.location.reload();
   });
 
+  var clearButton1 = document.getElementById("clearButton1");
+  var clearButton2 = document.getElementById("clearButton2");
+  var clearButtonALL = document.getElementById("clearButtonALL");
 
+  clearButton1.addEventListener("click", function() {
+  var rightField = document.getElementById("field1");
+  rightField.querySelector("p").textContent = "";
+});
 
+clearButton2.addEventListener("click", function() {
+  var leftField = document.getElementById("field2");
+  leftField.querySelector("p").textContent = "";
+});
+
+clearButtonALL.addEventListener("click", function() {
+  var leftField = document.getElementById("field2");
+  leftField.querySelector("p").textContent = "";
+  var rightField = document.getElementById("field1");
+  rightField.querySelector("p").textContent = "";
+});
 
 
 });
+
