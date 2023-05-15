@@ -22,26 +22,27 @@
             </ul>
         </div>
 
-        <div class="rightSide">
-            <div class="field-container">
+        <div class="rightSide" id="rightSide">
+            <div class="field-container" id="field-container">
                 <div class="field" id="field1" ondrop="drop(event)" ondragover="allowDrop(event)">
                     <h2>Player Left</h2>
                 </div>
                 <div class="field" id="field2" ondrop="drop(event)" ondragover="allowDrop(event)">
                     <h2>Player Right</h2>
                 </div>
+                <div class="button-container">
+                    <button class="my-button" id="cancelButton">Cancel</button>
+                    <a href="#" class="my-button" id="submitButton">Pair</a>
+                </div>
             </div>
 
-            <div class="button-container">
-                <a href="#" class="my-button" id="submitButton">Pair</a>
-                <div id="confirmationModal" class="modal">
-                    <div class="modal-content">
-                        <h2>Confirmation</h2>
-                        <p>Are you sure you want to submit?</p>
-                        <div class="modal-buttons">
-                            <button id="confirmYes">Yes</button>
-                            <button id="confirmNo">No</button>
-                        </div>
+            <div id="confirmationModal" class="modal">
+                <div class="modal-content">
+                    <h2>Confirmation</h2>
+                    <p>Are you sure you want to submit?</p>
+                    <div class="modal-buttons">
+                        <button id="confirmYes">Yes</button>
+                        <button id="confirmNo">No</button>
                     </div>
                 </div>
             </div>

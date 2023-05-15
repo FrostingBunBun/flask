@@ -25,15 +25,14 @@ function drop(event) {
     existingContent.remove();
   }
 
-  // Check if the name already exists in the target field
-  var isNameExists = Array.from(targetField.children).some(function (child) {
-    return child.textContent === name;
-  });
-
-  if (!isNameExists) {
-    targetField.appendChild(droppedElement);
+  // Check if the name already exists in the other field
+  var otherField = targetField.id === "field1" ? "field2" : "field1";
+  var otherContent = document.getElementById(otherField).querySelector("p");
+  if (otherContent && otherContent.textContent === name) {
+    otherContent.remove();
   }
 
+  targetField.appendChild(droppedElement);
   draggedElement.style.opacity = "1";
 
   var leftField = document.getElementById("field1");
@@ -65,49 +64,91 @@ function filterNames() {
   }
 }
 
-var searchInput = document.getElementById("searchInput");
-searchInput.addEventListener("input", filterNames);
+document.addEventListener("DOMContentLoaded", function () {
+  var searchInput = document.getElementById("searchInput");
+  searchInput.addEventListener("input", filterNames);
 
-var submitButton = document.querySelector(".my-button");
-var confirmationModal = document.getElementById("confirmationModal");
-var confirmYes = document.getElementById("confirmYes");
-var confirmNo = document.getElementById("confirmNo");
+  var submitButton = document.getElementById("submitButton");
+  var cancelButton = document.getElementById("cancelButton");
+  var confirmationModal = document.getElementById("confirmationModal");
+  var confirmYes = document.getElementById("confirmYes");
+  var confirmNo = document.getElementById("confirmNo");
 
-submitButton.addEventListener("click", function() {
-  confirmationModal.style.display = "block";
+  submitButton.addEventListener("click", function () {
+    var leftField = document.getElementById("field1");
+    var rightField = document.getElementById("field2");
+
+    if (
+      leftField.textContent.trim() !== "" &&
+      rightField.textContent.trim() !== ""
+    ) {
+      confirmationModal.style.display = "block";
+      // Show the cancel button
+      cancelButton.style.display = "block";
+    }
+  });
+
+  // CSS STUFF FOR YES NO
+  confirmYes.style.fontSize = "20px";
+  confirmYes.style.padding = "10px 20px";
+  confirmYes.style.backgroundColor = "#4CAF50";
+  confirmYes.style.color = "#fff";
+  confirmYes.style.border = "none";
+  confirmYes.style.borderRadius = "4px";
+  confirmYes.style.cursor = "pointer";
+
+  confirmNo.style.fontSize = "20px";
+  confirmNo.style.padding = "10px 20px";
+  confirmNo.style.backgroundColor = "#f44336";
+  confirmNo.style.color = "#fff";
+  confirmNo.style.border = "none";
+  confirmNo.style.borderRadius = "4px";
+  confirmNo.style.cursor = "pointer";
+
+  // Modify text content of list items
+  var listItems = document.querySelectorAll(".list-item");
+  listItems.forEach(function (item) {
+    item.textContent = item.textContent.slice(2, -2);
+  });
 });
 
-confirmYes.addEventListener("click", function() {
+confirmYes.addEventListener("click", function () {
+  var leftField = document.getElementById("field1");
+  var rightField = document.getElementById("field2");
+
+  if (
+    leftField.textContent.trim() !== "" &&
+    rightField.textContent.trim() !== ""
+  ) {
+    var leftName = leftField.textContent;
+    var rightName = rightField.textContent;
+
+    var matchResult = document.createElement("p");
+    matchResult.textContent = leftName + " VS " + rightName;
+    document.getElementById("field-container").innerHTML = "";
+    document.getElementById("field-container").appendChild(matchResult);
+
+    confirmationModal.style.display = "none";
+  }
+});
+
+confirmNo.addEventListener("click", function () {
   confirmationModal.style.display = "none";
-  // Submit the form or perform further actions
-  console.log("Form submitted");
 });
 
-confirmNo.addEventListener("click", function() {
-  confirmationModal.style.display = "none";
-  // Cancel the submission or perform further actions
-  console.log("Form submission canceled");
-});
+cancelButton.addEventListener("click", function () {
+  var leftField = document.getElementById("field1");
+  var rightField = document.getElementById("field2");
 
-// CSS STUFF FOR YES NO
-confirmYes.style.fontSize = "20px";
-confirmYes.style.padding = "10px 20px";
-confirmYes.style.backgroundColor = "#4CAF50";
-confirmYes.style.color = "#fff";
-confirmYes.style.border = "none";
-confirmYes.style.borderRadius = "4px";
-confirmYes.style.cursor = "pointer";
+  leftField.textContent = "Player Left";
+  rightField.textContent = "Player Right";
 
-confirmNo.style.fontSize = "20px";
-confirmNo.style.padding = "10px 20px";
-confirmNo.style.backgroundColor = "#f44336";
-confirmNo.style.color = "#fff";
-confirmNo.style.border = "none";
-confirmNo.style.borderRadius = "4px";
-confirmNo.style.cursor = "pointer";
+  // Hide the cancel button
+  cancelButton.style.display = "none";
 
-// Modify text content of list items
-var listItems = document.querySelectorAll('.list-item');
-listItems.forEach(function(item) {
-  item.textContent = item.textContent.slice(2, -2);
+  // Show the submit button
+  submitButton.style.display = "block";
+
+  // Show the list
+  document.getElementById("list").classList.remove("list-hidden");
 });
