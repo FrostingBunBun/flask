@@ -26,18 +26,24 @@
             <div class="field-container" id="field-container">
               <div class="field" id="field1" ondrop="drop(event)" ondragover="allowDrop(event)">
                 <h2>Player Left</h2>
-                <button class="clear-button" id="clearButton1">Clear</button>
+                <!-- <button class="clear-button" id="clearButton1">Clear</button> -->
+                <div class="player-info" id="playerInfo1">
+                  <p id="playerLeftInfo"></p>
+                </div>
               </div>
               <div class="field" id="field2" ondrop="drop(event)" ondragover="allowDrop(event)">
                 <h2>Player Right</h2>
-                <button class="clear-button" id="clearButton2">Clear</button>
+                <!-- <button class="clear-button" id="clearButton2">Clear</button> -->
+                <div class="player-info" id="playerInfo2">
+                  <p id="playerRightInfo"></p>
+                </div>
               </div>
             </div>
             
             <div class="button-container">
               <button class="my-button" id="cancelButton">Cancel</button>
               <a href="#" class="my-button" id="submitButton">Pair</a>
-              <button class="my-button" id="clearAllButton">Clear All</button>
+              <!-- <button class="my-button" id="clearAllButton">Clear All</button> -->
             </div>
             
             <div id="error-message" class="error-message"></div>

@@ -74,39 +74,65 @@ document.addEventListener("DOMContentLoaded", function () {
   var confirmYes = document.getElementById("confirmYes");
   var confirmNo = document.getElementById("confirmNo");
 
+
+
   submitButton.addEventListener("click", function () {
-    var leftField = document.getElementById("field1");
-    var rightField = document.getElementById("field2");
-    var errorMessage = document.getElementById("error-message");
-  
-    if (
-      leftField.textContent.trim() !== "" && leftField.textContent.trim() !== "Player Left" &&
-      rightField.textContent.trim() !== "" && rightField.textContent.trim() !== "Player Right"
-    ) {
-      var leftName = leftField.textContent;
-      var rightName = rightField.textContent;
-  
-      var matchResult = document.createElement("p");
-      matchResult.textContent = leftName + " VS " + rightName;
-      var fieldContainer = document.getElementById("field-container");
-      fieldContainer.innerHTML = "";
-      fieldContainer.appendChild(matchResult);
-  
-      confirmationModal.style.display = "none";
-      cancelButton.style.display = "block";
-  
-      // Reset error message
-      errorMessage.textContent = "";
-    } else {
-      errorMessage.textContent = "Please enter names into both fields.";
-      errorMessage.classList.add("show");
-  
-      // Remove the error class after 2 seconds
-      setTimeout(function() {
-        errorMessage.classList.remove("show");
-      }, 2000);
-    }
-  });
+  var leftField = document.getElementById("field1");
+  var rightField = document.getElementById("field2");
+  var errorMessage = document.getElementById("error-message");
+
+  if (
+    (leftField.textContent.trim() !== "" && leftField.textContent.trim() !== "Player Left" && leftField.textContent.trim() !== "Clear") &&
+    (rightField.textContent.trim() !== "" && rightField.textContent.trim() !== "Player Right" && rightField.textContent.trim() !== "Clear")
+  ) {
+    var leftName = leftField.textContent;
+    var rightName = rightField.textContent;
+
+    // Create containers for the players
+    var leftContainer = document.createElement("div");
+    leftContainer.classList.add("player-container");
+    var rightContainer = document.createElement("div");
+    rightContainer.classList.add("player-container");
+
+    // Create elements for player information
+    var leftInfo = document.createElement("p");
+    leftInfo.textContent = "Player Left Info"; // Replace with actual information
+    var rightInfo = document.createElement("p");
+    rightInfo.textContent = "Player Right Info"; // Replace with actual information
+
+    // Append player information to the containers
+    leftContainer.appendChild(leftInfo);
+    rightContainer.appendChild(rightInfo);
+
+    // Create match result element
+    var matchResult = document.createElement("p");
+    matchResult.textContent = leftName + " VS " + rightName;
+
+    // Clear the field container
+    var fieldContainer = document.getElementById("field-container");
+    fieldContainer.innerHTML = "";
+
+    // Append the containers and match result to the field container
+    fieldContainer.appendChild(leftContainer);
+    fieldContainer.appendChild(matchResult);
+    fieldContainer.appendChild(rightContainer);
+
+    confirmationModal.style.display = "none";
+    cancelButton.style.display = "block";
+
+    // Reset error message
+    errorMessage.textContent = "";
+  } else {
+    errorMessage.textContent = "Please enter names into both fields.";
+    errorMessage.classList.add("show");
+
+    // Remove the error class after 2 seconds
+    setTimeout(function () {
+      errorMessage.classList.remove("show");
+    }, 2000);
+  }
+});
+
   
   
   
@@ -140,8 +166,8 @@ document.addEventListener("DOMContentLoaded", function () {
     var rightField = document.getElementById("field2");
   
     if (
-      leftField.textContent.trim() !== "" && leftField.textContent.trim() !== "Player Left" &&
-      rightField.textContent.trim() !== "" && rightField.textContent.trim() !== "Player Right"
+      (leftField.textContent.trim() !== "" && leftField.textContent.trim() !== "Player Left" && leftField.textContent.trim() !== "Clear") &&
+      (rightField.textContent.trim() !== "" && rightField.textContent.trim() !== "Player Right" && rightField.textContent.trim() !== "Clear")
     ) {
       var leftName = leftField.textContent;
       var rightName = rightField.textContent;
@@ -185,37 +211,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Show the list
     document.getElementById("list").classList.remove("list-hidden");
   });
-
-  // Clear Button 1
-var clearButton1 = document.getElementById("clearButton1");
-clearButton1.addEventListener("click", function(event) {
-  event.preventDefault();
-  var field1 = document.getElementById("field1");
-  var h2 = field1.querySelector("h2");
-  h2.textContent = "Player Left";
-});
-
-// Clear Button 2
-var clearButton2 = document.getElementById("clearButton2");
-clearButton2.addEventListener("click", function(event) {
-  event.preventDefault();
-  var field2 = document.getElementById("field2");
-  var h2 = field2.querySelector("h2");
-  h2.textContent = "Player Right";
-});
-
-// Clear All Button
-var clearAllButton = document.getElementById("clearAllButton");
-clearAllButton.addEventListener("click", function(event) {
-  event.preventDefault();
-  var field1 = document.getElementById("field1");
-  var field2 = document.getElementById("field2");
-  var h2_1 = field1.querySelector("h2");
-  var h2_2 = field2.querySelector("h2");
-  h2_1.textContent = "Player Left";
-  h2_2.textContent = "Player Right";
-});
-
 
 
 
