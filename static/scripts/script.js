@@ -151,11 +151,13 @@ document.addEventListener("DOMContentLoaded", function () {
       rightField.textContent.trim() !== "" &&
       rightField.textContent.trim() !== "Player Right"
     ) {
+      const container = document.getElementById('match-container');
+      container.style.display = 'block';
       var leftName = leftField.textContent;
       var rightName = rightField.textContent;
       document.getElementById("submitButton").style.display = "none";
 
-      var matchResult = document.createElement("p");
+      var matchResult = document.createElement("div");
       matchResult.textContent = leftName + " VS " + rightName;
       var fieldContainer = document.getElementById("field-container");
       if (fieldContainer) {
