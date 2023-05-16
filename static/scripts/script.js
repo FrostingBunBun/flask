@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var fieldContainer = document.getElementById("field-container");
       if (fieldContainer) {
         fieldContainer.innerHTML = "";
-        fieldContainer.appendChild(matchResult);
+        // fieldContainer.appendChild(matchResult);
       }
 
       // Hide the cancel button
@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
     confirmationModal.style.display = "none";
     clearButtonALL.style.display = "none";
     var vs = document.getElementById("vsImg");
-    vs.style.display = "none";
+    vs.style.display = "none"
 
   });
 

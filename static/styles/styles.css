@@ -62,12 +62,13 @@ li:hover {
 .vs{
   position:absolute;
   top: 10%;
-  left: 62%;
+  left: 39.5%;
   z-index: -1;
   user-select: none; /* Disable selection */
   -moz-user-select: none; /* Firefox */
   -webkit-user-select: none; /* Safari and Chrome */
   -ms-user-select: none; /* Internet Explorer/Edge */
+  display:block;
 }
 
 .field h2 {
@@ -300,12 +301,6 @@ li:hover {
 
 .match-container {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
-  width: 1000px; /* Increase the width value to a larger value */
-  height: 400px;
-  color: #3e8e41;
   display: none;
 }
 
@@ -318,6 +313,8 @@ li:hover {
   background-color: #f9f9f9;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 100px;
+  height: 100px;
 }
 
 .player-info {
