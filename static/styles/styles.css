@@ -310,8 +310,10 @@ li:hover {
   align-items: center;
   background-color: #f2f2f2;
   padding: 20px;
-  margin: 10px;
+  margin-left: 40px;
+  margin-right: 40px;
   text-align: center;
+  border-radius: 10px;
 }
 
 /* Styles for player image */
