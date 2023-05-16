@@ -16,10 +16,7 @@ function drag(event) {
   event.dataTransfer.setData("text/plain", target.innerText);
 }
 
-
-
 function drop(event) {
-
   event.preventDefault();
   var name = event.dataTransfer.getData("text/plain");
   var droppedElement = document.createElement("p");
@@ -70,7 +67,6 @@ function drop(event) {
 
   targetField.appendChild(droppedElement);
   draggedElement.style.opacity = "1";
-
 }
 
 function filterNames() {
@@ -90,7 +86,6 @@ function filterNames() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-
   var searchInput = document.getElementById("searchInput");
   searchInput.addEventListener("input", filterNames);
 
@@ -150,19 +145,19 @@ document.addEventListener("DOMContentLoaded", function () {
   confirmYes.addEventListener("click", function () {
     var leftField = document.getElementById("field1");
     var rightField = document.getElementById("field2");
-
+  
     if (
       leftField.textContent.trim() !== "" &&
       leftField.textContent.trim() !== "Player Left" &&
       rightField.textContent.trim() !== "" &&
       rightField.textContent.trim() !== "Player Right"
     ) {
-      const container = document.getElementById('match-container');
-      container.style.display = 'flex';
+      const container = document.getElementById("match-container");
+      container.style.display = "flex";
       var leftName = leftField.textContent;
       var rightName = rightField.textContent;
       document.getElementById("submitButton").style.display = "none";
-
+  
       var matchResult = document.createElement("div");
       matchResult.textContent = leftName + " VS " + rightName;
       var fieldContainer = document.getElementById("field-container");
@@ -170,19 +165,70 @@ document.addEventListener("DOMContentLoaded", function () {
         fieldContainer.innerHTML = "";
         // fieldContainer.appendChild(matchResult);
       }
-
+  
       // Hide the cancel button
       cancelButton.style.display = "block";
     }
-
+  
     confirmationModal.style.display = "none";
     clearButtonALL.style.display = "none";
     var vs = document.getElementById("vsImg");
-    vs.style.display = "none"
+    vs.style.display = "none";
+  
+    // Retrieve values after the elements have been filled
+    var playerName1send = document.getElementById("playerName1").textContent;
+    var playerName2send = document.getElementById("playerName2").textContent;
 
-
-
+  
+    // Create an event to indicate that the values have been retrieved
+    var valuesRetrievedEvent = new CustomEvent("valuesRetrieved", {
+      detail: {
+        playerName1send: playerName1send,
+        playerName2send: playerName2send,
+      },
+    });
+  
+    // Dispatch the event on the document
+    document.dispatchEvent(valuesRetrievedEvent);
   });
+  
+  // Event listener to handle the retrieved values
+  document.addEventListener("valuesRetrieved", function (event) {
+    var data = event.detail; // Retrieve the values from the event
+  
+    // Perform further processing or AJAX request with the retrieved values
+    $.ajax({
+      type: "POST",
+      url: "/matchmaking",
+      data: JSON.stringify(data),
+      dataType: "json",
+      contentType: "application/json", // Specify content type as JSON
+      success: function (response) {
+        console.log(response);
+      },
+    });
+  });
+  
+  
+  // Event listener to handle the retrieved values
+  document.addEventListener("valuesRetrieved", function (event) {
+    var data = event.detail; // Retrieve the values from the event
+  
+    // Perform further processing or AJAX request with the retrieved values
+    $.ajax({
+      type: "POST",
+      url: "/matchmaking",
+      data: JSON.stringify(data),
+      dataType: "json",
+      contentType: "application/json", // Set the content type to JSON
+      success: function (response) {
+        console.log(response);
+      },
+    });
+  
+    console.log(data);
+  });
+  
 
   confirmNo.addEventListener("click", function () {
     confirmationModal.style.display = "none";
@@ -196,28 +242,26 @@ document.addEventListener("DOMContentLoaded", function () {
   var clearButton2 = document.getElementById("clearButton2");
   var clearButtonALL = document.getElementById("clearButtonALL");
 
-  clearButton1.addEventListener("click", function() {
-  var rightField = document.getElementById("field1");
-  rightField.querySelector("p").textContent = "";
-});
+  clearButton1.addEventListener("click", function () {
+    var rightField = document.getElementById("field1");
+    rightField.querySelector("p").textContent = "";
+  });
 
-clearButton2.addEventListener("click", function() {
-  var leftField = document.getElementById("field2");
-  leftField.querySelector("p").textContent = "";
-});
+  clearButton2.addEventListener("click", function () {
+    var leftField = document.getElementById("field2");
+    leftField.querySelector("p").textContent = "";
+  });
 
-clearButtonALL.addEventListener("click", function() {
-  var leftField = document.getElementById("field2");
-  leftField.querySelector("p").textContent = "";
-  var rightField = document.getElementById("field1");
-  rightField.querySelector("p").textContent = "";
-});
-
-
+  clearButtonALL.addEventListener("click", function () {
+    var leftField = document.getElementById("field2");
+    leftField.querySelector("p").textContent = "";
+    var rightField = document.getElementById("field1");
+    rightField.querySelector("p").textContent = "";
+  });
 });
 
 // Disable dragstart event for selected elements
-document.addEventListener("dragstart", function(event) {
+document.addEventListener("dragstart", function (event) {
   var selectedElements = window.getSelection().toString();
   if (selectedElements !== "") {
     event.preventDefault();

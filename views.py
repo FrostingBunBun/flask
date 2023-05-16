@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session
+from flask import Blueprint, render_template, request, redirect, url_for, session, jsonify
 import gspread
 import sqlite3
 import random
@@ -12,6 +12,31 @@ sh_mmr = sa_mmr.open("Leaderboards")
 wks_mmr = sh_mmr.worksheet("Leaderboards")
 
 playersNames = wks_mmr.get("D4:D")
+
+
+range_str = "C4:D"
+values = wks_mmr.range(range_str)
+range_wr = "I4:I"
+winrate = wks_mmr.range(range_wr)
+
+cell_values = {}
+
+for i in range(0, len(values), 2):
+    name = values[i + 1].value
+    value1 = values[i].value
+    value2 = winrate[i // 2].value
+    if name != "":
+        cell_values[name] = [value1, value2]
+
+
+
+
+
+
+
+test = wks_mmr.acell("I4").value
+
+
 
 flat_names = [item for sublist in playersNames for item in sublist]
 
@@ -50,12 +75,40 @@ def generate_password(length):
     return password
 
 
-@views.route("/matchmaking")
+@views.route("/matchmaking", methods=['GET', 'POST'])
 @login_required
 def matchmaking():
+    # Initialize variables with default values
+    playerMmr1 = "test"
+    playerWinrate1 = "test"
+    playerMmr2 = "test"
+    playerWinrate2 = "test"
 
-    print(flat_names)
-    return render_template("matchmaking.html", list=flat_names)
+    if request.method == 'POST':
+        data = request.get_json()
+        playerName1 = data.get("playerName1send")
+        playerMmr1 = cell_values[playerName1][0]
+        playerWinrate1 = cell_values[playerName1][1]
+
+        playerName2 = data.get("playerName2send")
+        playerMmr2 = cell_values[playerName2][0]
+        playerWinrate2 = cell_values[playerName2][1]
+        
+        print("playerName1: ", playerName1)
+        print("playerMmr1: ", playerMmr1)
+        print("playerWinrate1: ", playerWinrate1)
+
+        print("playerName2: ", playerName2)
+        print("playerMmr2: ", playerMmr2)
+        print("playerWinrate2: ", playerWinrate2)
+        print("=====================================")
+
+    player_data = [playerMmr1, playerWinrate1, playerMmr2, playerWinrate2]
+
+    return render_template("matchmaking.html", list=flat_names, player_data=player_data)
+
+
+
 
 
 
