@@ -289,7 +289,6 @@ li:hover {
   background-color: #b1b1b1;
 }
 .dragged-item {
-
   background-color: #ffcc00;
   color: #333;
   border: 2px solid #ffcc00;
@@ -300,41 +299,35 @@ li:hover {
 }
 
 .match-container {
-  display: flex;
   display: none;
+  justify-content: space-between;
+
 }
 
+/* Styles for player field */
 .player {
-  flex: 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  background-color: #f2f2f2;
   padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  width: 100px;
-  height: 100px;
-}
-
-.player-info {
+  margin: 10px;
   text-align: center;
-  margin-top: auto;
 }
 
-.player-image {
+/* Styles for player image */
+.player-image img {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  margin-bottom: 10px;
-  background-color: #ccc;
+  margin-right: 20px;
 }
 
-h3 {
+/* Styles for player name */
+.player h3 {
   margin: 0;
 }
 
-.rating,
-.additional-number {
-  margin-top: 10px;
+/* Styles for player rating and additional number */
+.player-info div {
+  margin-top: 5px;
 }

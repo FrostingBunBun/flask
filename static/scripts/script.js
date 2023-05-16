@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
       rightField.textContent.trim() !== "Player Right"
     ) {
       const container = document.getElementById('match-container');
-      container.style.display = 'block';
+      container.style.display = 'flex';
       var leftName = leftField.textContent;
       var rightName = rightField.textContent;
       document.getElementById("submitButton").style.display = "none";
@@ -173,6 +173,8 @@ document.addEventListener("DOMContentLoaded", function () {
     clearButtonALL.style.display = "none";
     var vs = document.getElementById("vsImg");
     vs.style.display = "none"
+
+
 
   });
 
