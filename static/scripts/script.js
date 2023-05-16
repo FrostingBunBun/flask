@@ -59,6 +59,12 @@ function drop(event) {
   console.log("Left Name: " + leftName);
   console.log("Right Name: " + rightName);
 
+  var playerName1 = document.getElementById("playerName1");
+  playerName1.textContent = leftName;
+
+  var playerName2 = document.getElementById("playerName2");
+  playerName2.textContent = rightName;
+
   // Show the list after items have been moved to the left
   document.getElementById("list").classList.remove("list-hidden");
 
