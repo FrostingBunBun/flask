@@ -85,23 +85,29 @@ def matchmaking():
     playerWinrate2 = "test"
 
     if request.method == 'POST':
+
         data = request.get_json()
         playerName1 = data.get("playerName1send")
-        playerMmr1 = cell_values[playerName1][0]
-        playerWinrate1 = cell_values[playerName1][1]
-
         playerName2 = data.get("playerName2send")
-        playerMmr2 = cell_values[playerName2][0]
-        playerWinrate2 = cell_values[playerName2][1]
+    
+        print("Player 1 Name:", playerName1)
+        print("Player 2 Name:", playerName2)
         
-        print("playerName1: ", playerName1)
-        print("playerMmr1: ", playerMmr1)
-        print("playerWinrate1: ", playerWinrate1)
-
-        print("playerName2: ", playerName2)
-        print("playerMmr2: ", playerMmr2)
-        print("playerWinrate2: ", playerWinrate2)
-        print("=====================================")
+        if playerName1 in cell_values:
+            playerMmr1 = cell_values[playerName1][0]
+            playerWinrate1 = cell_values[playerName1][1]
+            print("Player 1 MMr:", playerMmr1)
+            print("Player 1 Winrate:", playerWinrate1)
+        else:
+            print("Player 1 not found in cell_values")
+            
+        if playerName2 in cell_values:
+            playerMmr2 = cell_values[playerName2][0]
+            playerWinrate2 = cell_values[playerName2][1]
+            print("Player 2 MMr:", playerMmr2)
+            print("Player 2 Winrate:", playerWinrate2)
+        else:
+            print("Player 2 not found in cell_values")
 
     player_data = [playerMmr1, playerWinrate1, playerMmr2, playerWinrate2]
 
