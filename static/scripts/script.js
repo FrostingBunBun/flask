@@ -78,18 +78,28 @@ function drop(event) {
 
 function filterNames() {
   var input = document.getElementById("searchInput");
-  var filter = input.value.toUpperCase();
+  var filter = input.value.toLowerCase();
   var ul = document.querySelector(".list ul");
   var li = ul.getElementsByTagName("li");
 
   for (var i = 0; i < li.length; i++) {
     var name = li[i].textContent || li[i].innerText;
-    if (name.toUpperCase().startsWith(filter)) {
+    var transformedName = transformString(name);
+    var transformedFilter = transformString(filter);
+    
+    // Check if the original name or transformed name contains the filter
+    if (name.includes(filter) || transformedName.includes(transformedFilter)) {
       li[i].style.display = "";
     } else {
       li[i].style.display = "none";
     }
   }
+}
+
+function transformString(str) {
+  // Replace '3' with 'e' and convert to lowercase
+  var transformedStr = str.replace(/3/g, 'e').toLowerCase();
+  return transformedStr;
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -149,6 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
     item.textContent = item.textContent.slice(2, -2);
   });
 
+
   confirmYes.addEventListener("click", function () {
     var leftField = document.getElementById("field1");
     var rightField = document.getElementById("field2");
@@ -159,44 +170,49 @@ document.addEventListener("DOMContentLoaded", function () {
       rightField.textContent.trim() !== "" &&
       rightField.textContent.trim() !== "Player Right"
     ) {
-      const container = document.getElementById("match-container");
-      container.style.display = "flex";
-      var leftName = leftField.textContent;
-      var rightName = rightField.textContent;
-      document.getElementById("submitButton").style.display = "none";
+
+      window.location.href = "/matchmaking/match";
+      // const container = document.getElementById("match-container");
+      // container.style.display = "flex";
+      // var leftName = leftField.textContent;
+      // var rightName = rightField.textContent;
+      // document.getElementById("submitButton").style.display = "none";
   
-      var matchResult = document.createElement("div");
-      matchResult.textContent = leftName + " VS " + rightName;
-      var fieldContainer = document.getElementById("field-container");
-      if (fieldContainer) {
-        fieldContainer.innerHTML = "";
-        // fieldContainer.appendChild(matchResult);
-      }
+      // var matchResult = document.createElement("div");
+      // matchResult.textContent = leftName + " VS " + rightName;
+      // var fieldContainer = document.getElementById("field-container");
+      // if (fieldContainer) {
+      //   fieldContainer.innerHTML = "";
+      //   // fieldContainer.appendChild(matchResult);
+      // }
   
-      // Hide the cancel button
-      cancelButton.style.display = "block";
+      // // Hide the cancel button
+      // cancelButton.style.display = "block";
     }
   
-    confirmationModal.style.display = "none";
-    clearButtonALL.style.display = "none";
-    var vs = document.getElementById("vsImg");
-    vs.style.display = "none";
+    // confirmationModal.style.display = "none";
+    // clearButtonALL.style.display = "none";
+    // var vs = document.getElementById("vsImg");
+    // vs.style.display = "none";
   
-    // Retrieve values after the elements have been filled
-    var playerName1send = document.getElementById("playerName1").textContent;
-    var playerName2send = document.getElementById("playerName2").textContent;
+    // // Retrieve values after the elements have been filled
+    // var playerName1send = document.getElementById("playerName1").textContent;
+    // var playerName2send = document.getElementById("playerName2").textContent;
 
   
-    // Create an event to indicate that the values have been retrieved
-    var valuesRetrievedEvent = new CustomEvent("valuesRetrieved", {
-      detail: {
-        playerName1send: playerName1send,
-        playerName2send: playerName2send,
-      },
-    });
+    // // Create an event to indicate that the values have been retrieved
+    // var valuesRetrievedEvent = new CustomEvent("valuesRetrieved", {
+    //   detail: {
+    //     playerName1send: playerName1send,
+    //     playerName2send: playerName2send,
+    //   },
+    // });
   
-    // Dispatch the event on the document
-    document.dispatchEvent(valuesRetrievedEvent);
+    // // Dispatch the event on the document
+    // document.dispatchEvent(valuesRetrievedEvent);
+
+
+
   });
   
   // Event listener to handle the retrieved values

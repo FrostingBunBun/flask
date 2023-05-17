@@ -1,8 +1,8 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #a3a3a3;
+  background-color: #000000;
   margin: 0;
-  padding: 20px;
+  padding: 100px;
 }
 
 .container {
@@ -13,9 +13,24 @@ body {
   align-items: flex-start;
 }
 
+.background-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-image: url("https://my.catgirls.forsale/dKAWF069.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-position: center bottom -300px;
+  filter: blur(3px);
+}
+
 .list {
   flex: 1;
-  background-color: #fff;
+  background-color: #cecece;
   padding: 20px;
   border-radius: 30px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -25,7 +40,13 @@ body {
 }
 
 .list h2 {
-  margin-top: 0;
+  font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+    text-transform: uppercase;
+    text-align: center;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
 
 ul {
@@ -35,14 +56,14 @@ ul {
 
 li {
   padding: 10px;
-  background-color: #f0f0f0;
+  background-color: #ececec;
   border-radius: 10px;
   margin-bottom: 10px;
   cursor: grab;
 }
 
 li:hover {
-  background-color: #ececec;
+  background-color: #d8abbe;
 }
 
 .field {
@@ -54,21 +75,26 @@ li:hover {
   margin: 0 auto;
   width: 600px;
   height: 200px;
-  background-color: #fff;
+  background-color: #dddddd;
   padding: 25px;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-.vs{
-  position:absolute;
+
+.vs {
+  position: absolute;
   top: 10%;
-  left: 39.5%;
+  left: 37%;
   z-index: -1;
-  user-select: none; /* Disable selection */
-  -moz-user-select: none; /* Firefox */
-  -webkit-user-select: none; /* Safari and Chrome */
-  -ms-user-select: none; /* Internet Explorer/Edge */
-  display:block;
+  user-select: none;
+  /* Disable selection */
+  -moz-user-select: none;
+  /* Firefox */
+  -webkit-user-select: none;
+  /* Safari and Chrome */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  display: block;
 }
 
 .field h2 {
@@ -79,7 +105,7 @@ li:hover {
   margin: 0;
   font-weight: bold;
   font-size: 16px;
-  color: #555;
+  color: #c2c2c2;
   text-align: center;
 }
 
@@ -88,7 +114,7 @@ li:hover {
 }
 
 .field:hover {
-  background-color: #f9f9f9;
+  background-color: #d8d8d8;
 }
 
 .field.dragover {
@@ -122,7 +148,8 @@ li:hover {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: background-color 0.1s ease;
-  text-decoration: none; /* Set text-decoration to none */
+  text-decoration: none;
+  /* Set text-decoration to none */
 }
 
 .my-button:hover {
@@ -136,11 +163,11 @@ li:hover {
 
 .rightSide {
   flex: 1;
-  background-color: #fff;
+  background-color: #ffffff;
   padding: 20px;
   border-radius: 30px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  max-width: 1000px;
+  max-width: 800px;
   opacity: 0;
   animation: fadeIn 1s forwards;
   position: sticky;
@@ -182,8 +209,10 @@ li:hover {
   text-align: center;
   animation: slideIn 0.2s forwards;
   position: absolute;
-  top: 22.5%; /* Adjust top position */
-  left: 59%; /* Adjust left position */
+  top: 22.5%;
+  /* Adjust top position */
+  left: 59%;
+  /* Adjust left position */
 }
 
 
@@ -192,6 +221,7 @@ li:hover {
   from {
     transform: translateY(-100%);
   }
+
   to {
     transform: translateY(0);
   }
@@ -217,6 +247,7 @@ li:hover {
   0% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
@@ -231,6 +262,7 @@ li:hover {
 .match-container p {
   font-size: 24px;
 }
+
 #cancelButton {
   padding: 10px 20px;
   font-size: 16px;
@@ -243,6 +275,7 @@ li:hover {
   cursor: pointer;
   display: none;
 }
+
 .error-message {
   color: red;
   margin-top: 10px;
@@ -257,12 +290,13 @@ li:hover {
   opacity: 1;
   transform: translateY(0);
 }
+
 .clear-button {
   padding: 6px 20px;
   font-size: 24px;
   font-weight: bold;
   background-color: #c0c0c0;
-  color: #585858;
+  color: #962d2d;
   border: none;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -273,7 +307,8 @@ li:hover {
 .clear-button:hover {
   background-color: #b1b1b1;
 }
-.clear-button-all{
+
+.clear-button-all {
   padding: 10px 20px;
   font-size: 16px;
   font-weight: bold;
@@ -283,14 +318,16 @@ li:hover {
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  margin-top: 30px; /* Adjust the value as per your requirement */
+  margin-top: 30px;
+  /* Adjust the value as per your requirement */
 }
+
 .clear-button-all:hover {
   background-color: #b1b1b1;
 }
+
 .dragged-item {
   background-color: #ffcc00;
-  color: #333;
   border: 2px solid #ffcc00;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
