@@ -170,14 +170,18 @@ document.addEventListener("DOMContentLoaded", function () {
       rightField.textContent.trim() !== "" &&
       rightField.textContent.trim() !== "Player Right"
     ) {
-
-      window.location.href = "/matchmaking/match";
+      var dragged = document.getElementsByClassName("dragged-item");
+      var draggedText = dragged[0].textContent;
+      var redirectURL = "/matchmaking/match?dragged=" + encodeURIComponent(draggedText);
+      window.location.href = redirectURL;
       // const container = document.getElementById("match-container");
       // container.style.display = "flex";
-      // var leftName = leftField.textContent;
-      // var rightName = rightField.textContent;
+      var leftName = leftField.textContent;
+      var rightName = rightField.textContent;
+      // console.log(leftName);
+      // console.log(rightName);
       // document.getElementById("submitButton").style.display = "none";
-  
+
       // var matchResult = document.createElement("div");
       // matchResult.textContent = leftName + " VS " + rightName;
       // var fieldContainer = document.getElementById("field-container");
@@ -185,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
       //   fieldContainer.innerHTML = "";
       //   // fieldContainer.appendChild(matchResult);
       // }
-  
+
       // // Hide the cancel button
       // cancelButton.style.display = "block";
     }

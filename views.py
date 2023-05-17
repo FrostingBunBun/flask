@@ -135,7 +135,7 @@ def match():
 
     player_data = [playerMmr1, playerWinrate1, playerMmr2, playerWinrate2]
 
-    return render_template("match.html", list=flat_names, player_info=player_data)
+    return render_template("match.html", player_data=player_data)
 
 
 
