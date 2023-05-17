@@ -1,0 +1,164 @@
+/* Reset default margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000000;
+    color: #000000;
+    line-height: 1.4;
+    margin: 0; /* Remove default margin */
+}
+
+.background-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-image: url("https://my.catgirls.forsale/dKAWF069.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-position: center bottom -300px;
+    filter: blur(2px);
+}  
+
+.gradient-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background-image: linear-gradient(to bottom, rgba(255, 0, 85, 0.2), rgba(255, 0, 0, 0));
+    z-index: -1;
+}
+
+  /* background-image: url("../pics/f14.jpg"); */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.match-container {
+    margin: auto;
+    margin-top: 200px;
+    display: flex;
+    justify-content: space-between;
+    max-width: 800px;
+    animation: slideIn 0.5s ease-in-out;
+}
+
+@keyframes slideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.player {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 30px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    height: 200px;
+}
+
+.player-image {
+    margin-right: 20px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.player-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.player-image:hover img {
+    transform: scale(1.1);
+}
+
+.player-info h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.rating1,
+.rating2 {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.additionalNumber1,
+.additionalNumber2 {
+    font-size: 18px;
+    color: #777;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.my-button {
+    display: inline-block;
+    background-color: #4caf50;
+    color: #fff;
+    text-decoration: none;
+    padding: 15px 30px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 20px;
+}
+
+.my-button:hover {
+    background-color: #45a049;
+}
+
+.clear-button-all {
+    background-color: #f44336;
+    margin-left: 15px;
+}
+
+.clear-button-all:hover {
+    background-color: #d32f2f;
+}
+
+.error-message {
+    color: #f44336;
+    margin-top: 10px;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .match-container {
+        flex-direction: column;
+    }
+
+    .player {
+        margin-bottom: 20px;
+    }
+}

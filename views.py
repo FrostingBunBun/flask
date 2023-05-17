@@ -97,26 +97,46 @@ def matchmaking():
         data = request.get_json()
         playerName1 = data.get("playerName1send")
         playerName2 = data.get("playerName2send")
+        print(playerName1)
+        print(playerName2)
     
         playerMmr1 = cell_values[playerName1][0]
         playerWinrate1 = cell_values[playerName1][1]
 
-
-        # print("Player 2 Name:", playerName2)
         playerMmr2 = cell_values[playerName2][0]
         playerWinrate2 = cell_values[playerName2][1]
-
-        # print("Player 1 Name:", playerName1)
-        # print("Player 1 MMr:", playerMmr1)
-        # print("Player 1 Winrate:", playerWinrate1)
-
-        # print("Player 2 Name:", playerName2)
-        # print("Player 2 MMr:", playerMmr2)
-        # print("Player 2 Winrate:", playerWinrate2)
 
     player_data = [playerMmr1, playerWinrate1, playerMmr2, playerWinrate2]
 
     return render_template("matchmaking.html", list=flat_names, player_info=player_data)
+
+@views.route("/matchmaking/match", methods=['GET', 'POST'])
+@login_required
+def match():
+    # Initialize variables with default values for debugging
+    playerMmr1 = "1"
+    playerWinrate1 = "2"
+    playerMmr2 = "3"
+    playerWinrate2 = "4"
+
+    if request.method == 'POST':
+
+        data = request.get_json()
+        playerName1 = data.get("playerName1send")
+        playerName2 = data.get("playerName2send")
+        print(playerName1)
+        print(playerName2)
+    
+        playerMmr1 = cell_values[playerName1][0]
+        playerWinrate1 = cell_values[playerName1][1]
+
+        playerMmr2 = cell_values[playerName2][0]
+        playerWinrate2 = cell_values[playerName2][1]
+
+    player_data = [playerMmr1, playerWinrate1, playerMmr2, playerWinrate2]
+
+    return render_template("match.html", list=flat_names, player_info=player_data)
+
 
 
 

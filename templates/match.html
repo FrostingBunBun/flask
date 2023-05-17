@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="cache-control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <title>Players</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/match.css') }}"
+    />
+  </head>
+
+  <body>
+      <div class="background-image"></div>
+      <div class="gradient-overlay"></div>
+    <div class="match-container" id="match-container">
+      <div class="player">
+        <div class="player-image">
+          <img
+            class="vs-image"
+            id="1vsImg"
+            src="https://cdn.discordapp.com/attachments/337921358690385920/1108196545268039771/01-05-2023_232240.jpg"
+            alt="VS"
+          />
+        </div>
+        <div class="player-info">
+          <h3 id="playerName1"></h3>
+          <div class="rating1" id="test">rating1</div>
+          <div class="additionalNumber1">winrate1</div>
+        </div>
+      </div>
+      <div class="player">
+        <div class="player-image">
+          <img
+            class="vs-image"
+            id="2vsImg"
+            src="https://cdn.discordapp.com/attachments/337921358690385920/1108196545268039771/01-05-2023_232240.jpg"
+            alt="VS"
+          />
+        </div>
+        <div class="player-info">
+          <h3 id="playerName2"></h3>
+          <div class="rating2">rating2</div>
+          <div class="additionalNumber2">winrate2</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-container">
+      <button class="my-button" id="cancelButton">Cancel</button>
+    </div>
+
+    <div id="error-message" class="error-message"></div>
+
+    <script src="{{ url_for('static', filename='scripts/match.js') }}"></script>
+  </body>
+
+  <script
+    src="https://code.jquery.com/jquery-3.7.0.js"
+    integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+    crossorigin="anonymous"
+  ></script>
+</html>
