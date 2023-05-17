@@ -44,14 +44,22 @@ function drop(event) {
     otherContent.remove();
   }
 
+  // Check if the name already exists in the target field
+  var targetContent = targetField.querySelector("p");
+  if (targetContent && targetContent.textContent === name) {
+    return; // Don't add duplicate names
+  }
+
   targetField.appendChild(droppedElement);
   draggedElement.style.opacity = "1";
 
   var leftField = document.getElementById("field1");
-  var leftName = leftField.querySelector("p").textContent.trim();
+  var leftNameElement = leftField.querySelector("p");
+  var leftName = leftNameElement ? leftNameElement.textContent.trim() : "";
 
   var rightField = document.getElementById("field2");
-  var rightName = rightField.querySelector("p").textContent.trim();
+  var rightNameElement = rightField.querySelector("p");
+  var rightName = rightNameElement ? rightNameElement.textContent.trim() : "";
 
   console.log("Left Name: " + leftName);
   console.log("Right Name: " + rightName);
@@ -64,10 +72,9 @@ function drop(event) {
 
   // Show the list after items have been moved to the left
   document.getElementById("list").classList.remove("list-hidden");
-
-  targetField.appendChild(droppedElement);
-  draggedElement.style.opacity = "1";
 }
+
+
 
 function filterNames() {
   var input = document.getElementById("searchInput");
@@ -209,25 +216,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
   
-  
-  // Event listener to handle the retrieved values
-  document.addEventListener("valuesRetrieved", function (event) {
-    var data = event.detail; // Retrieve the values from the event
-  
-    // Perform further processing or AJAX request with the retrieved values
-    $.ajax({
-      type: "POST",
-      url: "/matchmaking",
-      data: JSON.stringify(data),
-      dataType: "json",
-      contentType: "application/json", // Set the content type to JSON
-      success: function (response) {
-        console.log(response);
-      },
-    });
-  
-    console.log(data);
-  });
   
 
   confirmNo.addEventListener("click", function () {

@@ -2,8 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="cache-control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
     <title>Players</title>
     <link
       rel="stylesheet"
@@ -86,26 +91,36 @@
         <div class="match-container" id="match-container">
           <div class="player">
             <div class="player-image">
-              <img class="vs-image" id="1vsImg" src="https://cdn.discordapp.com/attachments/337921358690385920/1107833070826029056/14-01-2023_203036.jpg" alt="VS" />
+              <img
+                class="vs-image"
+                id="1vsImg"
+                src=""
+                alt="VS"
+              />
             </div>
             <div class="player-info">
               <h3 id="playerName1"></h3>
-              <div class="rating1">{{ player_data[0] }}</div>
-              <div class="additional-number1">{{ player_data[1] }}</div>
+              <div class="rating1">{{ player_info[0] }}</div>
+              <div class="additionalNumber1">{{ player_info[1] }}</div>
             </div>
           </div>
           <div class="player">
             <div class="player-image">
-              <img class="vs-image" id="2vsImg" src="https://cdn.discordapp.com/attachments/337921358690385920/1107833070826029056/14-01-2023_203036.jpg" alt="VS" />
+              <img
+                class="vs-image"
+                id="2vsImg"
+                src=""
+                alt="VS"
+              />
             </div>
             <div class="player-info">
               <h3 id="playerName2"></h3>
-              <div class="rating2">{{ player_data[2] }}</div>
-              <div class="additional-number2">{{ player_data[3] }}</div>
+              <div class="rating2">{{ player_info[2] }}</div>
+              <div class="additionalNumber2">{{ player_info[3] }}</div>
             </div>
           </div>
         </div>
-        
+
         <!-- MATCH AREA DISPLAY -->
 
         <div class="button-container">

@@ -52,6 +52,7 @@ def login_required(f):
     return decorated_function
 
 
+
 def add_user(username):
     password = generate_password(16)
     print("password: ", password)
@@ -75,14 +76,21 @@ def generate_password(length):
     return password
 
 
+views.after_request
+def add_header(response):
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    return response
+
 @views.route("/matchmaking", methods=['GET', 'POST'])
 @login_required
 def matchmaking():
-    # Initialize variables with default values
-    playerMmr1 = "test"
-    playerWinrate1 = "test"
-    playerMmr2 = "test"
-    playerWinrate2 = "test"
+    # Initialize variables with default values for debugging
+    playerMmr1 = "1"
+    playerWinrate1 = "2"
+    playerMmr2 = "3"
+    playerWinrate2 = "4"
 
     if request.method == 'POST':
 
@@ -90,28 +98,25 @@ def matchmaking():
         playerName1 = data.get("playerName1send")
         playerName2 = data.get("playerName2send")
     
-        print("Player 1 Name:", playerName1)
-        print("Player 2 Name:", playerName2)
-        
-        if playerName1 in cell_values:
-            playerMmr1 = cell_values[playerName1][0]
-            playerWinrate1 = cell_values[playerName1][1]
-            print("Player 1 MMr:", playerMmr1)
-            print("Player 1 Winrate:", playerWinrate1)
-        else:
-            print("Player 1 not found in cell_values")
-            
-        if playerName2 in cell_values:
-            playerMmr2 = cell_values[playerName2][0]
-            playerWinrate2 = cell_values[playerName2][1]
-            print("Player 2 MMr:", playerMmr2)
-            print("Player 2 Winrate:", playerWinrate2)
-        else:
-            print("Player 2 not found in cell_values")
+        playerMmr1 = cell_values[playerName1][0]
+        playerWinrate1 = cell_values[playerName1][1]
+
+
+        # print("Player 2 Name:", playerName2)
+        playerMmr2 = cell_values[playerName2][0]
+        playerWinrate2 = cell_values[playerName2][1]
+
+        # print("Player 1 Name:", playerName1)
+        # print("Player 1 MMr:", playerMmr1)
+        # print("Player 1 Winrate:", playerWinrate1)
+
+        # print("Player 2 Name:", playerName2)
+        # print("Player 2 MMr:", playerMmr2)
+        # print("Player 2 Winrate:", playerWinrate2)
 
     player_data = [playerMmr1, playerWinrate1, playerMmr2, playerWinrate2]
 
-    return render_template("matchmaking.html", list=flat_names, player_data=player_data)
+    return render_template("matchmaking.html", list=flat_names, player_info=player_data)
 
 
 
