@@ -4,8 +4,12 @@ import sqlite3
 import random
 from threading import Lock
 from functools import wraps
+import json
 
 views = Blueprint(__name__, "views")
+
+leftNAME = ""
+rightNAME = ""
 
 sa_mmr = gspread.service_account("C:/Users/FrostingBunBun/Desktop/else/flask/credentials.json")
 sh_mmr = sa_mmr.open("Leaderboards")
@@ -86,56 +90,28 @@ def add_header(response):
 @views.route("/matchmaking", methods=['GET', 'POST'])
 @login_required
 def matchmaking():
-    # Initialize variables with default values for debugging
-    playerMmr1 = "1"
-    playerWinrate1 = "2"
-    playerMmr2 = "3"
-    playerWinrate2 = "4"
+  
 
-    if request.method == 'POST':
-
-        data = request.get_json()
-        playerName1 = data.get("playerName1send")
-        playerName2 = data.get("playerName2send")
-        print(playerName1)
-        print(playerName2)
-    
-        playerMmr1 = cell_values[playerName1][0]
-        playerWinrate1 = cell_values[playerName1][1]
-
-        playerMmr2 = cell_values[playerName2][0]
-        playerWinrate2 = cell_values[playerName2][1]
-
-    player_data = [playerMmr1, playerWinrate1, playerMmr2, playerWinrate2]
-
-    return render_template("matchmaking.html", list=flat_names, player_info=player_data)
+    return render_template("matchmaking.html", list=flat_names)
 
 @views.route("/matchmaking/match", methods=['GET', 'POST'])
 @login_required
 def match():
-    # Initialize variables with default values for debugging
-    playerMmr1 = "1"
-    playerWinrate1 = "2"
-    playerMmr2 = "3"
-    playerWinrate2 = "4"
 
-    if request.method == 'POST':
 
-        data = request.get_json()
-        playerName1 = data.get("playerName1send")
-        playerName2 = data.get("playerName2send")
-        print(playerName1)
-        print(playerName2)
-    
-        playerMmr1 = cell_values[playerName1][0]
-        playerWinrate1 = cell_values[playerName1][1]
+    return render_template("match.html")
 
-        playerMmr2 = cell_values[playerName2][0]
-        playerWinrate2 = cell_values[playerName2][1]
+@views.route("/processUserInfo/<string:userInfo>", methods=['POST'])
+def processUserInfo(userInfo):
+    userInfo = json.loads(userInfo)
+    print("USER INFO RECIEVED")
+    leftNAME = userInfo['1name']
+    rightNAME = userInfo['2name']
+    print(f"1 Name: {leftNAME}")
+    print(f"2 Name: {rightNAME}")
 
-    player_data = [playerMmr1, playerWinrate1, playerMmr2, playerWinrate2]
-
-    return render_template("match.html", player_data=player_data)
+    print("===================")
+    return "recieved success"
 
 
 

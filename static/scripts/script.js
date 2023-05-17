@@ -16,6 +16,7 @@ function drag(event) {
   event.dataTransfer.setData("text/plain", target.innerText);
 }
 
+
 function drop(event) {
   event.preventDefault();
   var name = event.dataTransfer.getData("text/plain");
@@ -63,12 +64,6 @@ function drop(event) {
 
   console.log("Left Name: " + leftName);
   console.log("Right Name: " + rightName);
-
-  var playerName1 = document.getElementById("playerName1");
-  playerName1.textContent = leftName;
-
-  var playerName2 = document.getElementById("playerName2");
-  playerName2.textContent = rightName;
 
   // Show the list after items have been moved to the left
   document.getElementById("list").classList.remove("list-hidden");
@@ -159,6 +154,28 @@ document.addEventListener("DOMContentLoaded", function () {
     item.textContent = item.textContent.slice(2, -2);
   });
 
+  function sendUserInfo(){
+
+  var leftField = document.getElementById("field1");
+  var leftNameElement = leftField.querySelector("p");
+  var leftName = leftNameElement ? leftNameElement.textContent.trim() : "";
+
+  var rightField = document.getElementById("field2");
+  var rightNameElement = rightField.querySelector("p");
+  var rightName = rightNameElement ? rightNameElement.textContent.trim() : "";
+
+    let userInfo = {
+      '1name': leftName,
+      '2name': rightName
+    }
+    const request = new XMLHttpRequest()
+    request.open('POST', `/processUserInfo/${JSON.stringify(userInfo)}`);
+    request.onload = () => {
+      const flaskMessage = request.responseText
+      console.log(flaskMessage)
+    }
+    request.send()
+  }
 
   confirmYes.addEventListener("click", function () {
     var leftField = document.getElementById("field1");
@@ -170,71 +187,29 @@ document.addEventListener("DOMContentLoaded", function () {
       rightField.textContent.trim() !== "" &&
       rightField.textContent.trim() !== "Player Right"
     ) {
-      var dragged = document.getElementsByClassName("dragged-item");
-      var draggedText = dragged[0].textContent;
-      var redirectURL = "/matchmaking/match?dragged=" + encodeURIComponent(draggedText);
-      window.location.href = redirectURL;
-      // const container = document.getElementById("match-container");
-      // container.style.display = "flex";
-      var leftName = leftField.textContent;
-      var rightName = rightField.textContent;
-      // console.log(leftName);
-      // console.log(rightName);
-      // document.getElementById("submitButton").style.display = "none";
-
-      // var matchResult = document.createElement("div");
-      // matchResult.textContent = leftName + " VS " + rightName;
-      // var fieldContainer = document.getElementById("field-container");
-      // if (fieldContainer) {
-      //   fieldContainer.innerHTML = "";
-      //   // fieldContainer.appendChild(matchResult);
-      // }
-
-      // // Hide the cancel button
-      // cancelButton.style.display = "block";
+      sendUserInfo()
+      window.location.href = "/matchmaking/match";
     }
-  
-    // confirmationModal.style.display = "none";
-    // clearButtonALL.style.display = "none";
-    // var vs = document.getElementById("vsImg");
-    // vs.style.display = "none";
-  
-    // // Retrieve values after the elements have been filled
-    // var playerName1send = document.getElementById("playerName1").textContent;
-    // var playerName2send = document.getElementById("playerName2").textContent;
-
-  
-    // // Create an event to indicate that the values have been retrieved
-    // var valuesRetrievedEvent = new CustomEvent("valuesRetrieved", {
-    //   detail: {
-    //     playerName1send: playerName1send,
-    //     playerName2send: playerName2send,
-    //   },
-    // });
-  
-    // // Dispatch the event on the document
-    // document.dispatchEvent(valuesRetrievedEvent);
-
-
-
   });
+
+  
   
   // Event listener to handle the retrieved values
-  document.addEventListener("valuesRetrieved", function (event) {
-    var data = event.detail; // Retrieve the values from the event
+  // document.addEventListener("valuesRetrieved", function (event) {
+  //   var data = event.detail; // Retrieve the values from the event
   
-    // Perform further processing or AJAX request with the retrieved values
-    $.ajax({
-      type: "POST",
-      url: "/matchmaking",
-      data: JSON.stringify(data),
-      dataType: "json",
-      contentType: "application/json", // Specify content type as JSON
-      success: function (response) {
-        console.log(response);
-      },
-    });
-  });
+  //   // Perform further processing or AJAX request with the retrieved values
+  //   $.ajax({
+  //     type: "POST",
+  //     url: "/matchmaking",
+  //     data: JSON.stringify(data),
+  //     dataType: "json",
+  //     contentType: "application/json", // Specify content type as JSON
+  //     success: function (response) {
+  //       console.log(response);
+  //     },
+  //   });
+  // });
 
   
 
