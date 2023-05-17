@@ -8,8 +8,6 @@ import json
 
 views = Blueprint(__name__, "views")
 
-leftNAME = ""
-rightNAME = ""
 
 sa_mmr = gspread.service_account("C:/Users/FrostingBunBun/Desktop/else/flask/credentials.json")
 sh_mmr = sa_mmr.open("Leaderboards")
@@ -90,28 +88,71 @@ def add_header(response):
 @views.route("/matchmaking", methods=['GET', 'POST'])
 @login_required
 def matchmaking():
-  
-
     return render_template("matchmaking.html", list=flat_names)
 
 @views.route("/matchmaking/match", methods=['GET', 'POST'])
 @login_required
 def match():
+    # Retrieve the stored variables from the session
+    
+    leftNAME = session.get('leftNAME')
+    leftMMR = session.get('leftMMR')
+    leftWINRATE = session.get('leftWINRATE')
+    rightNAME = session.get('rightNAME')
+    rightMMR = session.get('rightMMR')
+    rightWINRATE = session.get('rightWINRATE')
+    
+    print(f"1 name: {leftNAME}")
+    print(f"1 mmr: {leftMMR}")
+    print(f"1 winrate: {leftWINRATE}")
+    print(f"2 name: {rightNAME}")
+    print(f"2 mmr: {rightMMR}")
+    print(f"2 winrate: {rightWINRATE}")
+
+    # Clear the session variables to prevent reusing old values
+    session.pop('leftNAME', None)
+    session.pop('leftMMR', None)
+    session.pop('leftWINRATE', None)
+    session.pop('rightNAME', None)
+    session.pop('rightMMR', None)
+    session.pop('rightWINRATE', None)
+
+    return render_template("match.html",
+                           leftNAME=leftNAME,
+                           leftMMR=leftMMR,
+                           leftWINRATE=leftWINRATE,
+                           rightNAME=rightNAME,
+                           rightMMR=rightMMR,
+                           rightWINRATE=rightWINRATE)
 
 
-    return render_template("match.html")
 
 @views.route("/processUserInfo/<string:userInfo>", methods=['POST'])
 def processUserInfo(userInfo):
     userInfo = json.loads(userInfo)
-    print("USER INFO RECIEVED")
+    print("USER INFO RECEIVED")
     leftNAME = userInfo['1name']
     rightNAME = userInfo['2name']
-    print(f"1 Name: {leftNAME}")
-    print(f"2 Name: {rightNAME}")
+    leftMMR = cell_values[leftNAME][0]
+    rightMMR = cell_values[rightNAME][0]
+    leftWINRATE = cell_values[leftNAME][1]
+    rightWINRATE = cell_values[rightNAME][1]
+
+    
+
+    # Store the variables in the session
+    session['leftNAME'] = leftNAME
+    session['leftMMR'] = leftMMR
+    session['leftWINRATE'] = leftWINRATE
+    session['rightNAME'] = rightNAME
+    session['rightMMR'] = rightMMR
+    session['rightWINRATE'] = rightWINRATE
 
     print("===================")
-    return "recieved success"
+    # print("cell_values: ", cell_values)
+    
+    # Redirect to the 'match' route
+    return redirect(url_for('views.match'))
 
 
 

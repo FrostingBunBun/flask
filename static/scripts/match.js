@@ -7,6 +7,11 @@ document.addEventListener("DOMContentLoaded", function () {
     window.location.href = "/matchmaking";
     });
 
+    var selectValue = document.getElementById("playerName1");
+    selectValue.textContent = "{{ leftNAME }}";
+    console.log(selectValue);
+
+
     
 
     
