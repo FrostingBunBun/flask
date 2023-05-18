@@ -45,11 +45,12 @@ print(f"Importing modules...")
 
 
 import os
-
+import discord.ext
 import discord
 import gspread
 from discord.ext import commands
 from dotenv import load_dotenv
+import aiohttp
 
 from threading import Timer
 import pickle
@@ -75,17 +76,61 @@ print("Initializing Google Authentication...")
 
 
 print(f"Startup complete!\t[ {(time.time()-startTime):.2f}s ]")
+intents = discord.Intents.default()
+intents.members = True
+bot = discord.Client(intents=intents)
 
-bot = commands.Bot(command_prefix="#", intents=discord.Intents.all())
+guild_id = 991300258082590820
+guild = bot.get_guild(guild_id)
 
-@bot.event
-async def on_ready():
-    print("Logged on")
+async def get_member_avatars(guild):
+    member_avatars = {}
     
-    await bot.change_presence(status = discord.Status.online ,activity = discord.Activity(type = discord.ActivityType.listening, name = "bunbun's internal yelling"))
+    print(f"Number of members in guild: {len(guild.members)}")
+    
+    for member in guild.members:
+        member_id = member.id
+        avatar_hash = member.avatar
+        avatar_url = f'https://cdn.discordapp.com/avatars/{member_id}/{avatar_hash}.png'
+        member_avatars[member_id] = avatar_url
+        print("CLICK")
+        
+    return member_avatars
 
 
+async def fetch_member_avatars(guild):
+    avatars = await get_member_avatars(guild)
+    if avatars:
+        return avatars
+    else:
+        return None
 
+async def start_bot():
+    intents = discord.Intents.default()
+    intents.typing = False
+    intents.presences = False
 
+    bot = commands.Bot(command_prefix="#", intents=intents)
 
-bot.run(TOKEN)
+    @bot.event
+    async def on_ready():
+        print("Logged on")
+        guild_id = 991300258082590820
+        guild = bot.get_guild(guild_id)
+        
+        if guild:
+            member_avatars = await fetch_member_avatars(guild)
+            # print("TEST: ", member_avatars)
+            if member_avatars:
+                for member_id, avatar_url in member_avatars.items():
+                    print(f"Member ID: {member_id}, Avatar URL: {avatar_url}")
+            else:
+                print("Failed to fetch member avatars.")
+        else:
+            print("Guild not found.")
+        
+        await bot.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.listening, name="bunbun's internal yelling"))
+
+    await bot.start(TOKEN)
+
+asyncio.run(start_bot())
