@@ -1,3 +1,8 @@
+
+
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
 
     
@@ -5,34 +10,54 @@ document.addEventListener("DOMContentLoaded", function () {
         if (leftWinrate < 0 || leftWinrate > 1 || rightWinrate < 0 || rightWinrate > 1) {
           throw new Error('Win rates should be between 0 and 1 (inclusive).');
         }
+      
         leftRating = parseFloat(leftRating);
         rightRating = parseFloat(rightRating);
         leftWinrate = parseFloat(leftWinrate);
         rightWinrate = parseFloat(rightWinrate);
       
-        var leftProbability = 1 / (1 + Math.pow(10, (rightRating - leftRating)  * leftWinrate / 1.5 / 400))
-        var rightProbability = 1 / (1 + Math.pow(10, (leftRating - rightRating) * rightWinrate / 1.5 / 400))
+        console.log("leftRating: ", leftRating);
+        console.log("rightRating: ", rightRating);
+        console.log("leftWinrate: ", leftWinrate);
+        console.log("rightWinrate: ", rightWinrate);
       
-        var normalizedLeftProbability = leftProbability;
-        var normalizedRightProbability = rightProbability;
+        // Introduce a scaling factor to amplify the effect of win rate
+        var winRateScalingFactor = 2; // Adjust this factor as desired
       
-        return [normalizedLeftProbability, normalizedRightProbability];
+        // Calculate win probabilities based on the weighted average of ratings and win rates
+        var leftProbability = leftRating * (leftWinrate ** winRateScalingFactor);
+        var rightProbability = rightRating * (rightWinrate ** winRateScalingFactor);
+      
+        // Normalize probabilities to ensure they sum up to 1
+        var sumProbabilities = (leftProbability + rightProbability);
+        var normalizedLeftProbability = leftProbability / sumProbabilities;
+        var normalizedRightProbability = rightProbability / sumProbabilities;
+        console.log("sumProbabilities: ", sumProbabilities);
+        console.log("normalizedLeftProbability: ", normalizedLeftProbability);
+        console.log("normalizedRightProbability: ", normalizedRightProbability);
+      
+        return [normalizedRightProbability, normalizedLeftProbability];
       }
       
       
       
-// leftRating = parseFloat(leftRating);
-// rightRating = parseFloat(rightRating);
-// leftWinrate = parseFloat(leftWinrate);
-// rightWinrate = parseFloat(rightWinrate);
-
-// console.log("type leftRating: ", typeof leftRating);
-// console.log("type rightRating: ", typeof rightRating);
-// console.log("type leftWinrate: ", typeof leftWinrate);
-// console.log("type rightWinrate: ", typeof rightWinrate);
       
-      
-      
+    //   if (leftRating == 0){
+    //     leftRating = 0.01
+    // }
+    // if (rightRating == 0){
+    //     rightRating = 0.01
+    // }
+    // if (leftWinrate == 0){
+    //     leftWinrate = 0.01
+    // }
+    // if (rightWinrate == 0){
+    //     rightWinrate = 0.01
+    // }
+    // console.log("leftRating: ", leftRating);
+    // console.log("rightRating: ", rightRating);
+    // console.log("leftWinrate: ", leftWinrate);
+    // console.log("rightWinrate: ", rightWinrate);
       
       
       
@@ -91,8 +116,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
   
-    console.log("Left player's probability of winning:", leftProbability);
-    console.log("Right player's probability of winning:", rightProbability);
+    // console.log("Left player's probability of winning:", leftProbability);
+    // console.log("Right player's probability of winning:", rightProbability);
 
     var percentageLeft = (leftProbability * 100).toFixed(2) + "%";
     var percentageRight = (rightProbability * 100).toFixed(2) + "%";
