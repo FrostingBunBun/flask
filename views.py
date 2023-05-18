@@ -32,10 +32,6 @@ for i in range(0, len(values), 2):
 
 
 
-
-
-
-
 test = wks_mmr.acell("I4").value
 
 
@@ -52,6 +48,7 @@ def login_required(f):
             return redirect(url_for('views.login'))
         return f(*args, **kwargs)
     return decorated_function
+
 
 
 
@@ -90,32 +87,29 @@ def add_header(response):
 def matchmaking():
     return render_template("matchmaking.html", list=flat_names)
 
+
 @views.route("/matchmaking/match", methods=['GET', 'POST'])
 @login_required
 def match():
+
+    # Clear the session variables to prevent reusing old values
+
+
     # Retrieve the stored variables from the session
-    
     leftNAME = session.get('leftNAME')
     leftMMR = session.get('leftMMR')
     leftWINRATE = session.get('leftWINRATE')
     rightNAME = session.get('rightNAME')
     rightMMR = session.get('rightMMR')
     rightWINRATE = session.get('rightWINRATE')
-    
+
+
     print(f"1 name: {leftNAME}")
     print(f"1 mmr: {leftMMR}")
     print(f"1 winrate: {leftWINRATE}")
     print(f"2 name: {rightNAME}")
     print(f"2 mmr: {rightMMR}")
     print(f"2 winrate: {rightWINRATE}")
-
-    # Clear the session variables to prevent reusing old values
-    session.pop('leftNAME', None)
-    session.pop('leftMMR', None)
-    session.pop('leftWINRATE', None)
-    session.pop('rightNAME', None)
-    session.pop('rightMMR', None)
-    session.pop('rightWINRATE', None)
 
     return render_template("match.html",
                            leftNAME=leftNAME,
@@ -124,6 +118,8 @@ def match():
                            rightNAME=rightNAME,
                            rightMMR=rightMMR,
                            rightWINRATE=rightWINRATE)
+
+
 
 
 
@@ -157,7 +153,11 @@ def processUserInfo(userInfo):
 
 
 
+@views.route("/test")
+def test():
 
+    var = "DYN"
+    return render_template("test.html", var=var)
 
 
 @views.route("/entry")
