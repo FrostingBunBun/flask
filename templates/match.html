@@ -32,9 +32,9 @@
         </div>
 
         <div class="player-info">
-          <h3 id="playerName1">{{leftNAME}}</h3>
-          <div class="rating1">{{leftMMR}}</div>
-          <div class="additionalNumber1">{{leftWINRATE}}</div>
+          <div class="boxName"><h3 id="playerName1">{{leftNAME}}</h3></div>
+          <div class="rating1">mmr: {{leftMMR}}</div>
+          <div class="additionalNumber1">Winrate: {{leftWINRATE}}</div>
         </div>
       </div>
       <div class="player">
@@ -47,16 +47,21 @@
           />
         </div>
         <div class="player-info">
-          <h3 id="playerName2">{{rightNAME}}</h3>
-          <div class="rating2">{{rightMMR}}</div>
-          <div class="additionalNumber2">{{rightWINRATE}}</div>
+          <div class="boxName"><h3 id="playerName2">{{rightNAME}}</h3></div>
+          <div class="rating2">mmr: {{rightMMR}}</div>
+          <div class="additionalNumber2">Winrate: {{rightWINRATE}}</div>
         </div>
 
       </div>
     </div>
-    <div class="prob">Win Probability</div>
-
     
+    <div class="bottomPart">
+    <div class="button-container">>
+      <button class="win" id="winLeft">WON</button>
+      <button class="win" id="winRight">WON</button>
+    </div>
+
+    <div class="prob">Win Probability</div>
     <div class="gauge-container">
       <div class="gauge">
         <div class="fill" id="fill1">
@@ -77,6 +82,7 @@
     <div id="error-message" class="error-message"></div>
 
     <script src="{{ url_for('static', filename='scripts/match.js') }}"></script>
+  </div>
 
   </body>
 

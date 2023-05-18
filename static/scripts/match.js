@@ -1,4 +1,14 @@
-
+window.addEventListener('load', function() {
+  var leftGaugeElement = document.getElementById('leftGauge');
+  leftGaugeElement.classList.add('fade-in');
+  
+  var rightGaugeElement = document.getElementById('rightGauge');
+  rightGaugeElement.classList.add('fade-in');
+});
+window.addEventListener('load', function() {
+  var bottomPartElement = document.querySelector('.bottomPart');
+  bottomPartElement.classList.add('fade-in');
+});
 
 
 
@@ -95,19 +105,19 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   var leftRatingElement = document.querySelector(".rating1");
-  var leftRatingValue = leftRatingElement ? leftRatingElement.textContent.trim() : "";
+  var leftRatingValue = leftRatingElement ? leftRatingElement.textContent.trim().match(/\d+/) : "";
   console.log("left Rating value:", leftRatingValue);
   
-  var rightRatingElement = document.querySelector(".rating2");
-  var rightRatingValue = rightRatingElement ? rightRatingElement.textContent.trim() : "";
-  console.log("right Rating value:", rightRatingValue);
+  var rightRatingElement = document.querySelector('.rating2');
+  var rightRatingValue = rightRatingElement ? rightRatingElement.textContent.trim().match(/\d+/) : "";
+
   
   var leftWinrateElement = document.querySelector(".additionalNumber1");
-  var leftWinrateValue = leftWinrateElement ? leftWinrateElement.textContent.trim() : "";
+  var leftWinrateValue = leftWinrateElement ? leftWinrateElement.textContent.trim().replace("Winrate: ", "") : "";
   console.log("left Winrate value:", leftWinrateValue);
   
   var rightWinrateElement = document.querySelector(".additionalNumber2");
-  var rightWinrateValue = rightWinrateElement ? rightWinrateElement.textContent.trim() : "";
+  var rightWinrateValue = rightWinrateElement ? rightWinrateElement.textContent.trim().replace("Winrate: ", "") : "";
   console.log("right Winrate value:", rightWinrateValue);
   
 

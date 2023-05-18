@@ -6,7 +6,8 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Montserrat", sans-serif;
+  font-weight: 700;
     background-color: #000000;
     color: #000000;
     line-height: 1.4;
@@ -73,13 +74,13 @@ body {
 .player {
     display: flex;
   align-items: center;
-  background-color: #fff;
+  background-color: #755f6a;
   border-radius: 30px;
   padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-shadow: 1px 1px 1px #000000;
   width: 400px;
   height: 200px;
-  border: 5px solid #b3b3b3;
+  border: 5px solid #3b3b3b;
 }
 
 .player-image {
@@ -88,7 +89,7 @@ body {
     height: 100px;
     border-radius: 50%;
     overflow: hidden;
-    transition: transform 0.3s ease;
+    transition: transform 0.5s ease;
 }
 
 .player-image img {
@@ -100,7 +101,7 @@ body {
 
 .player-image:hover img {
     transform: scale(1.2);
-    transition: transform 0.3s ease;
+    transition: transform 0.5s ease;
 }
 
 .player-info h3 {
@@ -112,12 +113,14 @@ body {
 .rating2 {
     font-weight: bold;
     font-size: 20px;
+    color: rgb(230, 230, 230);
+    
 }
 
 .additionalNumber1,
 .additionalNumber2 {
     font-size: 18px;
-    color: #777;
+    color: #9c9c9c;
 }
 
 .button-container {
@@ -181,21 +184,33 @@ body {
 .gauge-container {
     display: flex;
     justify-content: center;
-    width: 600px; /* Adjust width as needed */
-    height: 40px; /* Adjust height as needed */
-    margin: 0 auto; /* Added to center the container */
-    border: 5px solid #383838; /* Add border if desired */
+    width: 600px;
+    height: 40px;
+    margin: 0 auto;
+    border: 5px solid #383838;
     margin-top: 60px;
-    position: relative; /* Added */
+    position: relative;
     border-radius: 5px;
   }
   
   .gauge {
-    width: 100%;
+    width: 0; /* Start with 0 width */
     height: 100%;
-    background-color: #eee; /* Set background color */
+    background-color: #eee;
     position: relative;
+    animation: fillGauge 1.5s ease-out forwards; /* Add animation */
   }
+  
+  @keyframes fillGauge {
+    0% {
+      width: 0; /* Start with 0 width */
+    }
+    100% {
+      width: 100%; /* Animate to 100% width */
+    }
+  }
+  
+  
   
   .fill {
     height: 100%;
@@ -234,4 +249,50 @@ body {
     letter-spacing: 2px;
     line-height: 1.5;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    opacity: 0; /* Make the element initially invisible */
+    transition: opacity 1s ease-in; /* Add transition for opacity */
 }
+.fade-in {
+    opacity: 1; /* Set opacity to 1 to fade in */
+  }
+.boxName{
+    border: 3px solid rgb(179, 179, 179);
+    border-radius: 20px;
+    /* display: inline-block; */
+    line-height: 1;
+    padding: 2px;
+    color: rgb(230, 230, 230);
+    text-align: center;
+}
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .win {
+    padding: 10px 20px;
+    background-color: #72a176;
+    color: #e6e6e6;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 250px;
+    text-shadow: 2px 2px 1px #000;
+    width: 100px;
+    height: 50px;
+  }
+  .win:hover {
+    background-color: #388E3C; /* Change to a darker shade for hover effect */
+  }
+  .bottomPart {
+    opacity: 0;
+    transform: translateY(100px); /* Initial position below its final position */
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+  }
+  
+  .fade-in {
+    opacity: 1;
+    transform: translateY(0); /* Move to its final position */
+  }
