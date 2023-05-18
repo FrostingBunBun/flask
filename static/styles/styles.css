@@ -173,7 +173,7 @@ li:hover {
   animation: fadeIn 1s forwards;
   position: sticky;
   top: 0;
-  /* opacity: 0.9 !important; */
+  opacity: 0.95 !important;
 }
 
 

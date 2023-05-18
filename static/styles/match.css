@@ -144,6 +144,7 @@ body {
     transition: background-color 0.1s ease;
     text-decoration: none;
     /* Set text-decoration to none */
+    opacity: 0.9;
 }
 
 .my-button:hover,
@@ -192,6 +193,7 @@ body {
     margin-top: 60px;
     position: relative;
     border-radius: 5px;
+    opacity: 0.95;
   }
   
   .gauge {
@@ -200,6 +202,7 @@ body {
     background-color: #eee;
     position: relative;
     animation: fillGauge 1.5s ease-out forwards; /* Add animation */
+    
   }
   
   @keyframes fillGauge {
@@ -231,10 +234,11 @@ body {
   .prob{
     position: absolute;
     text-align: center;
-    color: #bb0274;
+    color: #ffffff;
     left: 50%;
     transform: translateX(-50%);
     font-weight: bold;
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black; /* Apply multiple shadows to create the outline */
   }
   
   .gauge-label {
@@ -245,13 +249,15 @@ body {
     transform: translateX(-50%);
     font-size: 20px;
     font: bold 16px Arial, sans-serif;
-    color: #bb0274;
+    color: #ffffff;
     text-align: center;
     letter-spacing: 2px;
     line-height: 1.5;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black; /* Apply multiple shadows to create the outline */
     opacity: 0; /* Make the element initially invisible */
     transition: opacity 1s ease-in; /* Add transition for opacity */
+    font-size: 25px;
+    padding-bottom: 10px;
 }
 .fade-in {
     opacity: 1; /* Set opacity to 1 to fade in */
@@ -262,7 +268,7 @@ body {
     /* display: inline-block; */
     line-height: 1;
     padding: 2px;
-    color: rgb(230, 230, 230);
+    color: rgb(255, 255, 255);
     text-align: center;
 }
 .button-container {
@@ -274,15 +280,16 @@ body {
   .win {
     padding: 10px 20px;
     background-color: #72a176;
-    color: #e6e6e6;
+    color: #ffffff;
     font-size: 16px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     margin: 0 250px;
-    text-shadow: 2px 2px 1px #000;
+    text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black; /* Apply multiple shadows to create the outline */
     width: 100px;
     height: 50px;
+    opacity: 0.95;
   }
   .win:hover {
     background-color: #388E3C; /* Change to a darker shade for hover effect */
