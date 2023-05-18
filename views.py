@@ -6,6 +6,7 @@ from threading import Lock
 from functools import wraps
 import json
 
+
 views = Blueprint(__name__, "views")
 
 
@@ -206,6 +207,26 @@ def login():
 
     return render_template("login.html", incorrect_password=incorrect_password, not_confirmed=not_confirmed)
 
+from flask import jsonify, request
+
+@views.route('/avatar', methods=['POST'])
+def get_avatar():
+    name = request.form['name']  # Get the name from the request data
+
+    conn = sqlite3.connect('user_dsAvis.db')
+    cursor = conn.cursor()
+
+    # Execute a query to retrieve the avatar URL based on the name
+    cursor.execute("SELECT avatar_url FROM dsLinks WHERE name LIKE ?", (f"%{name}%",))
+    result = cursor.fetchone()
+
+    conn.close()
+
+    if result:
+        avatar_url = result[0]
+        return jsonify({'avatar_url': avatar_url})
+    else:
+        return jsonify({'error': 'User not found'})
 
 
 

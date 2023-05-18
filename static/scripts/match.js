@@ -20,11 +20,24 @@ document.addEventListener("DOMContentLoaded", function () {
         if (leftWinrate < 0 || leftWinrate > 1 || rightWinrate < 0 || rightWinrate > 1) {
           throw new Error('Win rates should be between 0 and 1 (inclusive).');
         }
-      
+
         leftRating = parseFloat(leftRating);
         rightRating = parseFloat(rightRating);
         leftWinrate = parseFloat(leftWinrate);
         rightWinrate = parseFloat(rightWinrate);
+
+        if (leftRating == 0){
+          leftRating = 1
+        }
+        if (rightRating == 0){
+          rightRating = 1
+        }
+        if (leftWinrate == 0){
+          leftWinrate = 20
+        }
+        if (rightWinrate == 0){
+          rightWinrate = 20
+        }
       
         console.log("leftRating: ", leftRating);
         console.log("rightRating: ", rightRating);
@@ -142,3 +155,28 @@ document.addEventListener("DOMContentLoaded", function () {
   // Example usage: update the gauge with values 60 and 40
   updateGauge(leftProbability, rightProbability);
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+  const name = 'NON';  // Replace with the actual name you want to search
+  
+
+  fetch('/avatar', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: `name=${name}`
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.error) {
+      console.error(data.error);
+    } else {
+      const avatarUrl = data.avatar_url;
+      const avatarImage = document.getElementById('2vsImg');
+      avatarImage.src = avatarUrl;
+    }
+  })
+  .catch(error => console.error(error));
+});
+

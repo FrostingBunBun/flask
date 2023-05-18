@@ -101,9 +101,7 @@ async def on_ready():
     user_names = [user.name for user in users]
     # print(user_ids)
 
-    # Establish a connection to the database
-    conn = sqlite3.connect('user_dsAvis.db')
-    cursor = conn.cursor()
+
 
     
 
