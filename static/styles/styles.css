@@ -327,8 +327,9 @@ li:hover {
 }
 
 .dragged-item {
-  background-color: #ffcc00;
-  border: 2px solid #ffcc00;
+  background-color: #b3cfec;
+  border: 2px solid #f12b98;
+  color:#f12b98 !important;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   font-size: 30px !important;
