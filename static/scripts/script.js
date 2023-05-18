@@ -178,6 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   confirmYes.addEventListener("click", function () {
+    sessionStorage.removeItem("refreshFlag");
     var leftField = document.getElementById("field1");
     var rightField = document.getElementById("field2");
   
