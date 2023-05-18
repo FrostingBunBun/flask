@@ -11,6 +11,7 @@ body {
   gap: 30px;
   justify-content: center;
   align-items: flex-start;
+  opacity: 0.95;
 }
 
 .background-image {
@@ -24,8 +25,8 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  background-position: center bottom -300px;
-  filter: blur(3px);
+  /* background-position: center bottom -300px; */
+  /* filter: blur(3px); */
 }
 
 .list {
@@ -172,6 +173,7 @@ li:hover {
   animation: fadeIn 1s forwards;
   position: sticky;
   top: 0;
+  /* opacity: 0.9 !important; */
 }
 
 

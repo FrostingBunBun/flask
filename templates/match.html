@@ -23,44 +23,37 @@
 
 
 
-    <div class="match-container" id="match-container">
-      <div class="player">
-        <div class="player-image">
-          
-          <img
-            class="vs-image"
-            id="1vsImg"
-            src="https://cdn.discordapp.com/attachments/337921358690385920/1108196545268039771/01-05-2023_232240.jpg"
-            alt="VS"
-          />
+      <div class="match-container" id="match-container">
+        <div class="player">
+          <div class="player-image">
+            <img class="vs-image" id="1vsImg" src="" alt="VS" />
+          </div>
+      
+          <div class="player-info">
+            <div class="boxName">
+              <h3 id="playerName1">{{ leftNAME }}</h3>
+            </div>
+            <div class="rating1">mmr: {{ leftMMR }}</div>
+            <div class="additionalNumber1">Winrate: {{ leftWINRATE }}</div>
+          </div>
         </div>
-
-        <div class="player-info">
-          <div class="boxName"><h3 id="playerName1">{{leftNAME}}</h3></div>
-          <div class="rating1">mmr: {{leftMMR}}</div>
-          <div class="additionalNumber1">Winrate: {{leftWINRATE}}</div>
+        <div class="player">
+          <div class="player-image">
+            <img class="avatar-image" id="2vsImg" src="" alt="Avatar" />
+          </div>
+          <div class="player-info">
+            <div class="boxName">
+              <h3 id="playerName2">{{ rightNAME }}</h3>
+            </div>
+            <div class="rating2">mmr: {{ rightMMR }}</div>
+            <div class="additionalNumber2">Winrate: {{ rightWINRATE }}</div>
+          </div>
         </div>
       </div>
-      <div class="player">
-        <div class="player-image">
-          <img
-            class="avatar-image"
-            id="2vsImg"
-            src=""
-            alt="Avatar"
-          />
-        </div>
-        <div class="player-info">
-          <div class="boxName"><h3 id="playerName2">{{rightNAME}}</h3></div>
-          <div class="rating2">mmr: {{rightMMR}}</div>
-          <div class="additionalNumber2">Winrate: {{rightWINRATE}}</div>
-        </div>
-
-      </div>
-    </div>
+      
     
 
-    
+
     <div class="bottomPart">
     <div class="button-container">>
       <button class="win" id="winLeft">WON</button>

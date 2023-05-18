@@ -157,26 +157,58 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-  const name = 'NON';  // Replace with the actual name you want to search
-  
+  const leftName = document.getElementById("playerName1").textContent;
+  const rightName = document.getElementById("playerName2").textContent;
+
+  fetch('/left-avatar', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: `name=${leftName}`
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.error) {
+      console.error(data.error);
+      setDefaultAvatar('1vsImg');
+    } else {
+      const avatarUrl = data.avatar_url;
+      const avatarImage = document.getElementById('1vsImg');
+      avatarImage.src = avatarUrl;
+    }
+  })
+  .catch(error => {
+    console.error(error);
+    setDefaultAvatar('1vsImg');
+  });
 
   fetch('/avatar', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
-    body: `name=${name}`
+    body: `name=${rightName}`
   })
   .then(response => response.json())
   .then(data => {
     if (data.error) {
       console.error(data.error);
+      setDefaultAvatar('2vsImg');
     } else {
       const avatarUrl = data.avatar_url;
       const avatarImage = document.getElementById('2vsImg');
       avatarImage.src = avatarUrl;
     }
   })
-  .catch(error => console.error(error));
-});
+  .catch(error => {
+    console.error(error);
+    setDefaultAvatar('2vsImg');
+  });
 
+  function setDefaultAvatar(imageId) {
+    const defaultImageUrl = 'https://my.catgirls.forsale/QukeB047.png'; // Replace with your default image URL
+    const avatarImage = document.getElementById(imageId);
+    avatarImage.src = defaultImageUrl;
+  }
+});

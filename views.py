@@ -208,6 +208,7 @@ def login():
     return render_template("login.html", incorrect_password=incorrect_password, not_confirmed=not_confirmed)
 
 from flask import jsonify, request
+import difflib
 
 @views.route('/avatar', methods=['POST'])
 def get_avatar():
@@ -216,19 +217,50 @@ def get_avatar():
     conn = sqlite3.connect('user_dsAvis.db')
     cursor = conn.cursor()
 
-    # Execute a query to retrieve the avatar URL based on the name
-    cursor.execute("SELECT avatar_url FROM dsLinks WHERE name LIKE ?", (f"%{name}%",))
-    result = cursor.fetchone()
+    cursor.execute("SELECT name, avatar_url FROM dsLinks")
+
+    results = cursor.fetchall()
 
     conn.close()
 
-    if result:
-        avatar_url = result[0]
-        return jsonify({'avatar_url': avatar_url})
-    else:
-        return jsonify({'error': 'User not found'})
+    matching_results = difflib.get_close_matches(name, [result[0] for result in results], n=1)
 
+    print("TESTTTTTT: ", matching_results)
 
+    if matching_results:
+        matching_name = matching_results[0]
+        for result in results:
+            if result[0] == matching_name:
+                avatar_url = result[1]
+                return jsonify({'avatar_url': avatar_url})
+
+    return jsonify({'error': 'User not found'})
+
+@views.route('/left-avatar', methods=['POST'])
+def get_left_avatar():
+    name = request.form['name']  # Get the name from the request data
+
+    conn = sqlite3.connect('user_dsAvis.db')
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT name, avatar_url FROM dsLinks")
+
+    results = cursor.fetchall()
+
+    conn.close()
+
+    matching_results = difflib.get_close_matches(name, [result[0] for result in results], n=1, cutoff=0.1)
+
+    print("TESTTTTTT: ", matching_results)
+
+    if matching_results:
+        matching_name = matching_results[0]
+        for result in results:
+            if result[0] == matching_name:
+                avatar_url = result[1]
+                return jsonify({'avatar_url': avatar_url})
+
+    return jsonify({'error': 'User not found'})
 
 
 

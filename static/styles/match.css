@@ -26,8 +26,8 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    background-position: center bottom -300px;
-    filter: blur(2px);
+    /* background-position: center bottom -300px; */
+    /* filter: blur(3px); */
 }
 
 .gradient-overlay {
@@ -81,6 +81,7 @@ body {
   width: 400px;
   height: 200px;
   border: 5px solid #3b3b3b;
+  opacity: 0.9;
 }
 
 .player-image {
