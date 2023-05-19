@@ -31,33 +31,38 @@ body {
 
 .list {
   flex: 1;
-  background-color: #cecece;
+  background-color: #575757;
   padding: 20px;
   border-radius: 30px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   max-width: 600px;
-  opacity: 0;
+  /* opacity: 0.5; */
   animation: fadeIn 1s forwards;
+
 }
 
 .list h2 {
-  font-size: 24px;
+  opacity: 1 !important;
+  font-size: 18px;
     font-weight: bold;
     margin-bottom: 10px;
-    color: #333;
+    color: #dd2179;
     text-transform: uppercase;
     text-align: center;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    letter-spacing: 2px;
+    text-shadow: -1px -1px 0 rgb(82, 82, 82), 1px -1px 0 rgb(82, 82, 82), -1px 1px 0 rgb(82, 82, 82), 1px 1px 0 rgb(82, 82, 82); /* Apply multiple shadows to create the outline */
 }
 
 ul {
+  opacity: 1 !important;
   list-style-type: none;
   padding: 0;
 }
 
 li {
+  opacity: 1 !important;
   padding: 10px;
-  background-color: #ececec;
+  background-color: #a7a7a7;
   border-radius: 10px;
   margin-bottom: 10px;
   cursor: grab;
@@ -76,7 +81,7 @@ li:hover {
   margin: 0 auto;
   width: 600px;
   height: 200px;
-  background-color: #dddddd;
+  background-color: #d1d1d1;
   padding: 25px;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -100,6 +105,15 @@ li:hover {
 
 .field h2 {
   margin-top: 0;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 1.2;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .field p {
@@ -115,11 +129,11 @@ li:hover {
 }
 
 .field:hover {
-  background-color: #d8d8d8;
+  background-color: #b1b1b1;
 }
 
 .field.dragover {
-  background-color: #f5f5f5;
+  background-color: #d3d3d3;
 }
 
 .field-container {
@@ -164,7 +178,7 @@ li:hover {
 
 .rightSide {
   flex: 1;
-  background-color: #ffffff;
+  background-color: #616161;
   padding: 20px;
   border-radius: 30px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -297,13 +311,14 @@ li:hover {
   padding: 6px 20px;
   font-size: 24px;
   font-weight: bold;
-  background-color: #c0c0c0;
+  background-color: #969696;
   color: #962d2d;
   border: none;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: background-color 0.1s ease;
+  opacity: 1 !important;
 }
 
 .clear-button:hover {
@@ -330,7 +345,7 @@ li:hover {
 
 .dragged-item {
   background-color: #b3cfec;
-  border: 2px solid #f12b98;
+  border: 2px solid #bb2176;
   color:#f12b98 !important;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -348,7 +363,7 @@ li:hover {
 .player {
   display: flex;
   align-items: center;
-  background-color: #f2f2f2;
+  background-color: #a0a0a0;
   padding: 20px;
   margin-left: 40px;
   margin-right: 40px;

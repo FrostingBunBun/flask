@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="pragma" content="no-cache" />
+  <meta http-equiv="expires" content="0" />
+  <title>Match</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/processing.css') }}" />
+</head>
+
+<body>
+  <div class="background-image"></div>
+  <div class="gradient-overlay"></div>
+  <div class="match-container" id="match-container">
+    <div class="loading">PROCESSING<span class="dots"></span></div>
+
+    <div class="loading-screen">
+        <div class="loader"></div>
+      </div>
+      
+  </div>
+
+  <script src="{{ url_for('static', filename='scripts/processing.js') }}"></script>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+</html>

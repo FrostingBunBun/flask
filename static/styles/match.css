@@ -27,7 +27,7 @@ body {
     background-size: cover;
     background-position: center;
     /* background-position: center bottom -300px; */
-    /* filter: blur(3px); */
+    filter: blur(5px);
 }
 
 .gradient-overlay {
@@ -239,6 +239,7 @@ body {
     transform: translateX(-50%);
     font-weight: bold;
     text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black; /* Apply multiple shadows to create the outline */
+    font-size: 20px;
   }
   
   .gauge-label {
@@ -258,6 +259,7 @@ body {
     transition: opacity 1s ease-in; /* Add transition for opacity */
     font-size: 25px;
     padding-bottom: 10px;
+    margin-left: -45px;
 }
 .fade-in {
     opacity: 1; /* Set opacity to 1 to fade in */
@@ -280,16 +282,17 @@ body {
   .win {
     padding: 10px 20px;
     background-color: #72a176;
-    color: #ffffff;
-    font-size: 16px;
+    color: #e0e0e0;
+    font-size: 24px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     margin: 0 250px;
     text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black; /* Apply multiple shadows to create the outline */
-    width: 100px;
+    width: 150px;
     height: 50px;
     opacity: 0.95;
+    
   }
   .win:hover {
     background-color: #388E3C; /* Change to a darker shade for hover effect */
@@ -303,4 +306,10 @@ body {
   .fade-in {
     opacity: 1;
     transform: translateY(0); /* Move to its final position */
+  }
+  .newMMRwin1,
+  .newMMRlose1,
+  .newMMRwin2,
+  .newMMRlose2{
+    color: rgb(192, 129, 160);
   }

@@ -160,6 +160,10 @@ def test():
     var = "DYN"
     return render_template("test.html", var=var)
 
+@views.route("/matchmaking/match/processing")
+def processing():
+    return render_template("processing.html")
+
 
 @views.route("/entry")
 def entry():
