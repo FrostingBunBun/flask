@@ -19,6 +19,7 @@
   <body>
     <div class="background-image"></div>
     <div class="container">
+
       <div class="list" id="list">
         <div class="search-container">
           <input
@@ -28,15 +29,21 @@
             placeholder="Search names..."
           />
         </div>
+
+
+        
         <h2>The Deadpool</h2>
         <ul id="nameList">
           {% for name in list %}
           <li class="list-item" draggable="true" ondragstart="drag(event)">
             {{ name }}
+            <span id="flag_{{ name }}"></span>
           </li>
           {% endfor %}
         </ul>
+
       </div>
+
 
       <div class="rightSide" id="rightSide">
         <!-- <img
@@ -140,6 +147,7 @@
     </div>
 
     <script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/flagLogic.js') }}"></script>
   </body>
   <script
     src="https://code.jquery.com/jquery-3.7.0.js"

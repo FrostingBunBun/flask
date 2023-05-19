@@ -5,6 +5,8 @@ import random
 from threading import Lock
 from functools import wraps
 import json
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
 
 
 views = Blueprint(__name__, "views")
@@ -16,6 +18,12 @@ wks_mmr = sh_mmr.worksheet("Leaderboards")
 
 playersNames = wks_mmr.get("D4:D")
 
+
+# =========================================================================
+# flags = wks_mmr.get("E4:E")
+# Get the cell value
+
+# =========================================================================
 
 range_str = "C4:D"
 values = wks_mmr.range(range_str)
@@ -38,6 +46,7 @@ test = wks_mmr.acell("I4").value
 
 
 flat_names = [item for sublist in playersNames for item in sublist]
+# flat_flags = [item for sublist in flags for item in sublist]
 
 database_path = 'C:/Users/FrostingBunBun/Desktop/else/flask/db/users.db'
 
@@ -86,6 +95,7 @@ def add_header(response):
 @views.route("/matchmaking", methods=['GET', 'POST'])
 @login_required
 def matchmaking():
+
     return render_template("matchmaking.html", list=flat_names)
 
 

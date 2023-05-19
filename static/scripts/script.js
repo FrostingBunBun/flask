@@ -13,7 +13,11 @@ function drag(event) {
   }
 
   draggedElement = target;
-  event.dataTransfer.setData("text/plain", target.innerText);
+  
+  // Get the name and remove everything after whitespace
+  var name = target.innerText.trim().split(" ")[0];
+  
+  event.dataTransfer.setData("text/plain", name);
 }
 
 

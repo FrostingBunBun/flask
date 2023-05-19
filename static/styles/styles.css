@@ -52,6 +52,9 @@ body {
     letter-spacing: 2px;
     text-shadow: -1px -1px 0 rgb(82, 82, 82), 1px -1px 0 rgb(82, 82, 82), -1px 1px 0 rgb(82, 82, 82), 1px 1px 0 rgb(82, 82, 82); /* Apply multiple shadows to create the outline */
 }
+.list-container {
+  display: flex;
+}
 
 ul {
   opacity: 1 !important;
@@ -387,4 +390,7 @@ li:hover {
 /* Styles for player rating and additional number */
 .player-info div {
   margin-top: 5px;
+}
+.flag{
+  float: right;
 }
