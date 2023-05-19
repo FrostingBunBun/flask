@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("Left button clicked (2nd time). Redirecting...");
       // Perform the redirect action for left button
       handleLeftWin();
-      resetButtons();
+      // resetButtons();
     }
   }
 
@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("Right button clicked (2nd time). Redirecting...");
       // Perform the redirect action for right button
       handleRightWin();
-      resetButtons();
+      // resetButtons();
     }
   }
 
@@ -263,6 +263,7 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("right_new_mmr: ", right_new_mmr);
 
     // ====================================================================================== LEFT WON
+    window.location.href = "/matchmaking/match/processing";
   }
 
 
@@ -303,7 +304,7 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("right_new_mmr: ", right_new_mmr);
 
     // ====================================================================================== RIGHT WON
-
+    window.location.href = "/matchmaking/match/processing";
   }
 
 
