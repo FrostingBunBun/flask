@@ -83,7 +83,7 @@ function getFlag(nameCell) {
     nameCell = nameCell.split(" ");
     nameCell = nameCell[0];
 
-    console.log(nameCell);
+    // console.log(nameCell);
     // =============================================
   
   
@@ -236,22 +236,121 @@ function getFlag(nameCell) {
     }
 
     window.onload = function() {
-        var names = document.getElementsByClassName("list-item");
-        for (var i = 0; i < names.length; i++) {
-          var name = names[i].innerText;
-          var flagUrl = getFlag(name);
+  var names = document.getElementsByClassName("list-item");
+  for (var i = 0; i < names.length; i++) {
+    var name = names[i].innerText;
+    var flagUrl = getFlag(name);
+
+    // Create a new image element
+    var img = document.createElement("img");
+    img.src = flagUrl;
+    img.style.maxWidth = "50px";
+    img.style.maxHeight = "50px";
+    img.style.float = "right";
+    img.style.marginLeft = "10px";
+    img.style.marginTop = "-5px";
+    img.style.verticalAlign = "middle";
+    img.style.transition = "transform 0.2s";
+
+    // Add hover effect
+    img.addEventListener("mouseenter", function() {
+      this.style.transform = "scale(1.2)";
+    });
+
+    img.addEventListener("mouseleave", function() {
+      this.style.transform = "scale(1)";
+    });
+
+    // Append the image to the list item
+    names[i].appendChild(img);
+  }
+};
+window.onload = function() {
+  var names = document.getElementsByClassName("list-item");
+  for (var i = 0; i < names.length; i++) {
+    var name = names[i].innerText;
+    var flagUrl = getFlag(name);
+
+    // Create a new image element
+    var img = document.createElement("img");
+    img.src = flagUrl;
+    img.style.maxWidth = "50px";
+    img.style.maxHeight = "50px";
+    img.style.float = "right";
+    img.style.marginLeft = "10px";
+    img.style.marginTop = "-5px";
+    img.style.verticalAlign = "middle";
+    img.style.transition = "transform 0.2s";
+
+    // Add hover effect to the list item
+    names[i].addEventListener("mouseenter", function() {
+      this.style.transform = "scale(1.1)";
+    });
+
+    names[i].addEventListener("mouseleave", function() {
+      this.style.transform = "scale(1)";
+    });
+
+    // Append the image to the list item
+    names[i].appendChild(img);
+  }
+};
+
+
+window.onload = function() {
+    var names = document.getElementsByClassName("list-item");
+    for (var i = 0; i < names.length; i++) {
+      var name = names[i].innerText;
+      var flagUrl = getFlag(name);
+  
+        // Create a new image element
+        var img = document.createElement("img");
+        img.src = flagUrl;
+        img.style.maxWidth = "80px";
+        img.style.maxHeight = "30px";
+        img.style.float = "right";
+        img.style.marginRight = "10px"; // Adjust the marginRight value to move the image
+        img.style.marginTop = "-5px";
+        img.style.verticalAlign = "middle";
+        img.style.transition = "transform 0.2s";
+
+
+      // Add hover effect
+    img.addEventListener("mouseenter", function() {
+        this.style.transform = "scale(1.7)";
+      });
+  
+      img.addEventListener("mouseleave", function() {
+        this.style.transform = "scale(1)";
+      });
+
+      // Add hover effect to the list item
+names[i].addEventListener("mouseenter", function() {
+    this.style.transform = "scale(1.1)";
+    this.style.transition = "transform 0.1s";
+  });
+  
+  names[i].addEventListener("mouseleave", function() {
+    this.style.transform = "scale(1)";
+    this.style.transition = "transform 0.1s";
+  });
+  
+      // Add hover effect to the list item
+      names[i].addEventListener("mouseenter", function() {
+        this.style.transform = "scale(1.1)";
+      });
+  
+      names[i].addEventListener("mouseleave", function() {
+        this.style.transform = "scale(1)";
+      });
+  
+      // Append the image to the list item
+      names[i].appendChild(img);
+    }
+  };
+  
+  
+
       
-          // Create a new image element
-          var img = document.createElement("img");
-          img.src = flagUrl;
-          img.style.maxWidth = "80px";
-          img.style.maxHeight = "30px";
-          img.style.float = "right";
-          img.style.marginLeft = "10px";
-      
-          // Append the image to the list item
-          names[i].appendChild(img);
-        }
-      };
       
       

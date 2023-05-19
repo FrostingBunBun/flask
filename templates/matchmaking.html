@@ -22,22 +22,18 @@
 
       <div class="list" id="list">
         <div class="search-container">
-          <input
-            type="text"
-            autocomplete="off"
-            id="searchInput"
-            placeholder="Search names..."
-          />
+          <input class="searchBar" type="text" autocomplete="off" id="searchInput" placeholder="Search names...">
+
         </div>
 
 
         
         <h2>The Deadpool</h2>
         <ul id="nameList">
-          {% for name in list %}
+          {% for name, value in my_dict.items() %}
           <li class="list-item" draggable="true" ondragstart="drag(event)">
             {{ name }}
-            <span id="flag_{{ name }}"></span>
+            <span id="flag_{{ name }}">({{ value }})</span>
           </li>
           {% endfor %}
         </ul>
@@ -134,7 +130,7 @@
 
         <div class="button-container">
           <button class="my-button" id="cancelButton">Cancel</button>
-          <a href="#" class="my-button" id="submitButton" draggable="false"
+          <a class="my-button" id="submitButton" draggable="false"
             >Pair</a
           >
           <button class="clear-button-all" id="clearButtonALL">

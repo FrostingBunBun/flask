@@ -4,6 +4,7 @@ function allowDrop(event) {
 
 function drag(event) {
   var target = event.target;
+  // console.log(target)
 
   // Check if the event target is a list item
   if (!target.classList.contains("list-item")) {
@@ -12,66 +13,122 @@ function drag(event) {
     return;
   }
 
-  draggedElement = target;
+
+
   
+
+  let string = target.textContent;
+  let mmr_number = null;
+
+  if (typeof string === "string") {
+    let match = string.match(/\((\d+)\)/);
+
+    if (match && match.length > 1) {
+      mmr_number = match[1];
+      console.log(mmr_number);
+    } else {
+      console.log("MMR number not found");
+    }
+  } else {
+    console.log("Invalid input: not a string");
+  }
+
+  draggedElement = target;
+
   // Get the name and remove everything after whitespace
   var name = target.innerText.trim().split(" ")[0];
-  
-  event.dataTransfer.setData("text/plain", name);
+
+  event.dataTransfer.setData("application/json", JSON.stringify({ name: name, mmr: mmr_number }));
 }
+
+
 
 
 function drop(event) {
   event.preventDefault();
-  var name = event.dataTransfer.getData("text/plain");
+
+  var jsonData = event.dataTransfer.getData("application/json");
+  var data = JSON.parse(jsonData);
+  var name = data.name;
+  var mmr = data.mmr;
+
   var droppedElement = document.createElement("p");
   droppedElement.textContent = name;
 
-  // Add a class to the dropped element
-  droppedElement.classList.add("dragged-item");
+  var droppedElementMmr = document.createElement("span");
+  droppedElementMmr.textContent = "(mmr: " + mmr + ")";
 
-  console.log("Dropped name: " + name);
+  // Create a container element for name and mmr
+  var container = document.createElement("div");
+  container.appendChild(droppedElement);
+  container.appendChild(droppedElementMmr);
 
-  // Find the target field element
+  // Add a class to the container
+  container.classList.add("dragged-item");
+
+  // Add the container to the target field
   var targetField = event.target.closest(".field");
   if (!targetField) return;
 
-  // Remove existing content before appending the new name
-  var existingContent = targetField.querySelector("p");
-  if (existingContent && existingContent.textContent !== name) {
-    existingContent.remove();
-  }
-
-  // Check if the name already exists in the other field
-  var otherField = targetField.id === "field1" ? "field2" : "field1";
-  var otherContent = document.getElementById(otherField).querySelector("p");
-  if (otherContent && otherContent.textContent === name) {
-    otherContent.remove();
-  }
-
-  // Check if the name already exists in the target field
-  var targetContent = targetField.querySelector("p");
-  if (targetContent && targetContent.textContent === name) {
-    return; // Don't add duplicate names
-  }
-
-  targetField.appendChild(droppedElement);
-  draggedElement.style.opacity = "1";
-
   var leftField = document.getElementById("field1");
-  var leftNameElement = leftField.querySelector("p");
+  var rightField = document.getElementById("field2");
+  var rightPlayer = document.getElementById("field2Small");
+
+  // Remove existing content from target field before appending the new name and mmr
+  var existingContent = targetField.querySelector(".dragged-item");
+  if (existingContent) {
+    existingContent.remove();
+    rightPlayer.remove();
+  }
+  var leftPlayer = document.getElementById("field1Small");
+  // Remove the name and mmr from the other field if they match the dropped name and mmr
+  var otherField = targetField === leftField ? rightField : leftField;
+  var otherNameElement = otherField.querySelector(".dragged-item p");
+  var otherMmrElement = otherField.querySelector(".dragged-item span");
+  var otherName = otherNameElement ? otherNameElement.textContent.trim() : "";
+  var otherMmr = otherMmrElement ? otherMmrElement.textContent.trim() : "";
+
+  if (otherName === name && otherMmr === "(mmr: " + mmr + ")") {
+    otherNameElement.remove();
+    otherMmrElement.remove();
+    leftPlayer.remove()
+  }
+
+
+  targetField.appendChild(container);
+  container.id = targetField.id + "Small"; // Set the ID of the container
+
+  var leftNameElement = leftField.querySelector(".dragged-item p");
   var leftName = leftNameElement ? leftNameElement.textContent.trim() : "";
 
-  var rightField = document.getElementById("field2");
-  var rightNameElement = rightField.querySelector("p");
+  var leftMmrElement = leftField.querySelector(".dragged-item span");
+  var leftMmr = leftMmrElement ? leftMmrElement.textContent.trim() : "";
+
+  var rightNameElement = rightField.querySelector(".dragged-item p");
   var rightName = rightNameElement ? rightNameElement.textContent.trim() : "";
 
+  var rightMmrElement = rightField.querySelector(".dragged-item span");
+  var rightMmr = rightMmrElement ? rightMmrElement.textContent.trim() : "";
+
   console.log("Left Name: " + leftName);
+  console.log("Left MMR: " + leftMmr);
   console.log("Right Name: " + rightName);
+  console.log("Right MMR: " + rightMmr);
+  // console.log("ALSO LEFT: ", leftField)
 
   // Show the list after items have been moved to the left
   document.getElementById("list").classList.remove("list-hidden");
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -116,24 +173,28 @@ document.addEventListener("DOMContentLoaded", function () {
     var leftField = document.getElementById("field1");
     var rightField = document.getElementById("field2");
     var errorMessage = document.getElementById("error-message");
-
+  
+    var leftNameElement = leftField.querySelector(".dragged-item p");
+    var rightNameElement = rightField.querySelector(".dragged-item p");
+  
     if (
-      leftField.querySelector("p").textContent.trim() !== "" &&
-      leftField.querySelector("p").textContent.trim() !== "Player Left" &&
-      rightField.querySelector("p").textContent.trim() !== "" &&
-      rightField.querySelector("p").textContent.trim() !== "Player Right"
+      leftNameElement && leftNameElement.textContent.trim() !== "" &&
+      leftNameElement.textContent.trim() !== "Player Left" &&
+      rightNameElement && rightNameElement.textContent.trim() !== "" &&
+      rightNameElement.textContent.trim() !== "Player Right"
     ) {
       confirmationModal.style.display = "block";
     } else {
       errorMessage.textContent = "Please enter names into both fields.";
       errorMessage.classList.add("show");
-
+  
       // Remove the error class after 2 seconds
       setTimeout(function () {
         errorMessage.classList.remove("show");
       }, 2000);
     }
   });
+  
 
   // CSS STUFF FOR YES NO
   confirmYes.style.fontSize = "20px";
@@ -235,20 +296,34 @@ document.addEventListener("DOMContentLoaded", function () {
   var clearButtonALL = document.getElementById("clearButtonALL");
 
   clearButton1.addEventListener("click", function () {
-    var rightField = document.getElementById("field1");
-    rightField.querySelector("p").textContent = "";
+    var leftPlayer = document.getElementById("field1Small");
+    if (leftPlayer) {
+      console.log("CLICK")
+      leftPlayer.remove()
+    }
   });
+  
 
   clearButton2.addEventListener("click", function () {
-    var leftField = document.getElementById("field2");
-    leftField.querySelector("p").textContent = "";
+    var rightPlayer = document.getElementById("field2Small");
+    if (rightPlayer) {
+      rightPlayer.remove();
+    }
   });
 
   clearButtonALL.addEventListener("click", function () {
-    var leftField = document.getElementById("field2");
-    leftField.querySelector("p").textContent = "";
-    var rightField = document.getElementById("field1");
-    rightField.querySelector("p").textContent = "";
+
+    var leftPlayer = document.getElementById("field1Small");
+    if (leftPlayer) {
+      console.log("CLICK")
+      leftPlayer.remove()
+    }
+
+    var rightPlayer = document.getElementById("field2Small");
+    if (rightPlayer) {
+      rightPlayer.remove();
+    }
+    
   });
 });
 

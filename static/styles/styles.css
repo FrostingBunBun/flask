@@ -13,6 +13,15 @@ body {
   align-items: flex-start;
   opacity: 0.95;
 }
+.list-item {
+  /* width: 100px; */
+  /* height: 100px; */
+  /* background-color: red; */
+  transition: transform 0.3s ease-in-out;
+}
+.list-item.dragging {
+  opacity: 0.5;
+}
 
 .background-image {
   position: fixed;
@@ -349,12 +358,19 @@ li:hover {
 .dragged-item {
   background-color: #b3cfec;
   border: 2px solid #bb2176;
-  color:#f12b98 !important;
+  color:#979797 !important;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   font-size: 30px !important;
   margin-top: 20px !important;
 }
+.dragged-item p{
+  background-color: #b3cfec;
+  color:#f12b98 !important;
+  border-radius: 5px;
+  font-size: 30px !important;
+}
+
 
 .match-container {
   display: none;

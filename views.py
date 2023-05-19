@@ -17,6 +17,17 @@ sh_mmr = sa_mmr.open("Leaderboards")
 wks_mmr = sh_mmr.worksheet("Leaderboards")
 
 playersNames = wks_mmr.get("D4:D")
+flat_names = [item for sublist in playersNames for item in sublist]
+
+playersMmr = wks_mmr.get("C4:C")
+flat_mmrs = [item for sublist in playersMmr for item in sublist]
+
+nameMmr_dict = {}
+
+for i in range(len(flat_names)):
+    nameMmr_dict[flat_names[i]] = flat_mmrs[i]
+
+# print(nameMmr_dict)
 
 
 # =========================================================================
@@ -24,6 +35,10 @@ playersNames = wks_mmr.get("D4:D")
 # Get the cell value
 
 # =========================================================================
+
+
+
+
 
 range_str = "C4:D"
 values = wks_mmr.range(range_str)
@@ -45,8 +60,6 @@ test = wks_mmr.acell("I4").value
 
 
 
-flat_names = [item for sublist in playersNames for item in sublist]
-# flat_flags = [item for sublist in flags for item in sublist]
 
 database_path = 'C:/Users/FrostingBunBun/Desktop/else/flask/db/users.db'
 
@@ -96,7 +109,8 @@ def add_header(response):
 @login_required
 def matchmaking():
 
-    return render_template("matchmaking.html", list=flat_names)
+
+    return render_template("matchmaking.html", my_dict=nameMmr_dict)
 
 
 @views.route("/matchmaking/match", methods=['GET', 'POST'])

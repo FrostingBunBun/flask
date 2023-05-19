@@ -366,7 +366,28 @@ document.addEventListener("DOMContentLoaded", function () {
   var newMMRlose2 = document.querySelector(".newMMRlose2");
   newMMRlose2.innerHTML = "lose case: -" + shift_left;
 
+// ================================================================
+// const elementId = "myElement"; // ID of the element containing the text
+// const url = "/get-text"; // URL to the server endpoint
 
+// const elementText = document.getElementById(elementId).innerText; // Get the text from the element
+
+// fetch(url, {
+//   method: "POST",
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+//   body: JSON.stringify({ text: elementText }), // Send the text as JSON in the request body
+// })
+//   .then((response) => response.text())
+//   .then((data) => {
+//     // Handle the response data
+//     console.log("Response:", data);
+//   })
+//   .catch((error) => {
+//     console.error("Error:", error);
+//   });
+// ================================================================
 
 
 
