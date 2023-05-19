@@ -160,135 +160,281 @@ document.addEventListener("DOMContentLoaded", function () {
   // Example usage: update the gauge with values 60 and 40
   updateGauge(leftProbability, rightProbability);
 
-  var leftWinButton = document.getElementById("winLeft");
-var rightWinButton = document.getElementById("winRight");
 
-rightWinButton.addEventListener("click", function () {
-  if (rightWinButton.classList.contains("confirm")) {
-    // If the confirmation button is already shown, revert back to the "win" button
-    rightWinButton.classList.remove("confirm");
-    rightWinButton.textContent = "Won";
-  } else {
-    // Create a new confirmation button
-    var confirmationButton = document.createElement("button");
-    confirmationButton.textContent = "Confirm";
-    confirmationButton.classList.add("win", "confirm");
 
-    // Replace the existing button with the confirmation button
-    var parentElement = rightWinButton.parentElement;
-    parentElement.replaceChild(confirmationButton, rightWinButton);
 
-    // Add an event listener to the confirmation button
-    confirmationButton.addEventListener("click", function () {
-      // ====================================================================================== LEFT WON
-
-      var expected_score =
-        1 /
-        (1 +
-          Math.pow(
-            10,
-            Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 400
-          ));
-      K = 50;
-
-      left_mmr = parseInt(leftRatingValue[0]);
-      right_mmr = parseInt(rightRatingValue[0]);
-      console.log("left_mmr: ", left_mmr);
-      console.log("right_mmr: ", right_mmr);
-
-      left_new_mmr = leftRatingValue[0];
-      right_new_mmr = rightRatingValue[0];
-
-      if (left_mmr > right_mmr) {
-        var shift = Math.round(K * (1 - expected_score));
-        var left_new_mmr = Math.round(left_mmr - shift);
-        var right_new_mmr = Math.round(right_mmr + shift);
-        console.log("CHECK 1");
-      } else {
-        var shift = Math.round(K * (0 - expected_score));
-        var left_new_mmr = Math.round(left_mmr + shift);
-        var right_new_mmr = Math.round(right_mmr - shift);
-        console.log("CHECK 2");
-      }
-
-      console.log("shift = ", Math.abs(shift));
-      console.log("left_new_mmr: ", left_new_mmr);
-      console.log("right_new_mmr: ", right_new_mmr);
-
-      // ====================================================================================== LEFT WON
-      // Perform the desired action upon confirmation
-      console.log("Confirmation button clicked");
-      // Add your code here for the action you want to perform
-      // parentElement.replaceChild(rightWinButton, confirmationButton);
-      window.location.href = "/matchmaking/match/processing";
-    });
-  }
-});
-
-  leftWinButton.addEventListener("click", function () {
-    
-    // Create a new confirmation button
-    var confirmationButton = document.createElement("button");
-    confirmationButton.textContent = "Confirm";
-    confirmationButton.classList.add("win");
-
-    // Replace the existing button with the confirmation button
-    var parentElement = leftWinButton.parentElement;
-    parentElement.replaceChild(confirmationButton, leftWinButton);
-
-    // Add an event listener to the confirmation button
-    confirmationButton.addEventListener("click", function () {
-      
-      // ====================================================================================== RIGHT WON
-
-      var expected_score =
-        1 /
-        (1 +
-          Math.pow(
-            10,
-            Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 400
-          ));
-      K = 50;
-
-      left_mmr = parseInt(leftRatingValue[0]);
-      right_mmr = parseInt(rightRatingValue[0]);
-      console.log("left_mmr: ", left_mmr);
-      console.log("right_mmr: ", right_mmr);
-
-      left_new_mmr = leftRatingValue[0];
-      right_new_mmr = rightRatingValue[0];
-
-      if (left_mmr < right_mmr) {
-        var shift = Math.round(K * (1 - expected_score));
-        var left_new_mmr = Math.round(left_mmr + shift);
-        var right_new_mmr = Math.round(right_mmr - shift);
-        console.log("CHECK 1");
-      } else {
-        var shift = Math.round(K * (0 - expected_score));
-        var left_new_mmr = Math.round(left_mmr - shift);
-        var right_new_mmr = Math.round(right_mmr + shift);
-        console.log("CHECK 2");
-      }
-
-      console.log("shift = ", Math.abs(shift));
-      console.log("left_new_mmr: ", left_new_mmr);
-      console.log("right_new_mmr: ", right_new_mmr);
-
-      // ====================================================================================== RIGHT WON
-      // Perform the desired action upon confirmation
-      console.log("Confirmation button clicked");
-      // Add your code here for the action you want to perform
-      // parentElement.replaceChild(leftWinButton, confirmationButton);
-      window.location.href = "/matchmaking/match/processing";
-    });
-  });
 
   
+  var leftWinButton = document.getElementById("winLeft");
+  var rightWinButton = document.getElementById("winRight");
+
+  rightWinButton.addEventListener("click", function () {
+
+    conLeft = document.getElementById("conLeft")
+
+    if (conLeft !== null) {
+      // If the confirmation button is already shown, revert back to the "win" button
+      console.log("LEFT CONTAINS")
+      var confirmationButton = document.createElement("button");
+      confirmationButton.textContent = "Confirm";
+      confirmationButton.classList.add("confirmRight");
+      confirmationButton.id = "conRight";
+
+      conLeft = document.getElementById("conLeft");
+      if (conLeft !== null) {
+        conLeft.className = "win";
+        conLeft.id = "winLeft";
+        conLeft.textContent = "WON"
+      } else {
+        console.log("Element not found");
+      }
+
+      // Replace the existing button with the confirmation button
+      var parentElement = rightWinButton.parentElement;
+      parentElement.replaceChild(confirmationButton, rightWinButton);
+
+      // Add an event listener to the confirmation button
+      confirmationButton.addEventListener("click", function () {
+        // ====================================================================================== LEFT WON
+
+        var expected_score =
+          1 /
+          (1 +
+            Math.pow(
+              10,
+              Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 400
+            ));
+        K = 50;
+
+        left_mmr = parseInt(leftRatingValue[0]);
+        right_mmr = parseInt(rightRatingValue[0]);
+        console.log("left_mmr: ", left_mmr);
+        console.log("right_mmr: ", right_mmr);
+
+        left_new_mmr = leftRatingValue[0];
+        right_new_mmr = rightRatingValue[0];
+
+        if (left_mmr > right_mmr) {
+          var shift = Math.round(K * (1 - expected_score));
+          var left_new_mmr = Math.round(left_mmr - shift);
+          var right_new_mmr = Math.round(right_mmr + shift);
+          console.log("CHECK 1");
+        } else {
+          var shift = Math.round(K * (0 - expected_score));
+          var left_new_mmr = Math.round(left_mmr + shift);
+          var right_new_mmr = Math.round(right_mmr - shift);
+          console.log("CHECK 2");
+        }
+
+        console.log("shift = ", Math.abs(shift));
+        console.log("left_new_mmr: ", left_new_mmr);
+        console.log("right_new_mmr: ", right_new_mmr);
+
+        // ====================================================================================== LEFT WON
+        // Perform the desired action upon confirmation
+        console.log("Confirmation button clicked");
+        // Add your code here for the action you want to perform
+        // parentElement.replaceChild(rightWinButton, confirmationButton);
+        // window.location.href = "/matchmaking/match/processing";
+      });
+      // leftWinButton.textContent = "WON";
+    } else {
+      console.log("LEFT NOT CONTAINS")
+      // Create a new confirmation button
+      var confirmationButton = document.createElement("button");
+      confirmationButton.textContent = "Confirm";
+      confirmationButton.classList.add("confirmRight");
+      confirmationButton.id = "conRight"
+
+      // Replace the existing button with the confirmation button
+      var parentElement = rightWinButton.parentElement;
+      parentElement.replaceChild(confirmationButton, rightWinButton);
+
+      // Add an event listener to the confirmation button
+      confirmationButton.addEventListener("click", function () {
+        // ====================================================================================== LEFT WON
+
+        var expected_score =
+          1 /
+          (1 +
+            Math.pow(
+              10,
+              Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 400
+            ));
+        K = 50;
+
+        left_mmr = parseInt(leftRatingValue[0]);
+        right_mmr = parseInt(rightRatingValue[0]);
+        console.log("left_mmr: ", left_mmr);
+        console.log("right_mmr: ", right_mmr);
+
+        left_new_mmr = leftRatingValue[0];
+        right_new_mmr = rightRatingValue[0];
+
+        if (left_mmr > right_mmr) {
+          var shift = Math.round(K * (1 - expected_score));
+          var left_new_mmr = Math.round(left_mmr - shift);
+          var right_new_mmr = Math.round(right_mmr + shift);
+          console.log("CHECK 1");
+        } else {
+          var shift = Math.round(K * (0 - expected_score));
+          var left_new_mmr = Math.round(left_mmr + shift);
+          var right_new_mmr = Math.round(right_mmr - shift);
+          console.log("CHECK 2");
+        }
+
+        console.log("shift = ", Math.abs(shift));
+        console.log("left_new_mmr: ", left_new_mmr);
+        console.log("right_new_mmr: ", right_new_mmr);
+
+        // ====================================================================================== LEFT WON
+        // Perform the desired action upon confirmation
+        console.log("Confirmation button clicked");
+        // Add your code here for the action you want to perform
+        // parentElement.replaceChild(rightWinButton, confirmationButton);
+        window.location.href = "/matchmaking/match/processing";
+      });
+    }
+  });
+
+  leftWinButton.addEventListener("click", function () {
+
+    conRight = document.getElementById("conRight")
+
+    if (conRight !== null) {
+      // If the confirmation button is already shown, revert back to the "win" button
+      console.log("RIGHT CONTAINS")
+      // Create a new confirmation button
+      var confirmationButton = document.createElement("button");
+      confirmationButton.textContent = "Confirm";
+      confirmationButton.classList.add("confirmLeft");
+      confirmationButton.id = "conLeft"
+
+      conRight = document.getElementById("conRight");
+      if (conRight !== null) {
+        conRight.className = "win";
+        conRight.id = "winRight";
+        conRight.textContent = "WON"
+      } else {
+        console.log("Element not found");
+      }
+
+      // Replace the existing button with the confirmation button
+      var parentElement = leftWinButton.parentElement;
+      parentElement.replaceChild(confirmationButton, leftWinButton);
+
+      // Add an event listener to the confirmation button
+      confirmationButton.addEventListener("click", function () {
+
+        // ====================================================================================== RIGHT WON
+
+        var expected_score =
+          1 /
+          (1 +
+            Math.pow(
+              10,
+              Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 400
+            ));
+        K = 50;
+
+        left_mmr = parseInt(leftRatingValue[0]);
+        right_mmr = parseInt(rightRatingValue[0]);
+        console.log("left_mmr: ", left_mmr);
+        console.log("right_mmr: ", right_mmr);
+
+        left_new_mmr = leftRatingValue[0];
+        right_new_mmr = rightRatingValue[0];
+
+        if (left_mmr < right_mmr) {
+          var shift = Math.round(K * (1 - expected_score));
+          var left_new_mmr = Math.round(left_mmr + shift);
+          var right_new_mmr = Math.round(right_mmr - shift);
+          console.log("CHECK 1");
+        } else {
+          var shift = Math.round(K * (0 - expected_score));
+          var left_new_mmr = Math.round(left_mmr - shift);
+          var right_new_mmr = Math.round(right_mmr + shift);
+          console.log("CHECK 2");
+        }
+
+        console.log("shift = ", Math.abs(shift));
+        console.log("left_new_mmr: ", left_new_mmr);
+        console.log("right_new_mmr: ", right_new_mmr);
+
+        // ====================================================================================== RIGHT WON
+        // Perform the desired action upon confirmation
+        console.log("Confirmation button clicked");
+        // Add your code here for the action you want to perform
+        // parentElement.replaceChild(leftWinButton, confirmationButton);
+        // window.location.href = "/matchmaking/match/processing";
+      });
+      // rightWinButton.textContent = "WON";
+    } else {
+      console.log("RIGHT NOT CONTAINS")
+      // Create a new confirmation button
+      var confirmationButton = document.createElement("button");
+      confirmationButton.textContent = "Confirm";
+      confirmationButton.classList.add("confirmLeft");
+      confirmationButton.id = "conLeft"
+
+      // Replace the existing button with the confirmation button
+      var parentElement = leftWinButton.parentElement;
+      parentElement.replaceChild(confirmationButton, leftWinButton);
+
+      // Add an event listener to the confirmation button
+      confirmationButton.addEventListener("click", function () {
+
+        // ====================================================================================== RIGHT WON
+
+        var expected_score =
+          1 /
+          (1 +
+            Math.pow(
+              10,
+              Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 400
+            ));
+        K = 50;
+
+        left_mmr = parseInt(leftRatingValue[0]);
+        right_mmr = parseInt(rightRatingValue[0]);
+        console.log("left_mmr: ", left_mmr);
+        console.log("right_mmr: ", right_mmr);
+
+        left_new_mmr = leftRatingValue[0];
+        right_new_mmr = rightRatingValue[0];
+
+        if (left_mmr < right_mmr) {
+          var shift = Math.round(K * (1 - expected_score));
+          var left_new_mmr = Math.round(left_mmr + shift);
+          var right_new_mmr = Math.round(right_mmr - shift);
+          console.log("CHECK 1");
+        } else {
+          var shift = Math.round(K * (0 - expected_score));
+          var left_new_mmr = Math.round(left_mmr - shift);
+          var right_new_mmr = Math.round(right_mmr + shift);
+          console.log("CHECK 2");
+        }
+
+        console.log("shift = ", Math.abs(shift));
+        console.log("left_new_mmr: ", left_new_mmr);
+        console.log("right_new_mmr: ", right_new_mmr);
+
+        // ====================================================================================== RIGHT WON
+        // Perform the desired action upon confirmation
+        console.log("Confirmation button clicked");
+        // Add your code here for the action you want to perform
+        // parentElement.replaceChild(leftWinButton, confirmationButton);
+        window.location.href = "/matchmaking/match/processing";
+      });
+    }
+  });
+
+
 });
 
 document.addEventListener("DOMContentLoaded", function () {
 
-  
+
   var leftRatingElement = document.querySelector(".rating1");
   var leftRatingValue = leftRatingElement ? leftRatingElement.textContent.trim().match(/\d+/) : "";
 
@@ -299,7 +445,7 @@ document.addEventListener("DOMContentLoaded", function () {
   right_mmr = parseInt(rightRatingValue[0]);
 
 
-  
+
   // ===================win left
   var expected_score_left =
     1 /
