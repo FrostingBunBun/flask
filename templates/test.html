@@ -1,18 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/entry.css') }}">
-</head>
-<body>
-    <div class="container">
-        <h1>Login Page</h1>
-        <button id="loginBtn" class="btn btn-primary">Login</button>
-        <button id="registerBtn" class="btn btn-secondary">Register</button>
-        <h1>{{dyn}}</h1>
-    </div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="cache-control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <title>Match</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/match.css') }}"
+    />
+  </head>
+>
+  <body>
+    <button id="leftButton">Left Button</button>
+    <button id="rightButton">Right Button</button>
+  </body>
+  <script src="{{ url_for('static', filename='scripts/test.js') }}"></script>
+  <script
+    src="https://code.jquery.com/jquery-3.7.0.js"
+    integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+    crossorigin="anonymous"
+  ></script>
 </html>
