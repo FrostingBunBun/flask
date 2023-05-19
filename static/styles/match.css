@@ -280,8 +280,8 @@ body {
   }
   
   .win,
-  .confirmLeft,
-  .confirmRight {
+  .rightButton,
+  .leftButton {
     padding: 10px 20px;
     background-color: #72a176;
     color: #e0e0e0;
