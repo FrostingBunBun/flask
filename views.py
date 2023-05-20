@@ -9,6 +9,7 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
 
+
 views = Blueprint(__name__, "views")
 
 
@@ -108,9 +109,56 @@ def add_header(response):
 @views.route("/matchmaking", methods=['GET', 'POST'])
 @login_required
 def matchmaking():
-
+    
+    playersNames = wks_mmr.get("D4:D")
+    flat_names = [item for sublist in playersNames for item in sublist]
+    
+    playersMmr = wks_mmr.get("C4:C")
+    flat_mmrs = [item for sublist in playersMmr for item in sublist]
+    
+    nameMmr_dict = {}
+    
+    for i in range(len(flat_names)):
+        nameMmr_dict[flat_names[i]] = flat_mmrs[i]
 
     return render_template("matchmaking.html", my_dict=nameMmr_dict)
+
+@views.route('/process-data', methods=['POST'])
+def process_data():
+
+    
+
+    data = request.get_json()
+    # Process the data in Python
+    leftName = data['leftName']
+    left_new_mmr = data['left_new_mmr']
+    rightName = data['rightName']
+    right_new_mmr = data['right_new_mmr']
+
+    processed_data = f"{leftName}, {left_new_mmr}, {rightName}, {right_new_mmr} recieved"
+
+    playerLeft_row = wks_mmr.cell(wks_mmr.find(leftName).row, 4).row
+    playerRight_row = wks_mmr.cell(wks_mmr.find(rightName).row, 4).row
+    print("===================================")
+    print("leftName: ", leftName)
+    print("leftMMR: ", left_new_mmr)
+    print("playerLeft_row: ", playerLeft_row)
+    print("rightName: ", rightName)
+    print("rightMMR: ", right_new_mmr)
+    print("playerRight_row: ", playerRight_row)
+    print("===================================")
+
+    wks_mmr.update_cell(playerLeft_row, 3, left_new_mmr)
+    wks_mmr.update_cell(playerRight_row, 3, right_new_mmr)
+
+    wks_mmr.update_cell(playerLeft_row, 6, int(wks_mmr.cell(playerLeft_row, 6).value) + 1)
+    wks_mmr.update_cell(playerRight_row, 7, int(wks_mmr.cell(playerRight_row, 7).value) + 1)
+
+    # Prepare the response
+    response = {
+        'result': processed_data
+    }
+    return jsonify(response)
 
 
 @views.route("/matchmaking/match", methods=['GET', 'POST'])
@@ -178,11 +226,13 @@ def processUserInfo(userInfo):
 
 
 
+
+
 @views.route("/test")
 def test():
-
     var = "DYN"
     return render_template("test.html", var=var)
+
 
 @views.route("/matchmaking/match/processing")
 def processing():
@@ -263,6 +313,7 @@ def get_avatar():
                 return jsonify({'avatar_url': avatar_url})
 
     return jsonify({'error': 'User not found'})
+
 
 @views.route('/left-avatar', methods=['POST'])
 def get_left_avatar():

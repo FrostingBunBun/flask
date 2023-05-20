@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("Left button clicked (2nd time). Redirecting...");
       // Perform the redirect action for left button
       handleLeftWin();
-      // resetButtons();
+      resetButtons();
     }
   }
 
@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log("Right button clicked (2nd time). Redirecting...");
       // Perform the redirect action for right button
       handleRightWin();
-      // resetButtons();
+      resetButtons();
     }
   }
 
@@ -237,7 +237,7 @@ document.addEventListener("DOMContentLoaded", function () {
           Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 400
         ));
     K = 50;
-
+    console.log("========================================================")
     left_mmr = parseInt(leftRatingValue[0]);
     right_mmr = parseInt(rightRatingValue[0]);
     console.log("left_mmr: ", left_mmr);
@@ -247,12 +247,12 @@ document.addEventListener("DOMContentLoaded", function () {
     right_new_mmr = rightRatingValue[0];
 
     if (left_mmr > right_mmr) {
-      var shift = Math.round(K * (1 - expected_score));
+      var shift = Math.round(K * (0 - expected_score));
       var left_new_mmr = Math.round(left_mmr - shift);
       var right_new_mmr = Math.round(right_mmr + shift);
       console.log("CHECK 1");
     } else {
-      var shift = Math.round(K * (0 - expected_score));
+      var shift = Math.round(K * (1 - expected_score));
       var left_new_mmr = Math.round(left_mmr + shift);
       var right_new_mmr = Math.round(right_mmr - shift);
       console.log("CHECK 2");
@@ -261,6 +261,38 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("shift = ", Math.abs(shift));
     console.log("left_new_mmr: ", left_new_mmr);
     console.log("right_new_mmr: ", right_new_mmr);
+
+    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    var playerNameElementLeft = document.getElementById("playerName1");
+    var leftName = playerNameElementLeft.textContent;
+
+    var playerNameElementRight = document.getElementById("playerName2");
+    var rightName = playerNameElementRight.textContent;
+
+    var data = {
+      leftName: leftName,
+      left_new_mmr: left_new_mmr,
+      rightName: rightName,
+      right_new_mmr: right_new_mmr
+    };
+
+    fetch('/process-data', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => response.json())
+      .then(responseData => {
+        // Process the response data received from the server
+        console.log(responseData);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
     // ====================================================================================== LEFT WON
     window.location.href = "/matchmaking/match/processing";
@@ -278,7 +310,7 @@ document.addEventListener("DOMContentLoaded", function () {
           Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 400
         ));
     K = 50;
-
+    console.log("========================================================")
     left_mmr = parseInt(leftRatingValue[0]);
     right_mmr = parseInt(rightRatingValue[0]);
     console.log("left_mmr: ", left_mmr);
@@ -288,12 +320,12 @@ document.addEventListener("DOMContentLoaded", function () {
     right_new_mmr = rightRatingValue[0];
 
     if (left_mmr < right_mmr) {
-      var shift = Math.round(K * (1 - expected_score));
+      var shift = Math.round(K * (0 - expected_score));
       var left_new_mmr = Math.round(left_mmr + shift);
       var right_new_mmr = Math.round(right_mmr - shift);
       console.log("CHECK 1");
     } else {
-      var shift = Math.round(K * (0 - expected_score));
+      var shift = Math.round(K * (1 - expected_score));
       var left_new_mmr = Math.round(left_mmr - shift);
       var right_new_mmr = Math.round(right_mmr + shift);
       console.log("CHECK 2");
@@ -302,6 +334,38 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("shift = ", Math.abs(shift));
     console.log("left_new_mmr: ", left_new_mmr);
     console.log("right_new_mmr: ", right_new_mmr);
+
+    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    var playerNameElementLeft = document.getElementById("playerName1");
+    var leftName = playerNameElementLeft.textContent;
+
+    var playerNameElementRight = document.getElementById("playerName2");
+    var rightName = playerNameElementRight.textContent;
+
+    var data = {
+      leftName: leftName,
+      left_new_mmr: left_new_mmr,
+      rightName: rightName,
+      right_new_mmr: right_new_mmr
+    };
+
+    fetch('/process-data', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => response.json())
+      .then(responseData => {
+        // Process the response data received from the server
+        console.log(responseData);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
     // ====================================================================================== RIGHT WON
     window.location.href = "/matchmaking/match/processing";
@@ -366,28 +430,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var newMMRlose2 = document.querySelector(".newMMRlose2");
   newMMRlose2.innerHTML = "lose case: -" + shift_left;
 
-// ================================================================
-// const elementId = "myElement"; // ID of the element containing the text
-// const url = "/get-text"; // URL to the server endpoint
-
-// const elementText = document.getElementById(elementId).innerText; // Get the text from the element
-
-// fetch(url, {
-//   method: "POST",
-//   headers: {
-//     "Content-Type": "application/json",
-//   },
-//   body: JSON.stringify({ text: elementText }), // Send the text as JSON in the request body
-// })
-//   .then((response) => response.text())
-//   .then((data) => {
-//     // Handle the response data
-//     console.log("Response:", data);
-//   })
-//   .catch((error) => {
-//     console.error("Error:", error);
-//   });
-// ================================================================
+  // ================================================================
 
 
 
@@ -441,6 +484,10 @@ document.addEventListener("DOMContentLoaded", function () {
       console.error(error);
       setDefaultAvatar("2vsImg");
     });
+
+
+
+
 
   function setDefaultAvatar(imageId) {
     const defaultImageUrl = "https://my.catgirls.forsale/QukeB047.png"; // Replace with your default image URL
