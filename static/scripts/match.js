@@ -408,6 +408,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error(data.error);
         setDefaultAvatar("1vsImg");
       } else {
+        // console.log("DAAAAAAAAAAAA BLIAT")
         const avatarUrl = data.avatar_url;
         const avatarImage = document.getElementById("1vsImg");
         avatarImage.src = avatarUrl;

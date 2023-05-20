@@ -72,15 +72,7 @@ function drop(event) {
 
   var leftField = document.getElementById("field1");
   var rightField = document.getElementById("field2");
-  var rightPlayer = document.getElementById("field2Small");
 
-  // Remove existing content from target field before appending the new name and mmr
-  var existingContent = targetField.querySelector(".dragged-item");
-  if (existingContent) {
-    existingContent.remove();
-    rightPlayer.remove();
-  }
-  var leftPlayer = document.getElementById("field1Small");
   // Remove the name and mmr from the other field if they match the dropped name and mmr
   var otherField = targetField === leftField ? rightField : leftField;
   var otherNameElement = otherField.querySelector(".dragged-item p");
@@ -91,34 +83,21 @@ function drop(event) {
   if (otherName === name && otherMmr === "(mmr: " + mmr + ")") {
     otherNameElement.remove();
     otherMmrElement.remove();
-    leftPlayer.remove()
   }
 
+  // Remove existing content from target field before appending the new name and mmr
+  var existingContent = targetField.querySelector(".dragged-item");
+  if (existingContent) {
+    existingContent.remove();
+  }
 
   targetField.appendChild(container);
   container.id = targetField.id + "Small"; // Set the ID of the container
 
-  var leftNameElement = leftField.querySelector(".dragged-item p");
-  var leftName = leftNameElement ? leftNameElement.textContent.trim() : "";
-
-  var leftMmrElement = leftField.querySelector(".dragged-item span");
-  var leftMmr = leftMmrElement ? leftMmrElement.textContent.trim() : "";
-
-  var rightNameElement = rightField.querySelector(".dragged-item p");
-  var rightName = rightNameElement ? rightNameElement.textContent.trim() : "";
-
-  var rightMmrElement = rightField.querySelector(".dragged-item span");
-  var rightMmr = rightMmrElement ? rightMmrElement.textContent.trim() : "";
-
-  console.log("Left Name: " + leftName);
-  console.log("Left MMR: " + leftMmr);
-  console.log("Right Name: " + rightName);
-  console.log("Right MMR: " + rightMmr);
-  // console.log("ALSO LEFT: ", leftField)
-
   // Show the list after items have been moved to the left
   document.getElementById("list").classList.remove("list-hidden");
 }
+
 
 
 
@@ -176,6 +155,9 @@ document.addEventListener("DOMContentLoaded", function () {
   
     var leftNameElement = leftField.querySelector(".dragged-item p");
     var rightNameElement = rightField.querySelector(".dragged-item p");
+    // console.log("leftNameElement: ", leftNameElement)
+    // console.log("rightNameElement: ", rightNameElement)
+
   
     if (
       leftNameElement && leftNameElement.textContent.trim() !== "" &&
@@ -221,13 +203,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function sendUserInfo(){
 
-  var leftField = document.getElementById("field1");
+  var leftField = document.getElementById("field1Small");
   var leftNameElement = leftField.querySelector("p");
   var leftName = leftNameElement ? leftNameElement.textContent.trim() : "";
 
-  var rightField = document.getElementById("field2");
+  
+
+  var rightField = document.getElementById("field2Small");
   var rightNameElement = rightField.querySelector("p");
   var rightName = rightNameElement ? rightNameElement.textContent.trim() : "";
+
+  console.log("SENT: ", leftName)
+  console.log("SENT: ", rightName)
 
     let userInfo = {
       '1name': leftName,
@@ -236,16 +223,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const request = new XMLHttpRequest()
     request.open('POST', `/processUserInfo/${JSON.stringify(userInfo)}`);
     request.onload = () => {
-      const flaskMessage = request.responseText
-      console.log(flaskMessage)
+      // const flaskMessage = request.responseText
+      // console.log(flaskMessage)
     }
     request.send()
   }
 
   confirmYes.addEventListener("click", function () {
     sessionStorage.removeItem("refreshFlag");
-    var leftField = document.getElementById("field1");
-    var rightField = document.getElementById("field2");
+    var leftField = document.getElementById("field1Small");
+    var rightField = document.getElementById("field2Small");
   
     if (
       leftField.textContent.trim() !== "" &&
