@@ -138,6 +138,13 @@ function transformString(str) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+  // Check if the page has been refreshed before
+  if (!localStorage.getItem('pageRefreshed')) {
+    // Set the flag in localStorage to indicate the page has been refreshed
+    localStorage.setItem('pageRefreshed', true);
+    // Reload the page
+    location.reload();
+  }
   var searchInput = document.getElementById("searchInput");
   searchInput.addEventListener("input", filterNames);
 
@@ -203,6 +210,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function sendUserInfo(){
 
+    
+
   var leftField = document.getElementById("field1Small");
   var leftNameElement = leftField.querySelector("p");
   var leftName = leftNameElement ? leftNameElement.textContent.trim() : "";
@@ -241,7 +250,7 @@ document.addEventListener("DOMContentLoaded", function () {
       rightField.textContent.trim() !== "Player Right"
     ) {
       sendUserInfo()
-      window.location.href = "/matchmaking/match";
+      window.location.href = "/matchmaking/match/processing";
     }
   });
 

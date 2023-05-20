@@ -41,23 +41,7 @@ for i in range(len(flat_names)):
 
 
 
-range_str = "C4:D"
-values = wks_mmr.range(range_str)
-range_wr = "I4:I"
-winrate = wks_mmr.range(range_wr)
 
-cell_values = {}
-
-for i in range(0, len(values), 2):
-    name = values[i + 1].value
-    value1 = values[i].value
-    value2 = winrate[i // 2].value
-    if name != "":
-        cell_values[name] = [value1, value2]
-
-
-
-test = wks_mmr.acell("I4").value
 
 
 
@@ -112,12 +96,12 @@ def matchmaking():
     
     playersNames = wks_mmr.get("D4:D")
     flat_names = [item for sublist in playersNames for item in sublist]
-    
+
     playersMmr = wks_mmr.get("C4:C")
     flat_mmrs = [item for sublist in playersMmr for item in sublist]
-    
+
     nameMmr_dict = {}
-    
+
     for i in range(len(flat_names)):
         nameMmr_dict[flat_names[i]] = flat_mmrs[i]
 
@@ -164,9 +148,14 @@ def process_data():
 @views.route("/matchmaking/match", methods=['GET', 'POST'])
 @login_required
 def match():
+    
 
     # Clear the session variables to prevent reusing old values
+    # print("SESSION ITEMS: ", session.items())
+    confirmed = session.get('confirmed')
 
+
+    print("CONFIRMED", confirmed)
 
     # Retrieve the stored variables from the session
     leftNAME = session.get('leftNAME')
@@ -176,13 +165,7 @@ def match():
     rightMMR = session.get('rightMMR')
     rightWINRATE = session.get('rightWINRATE')
 
-
-    print(f"1 name: {leftNAME}")
-    print(f"1 mmr: {leftMMR}")
-    print(f"1 winrate: {leftWINRATE}")
-    print(f"2 name: {rightNAME}")
-    print(f"2 mmr: {rightMMR}")
-    print(f"2 winrate: {rightWINRATE}")
+    
 
     return render_template("match.html",
                            leftNAME=leftNAME,
@@ -198,6 +181,21 @@ def match():
 
 @views.route("/processUserInfo/<string:userInfo>", methods=['POST'])
 def processUserInfo(userInfo):
+
+    range_str = "C4:D"
+    values = wks_mmr.range(range_str)
+    range_wr = "I4:I"
+    winrate = wks_mmr.range(range_wr)
+
+    cell_values = {}
+
+    for i in range(0, len(values), 2):
+        name = values[i + 1].value
+        value1 = values[i].value
+        value2 = winrate[i // 2].value
+        if name != "":
+            cell_values[name] = [value1, value2]
+
     userInfo = json.loads(userInfo)
     print("USER INFO RECEIVED")
     leftNAME = userInfo['1name']
@@ -206,6 +204,25 @@ def processUserInfo(userInfo):
     rightMMR = cell_values[rightNAME][0]
     leftWINRATE = cell_values[leftNAME][1]
     rightWINRATE = cell_values[rightNAME][1]
+
+    print("==============================================")
+    print("==============================================")
+
+    # print(f"1 name: {leftNAME}")
+    # print(f"1 mmr: {leftMMR}")
+    # print(f"1 winrate: {leftWINRATE}")
+    # print(f"2 name: {rightNAME}")
+    # print(f"2 mmr: {rightMMR}")
+    # print(f"2 winrate: {rightWINRATE}")
+    # print("")
+    # print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+
+    session.pop('leftMMR', None)
+    session.pop('leftNAME', None)
+    session.pop('leftWINRATE', None)
+    session.pop('rightNAME', None)
+    session.pop('rightMMR', None)
+    session.pop('rightWINRATE', None)
 
     
 
@@ -217,7 +234,7 @@ def processUserInfo(userInfo):
     session['rightMMR'] = rightMMR
     session['rightWINRATE'] = rightWINRATE
 
-    print("===================")
+
     # print("cell_values: ", cell_values)
     
     # Redirect to the 'match' route
@@ -237,6 +254,10 @@ def test():
 @views.route("/matchmaking/match/processing")
 def processing():
     return render_template("processing.html")
+
+@views.route("/matchmaking/match/processing/calculate")
+def calculate():
+    return render_template("calculate.html")
 
 
 @views.route("/entry")

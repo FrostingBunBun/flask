@@ -44,10 +44,10 @@ document.addEventListener("DOMContentLoaded", function () {
       rightWinrate = 20;
     }
 
-    console.log("leftRating: ", leftRating);
-    console.log("rightRating: ", rightRating);
-    console.log("leftWinrate: ", leftWinrate);
-    console.log("rightWinrate: ", rightWinrate);
+    // console.log("leftRating: ", leftRating);
+    // console.log("rightRating: ", rightRating);
+    // console.log("leftWinrate: ", leftWinrate);
+    // console.log("rightWinrate: ", rightWinrate);
 
     // Introduce a scaling factor to amplify the effect of win rate
     var winRateScalingFactor = 2; // Adjust this factor as desired
@@ -60,9 +60,9 @@ document.addEventListener("DOMContentLoaded", function () {
     var sumProbabilities = leftProbability + rightProbability;
     var normalizedLeftProbability = leftProbability / sumProbabilities;
     var normalizedRightProbability = rightProbability / sumProbabilities;
-    console.log("sumProbabilities: ", sumProbabilities);
-    console.log("normalizedLeftProbability: ", normalizedLeftProbability);
-    console.log("normalizedRightProbability: ", normalizedRightProbability);
+    // console.log("sumProbabilities: ", sumProbabilities);
+    // console.log("normalizedLeftProbability: ", normalizedLeftProbability);
+    // console.log("normalizedRightProbability: ", normalizedRightProbability);
 
     return [normalizedRightProbability, normalizedLeftProbability];
   }
@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var leftRatingValue = leftRatingElement
     ? leftRatingElement.textContent.trim().match(/\d+/)
     : "";
-  console.log("left Rating value:", leftRatingValue);
+  // console.log("left Rating value:", leftRatingValue);
 
   var rightRatingElement = document.querySelector(".rating2");
   var rightRatingValue = rightRatingElement
@@ -130,13 +130,13 @@ document.addEventListener("DOMContentLoaded", function () {
   var leftWinrateValue = leftWinrateElement
     ? leftWinrateElement.textContent.trim().replace("Winrate: ", "")
     : "";
-  console.log("left Winrate value:", leftWinrateValue);
+  // console.log("left Winrate value:", leftWinrateValue);
 
   var rightWinrateElement = document.querySelector(".additionalNumber2");
   var rightWinrateValue = rightWinrateElement
     ? rightWinrateElement.textContent.trim().replace("Winrate: ", "")
     : "";
-  console.log("right Winrate value:", rightWinrateValue);
+  // console.log("right Winrate value:", rightWinrateValue);
 
   var [rightProbability, leftProbability] = calculateWinProbabilities(
     leftRatingValue,
@@ -184,6 +184,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Perform the redirect action for left button
       handleLeftWin();
       resetButtons();
+      sessionStorage.clear();
     }
   }
 
@@ -203,6 +204,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Perform the redirect action for right button
       handleRightWin();
       resetButtons();
+      sessionStorage.clear();
     }
   }
 
@@ -295,7 +297,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
     // ====================================================================================== LEFT WON
-    window.location.href = "/matchmaking/match/processing";
+    window.location.href = "/matchmaking/match/processing/calculate";
   }
 
 
@@ -368,7 +370,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
     // ====================================================================================== RIGHT WON
-    window.location.href = "/matchmaking/match/processing";
+    window.location.href = "/matchmaking/match/processing/calculate";
   }
 
 
@@ -388,6 +390,20 @@ document.addEventListener("DOMContentLoaded", function () {
   left_mmr = parseInt(leftRatingValue[0]);
   right_mmr = parseInt(rightRatingValue[0]);
 
+  // // session.pop('leftMMR', None)
+  // //   session.pop('leftNAME', None)
+  // //   session.pop('leftWINRATE', None)
+  // //   session.pop('rightNAME', None)
+  // //   session.pop('rightMMR', None)
+  // //   session.pop('rightWINRATE', None)
+  // console.log("BEFORE SESSION", sessionStorage);
+  // sessionStorage.removeItem('leftMMR');
+  // sessionStorage.removeItem('leftNAME');
+  // sessionStorage.removeItem('leftWINRATE');
+  // sessionStorage.removeItem('rightNAME');
+  // sessionStorage.removeItem('rightMMR');
+  // sessionStorage.removeItem('rightWINRATE');
+  // console.log("AFTER SESSION", sessionStorage)
 
 
   // ===================win left
@@ -401,7 +417,7 @@ document.addEventListener("DOMContentLoaded", function () {
   } else {
     var shift_left = Math.abs(Math.round(K * (0 - expected_score_left)));
   }
-  console.log("SHIFTTTTT left win: ", shift_left)
+  // console.log("SHIFTTTTT left win: ", shift_left)
   // ===================win left
 
   // // ===================win right
@@ -415,7 +431,7 @@ document.addEventListener("DOMContentLoaded", function () {
   } else {
     var shift_right = Math.abs(Math.round(K * (0 - expected_score_right)));
   }
-  console.log("SHIFTTTTT right win: ", shift_right)
+  // console.log("SHIFTTTTT right win: ", shift_right)
   // // ===================win right
 
   var newMMRwin1 = document.querySelector('.newMMRwin1');
@@ -495,3 +511,10 @@ document.addEventListener("DOMContentLoaded", function () {
     avatarImage.src = defaultImageUrl;
   }
 });
+
+// if (!sessionStorage.getItem('pageReloaded')) {
+//   setTimeout(function() {
+//   sessionStorage.setItem('pageReloaded', 'true');
+//   location.reload(); // Reload the page
+// }, 400);
+// }

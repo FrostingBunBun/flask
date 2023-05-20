@@ -17,8 +17,9 @@ body {
   /* width: 100px; */
   /* height: 100px; */
   /* background-color: red; */
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.5s ease-in-out;
 }
+
 .list-item.dragging {
   opacity: 0.5;
 }
@@ -199,7 +200,23 @@ li:hover {
   animation: fadeIn 1s forwards;
   position: sticky;
   top: 0;
+  /* Add animation properties */
+  animation-name: slideInn;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
   opacity: 0.95 !important;
+  
+  
+}
+@keyframes slideInn {
+  from {
+    opacity: 0;
+    transform: translateY(-5%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 
@@ -274,10 +291,12 @@ li:hover {
 @keyframes fadeIn {
   0% {
     opacity: 0;
+    transform: translateY(-1%);
   }
 
   100% {
     opacity: 1;
+    transform: translateY(0);
   }
 }
 
