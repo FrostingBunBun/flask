@@ -13,7 +13,7 @@ from googleapiclient.discovery import build
 views = Blueprint(__name__, "views")
 
 
-sa_mmr = gspread.service_account("C:/Users/FrostingBunBun/Desktop/else/flask/credentials.json")
+sa_mmr = gspread.service_account("./credentials.json")
 sh_mmr = sa_mmr.open("Leaderboards")
 wks_mmr = sh_mmr.worksheet("Leaderboards")
 
@@ -46,7 +46,7 @@ for i in range(len(flat_names)):
 
 
 
-database_path = 'C:/Users/FrostingBunBun/Desktop/else/flask/db/users.db'
+database_path = './db/users.db'
 
 
 def login_required(f):
@@ -260,7 +260,7 @@ def calculate():
     return render_template("calculate.html")
 
 
-@views.route("/entry")
+@views.route("/")
 def entry():
     return render_template("entry.html")
 
