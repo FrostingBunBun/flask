@@ -8,26 +8,15 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/entry.css') }}">
 </head>
 <body>
+    <div class="buttonContainer">
+        <button id="homeBtn" class="home">Home</button>
+</div>
     <div class="container">
+        
         <h1>Login Page</h1>
         <button id="loginBtn" class="btn btn-primary">Login</button>
         <button id="registerBtn" class="btn btn-secondary">Register</button>
     </div>
-    
-    <script>
-        // Register button click event handler
-        var registerBtn = document.getElementById("registerBtn");
-        registerBtn.addEventListener("click", function() {
-            // Redirect to the registration page or perform necessary actions
-            window.location.href = "register";
-        });
-
-        // Login button click event handler
-        var loginBtn = document.getElementById("loginBtn");
-        loginBtn.addEventListener("click", function() {
-            // Redirect to the login page or perform necessary actions
-            window.location.href = "login";
-        });
-    </script>
+    <script src="{{ url_for('static', filename='scripts/entry.js') }}"></script>
 </body>
 </html>

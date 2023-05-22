@@ -57,6 +57,20 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+def mod_required(func):
+    @wraps(func)
+    def decorated_function(*args, **kwargs):
+        # Check if user is a moderator
+        is_mod = session.get('mod')
+        
+        if not is_mod:
+            return redirect(url_for('views.login'))
+        
+        return func(*args, **kwargs)
+    
+    return decorated_function
+
+
 
 
 
@@ -93,6 +107,29 @@ def add_header(response):
 @views.route("/matchmaking", methods=['GET', 'POST'])
 @login_required
 def matchmaking():
+    # ===================================================
+
+    # # Connect to the database (creates a new database if it doesn't exist)
+    # conn = sqlite3.connect('./db/matches_data.db')
+    # cursor = conn.cursor()
+    # # Create the Matches table if it doesn't exist
+    # cursor.execute('''
+    #     CREATE TABLE IF NOT EXISTS Matches (
+    #         match_id INTEGER PRIMARY KEY,
+    #         playerLeft TEXT,
+    #         playerRight TEXT,
+    #         winner TEXT,
+    #         loser TEXT,
+    #         timestamp DATETIME,
+    #         duration INTEGER,
+    #         shift INTEGER
+    #     )
+    # ''')
+
+    # # Commit the changes and close the connection
+    # conn.commit()
+    # conn.close()
+    # ===================================================
     
     playersNames = wks_mmr.get("D4:D")
     flat_names = [item for sublist in playersNames for item in sublist]
@@ -265,6 +302,19 @@ def test():
     return render_template("test.html", var=var)
 
 
+@views.route("/main")
+# @mod_required
+def main():
+    print("==========================")
+    print(session.items())
+    print("==========================")
+    if session.get('logged_in'):
+        username = session['username']
+        return render_template("main_logged.html", username=username)
+    else:
+        return render_template("main.html")
+
+
 @views.route("/matchmaking/match/processing")
 def processing():
     return render_template("processing.html")
@@ -276,7 +326,10 @@ def calculate():
 
 @views.route("/")
 def entry():
-    return render_template("entry.html")
+    if 'username' in session:
+        return redirect(url_for("views.matchmaking"))
+    else:
+        return render_template("entry.html")
 
 
 @views.route("/register", methods=['GET', 'POST'])
@@ -329,9 +382,11 @@ def login():
                  # Retrieve and store the user's name in the session
                 username = user[1]  # Assuming username is at index 1 in the user tuple
                 session['username'] = username
+                if user[4] == 1:
+                    session['mod'] = True
 
                 conn.close()  # Close the database connection
-                return redirect(url_for("views.matchmaking"))
+                return redirect(url_for("views.main"))
             else:
                 # Account is not confirmed
                 not_confirmed = True
@@ -388,7 +443,7 @@ def get_left_avatar():
 
     matching_results = difflib.get_close_matches(name, [result[0] for result in results], n=1, cutoff=0.1)
 
-    print("TESTTTTTT: ", matching_results)
+    # print("TESTTTTTT: ", matching_results)
 
     if matching_results:
         matching_name = matching_results[0]

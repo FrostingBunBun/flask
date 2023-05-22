@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/entry.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/login.css') }}">
     <style>
         .error-message {
             color: red;
@@ -14,6 +14,9 @@
     </style>
 </head>
 <body>
+    <div class="buttonContainer">
+        <button id="homeBtn" class="home">Home</button>
+</div>
     <div class="topper">
         <button class="btn btn-secondary" onclick="goBack()">Back</button>
     </div>
@@ -33,8 +36,9 @@
     
     <script>
         function goBack() {
-            window.location.href = "entry";
+            window.location.href = "/";
         }
     </script>
+    <script src="{{ url_for('static', filename='scripts/login.js') }}"></script>
 </body>
 </html>

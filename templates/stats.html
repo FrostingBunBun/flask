@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}">
+</head>
+<body>
+    <!-- Navigation bar -->
+    <nav>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Leaderboards</a></li>
+            <li><a href="#">Game Performance</a></li>
+        </ul>
+    </nav>
+
+    <!-- Leaderboards section -->
+    <section id="leaderboards">
+        <h2>Leaderboards</h2>
+        <!-- Add your leaderboard content here -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Player</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Player 1</td>
+                    <td>1000</td>
+                </tr>
+                <!-- Add more rows as needed -->
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Game performance section -->
+    <section id="game-performance">
+        <h2>Game Performance</h2>
+        <!-- Add your game performance content here -->
+        <p>Game statistics and performance details go here.</p>
+    </section>
+
+</body>
+</html>

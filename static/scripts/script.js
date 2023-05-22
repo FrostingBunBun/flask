@@ -356,3 +356,8 @@ logOutButton.addEventListener('click', function() {
     xhr.send(JSON.stringify({ 'key': key }));
 });
 
+var homeBtn = document.getElementById("home");
+homeBtn.addEventListener("click", function() {
+    // Redirect to the login page or perform necessary actions
+    window.location.href = "/main";
+});

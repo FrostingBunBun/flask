@@ -298,6 +298,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ====================================================================================== LEFT WON
     window.location.href = "/matchmaking/match/processing/calculate";
+
+    const sqlite3 = require('sqlite3').verbose();
+
+    function createTable() {
+      const db = new sqlite3.Database('mydatabase.db');
+    
+      // Create the table if it doesn't exist
+db.run(`
+CREATE TABLE IF NOT EXISTS results (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  playerLeft TEXT,
+  playerRight TEXT,
+  score INTEGER,
+  date TEXT
+)
+`);
+    
+      db.close();
+    }
+    
+    function addResults(playerName, score) {
+      const db = new sqlite3.Database('mydatabase.db');
+    
+      // Insert the results into the table
+      db.run('INSERT INTO results (player, score) VALUES (?, ?)', playerName, score);
+    
+      db.close();
+    }
+    
+    // Call the createTable function to ensure the table exists
+    createTable();
+    
+    // Usage example
+    const playerName = 'John Doe';
+    const score = 100;
+    
+    addResults(playerName, score);
+    
+
+
   }
 
 
