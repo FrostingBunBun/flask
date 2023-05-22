@@ -104,8 +104,13 @@ def matchmaking():
 
     for i in range(len(flat_names)):
         nameMmr_dict[flat_names[i]] = flat_mmrs[i]
-
-    return render_template("matchmaking.html", my_dict=nameMmr_dict)
+    username = ''
+    if 'username' in session:
+        username = session['username']
+    print("==========================")
+    print(session.items())
+    print("==========================")
+    return render_template("matchmaking.html", my_dict=nameMmr_dict, username=username)
 
 @views.route('/process-data', methods=['POST'])
 def process_data():
@@ -164,6 +169,14 @@ def match():
     rightNAME = session.get('rightNAME')
     rightMMR = session.get('rightMMR')
     rightWINRATE = session.get('rightWINRATE')
+    print("==========================")
+    print(session.items())
+    print("==========================")
+    if 'username' in session:
+        username = session['username']
+    print("==========================")
+    print(session.items())
+    print("==========================")
 
     
 
@@ -173,7 +186,8 @@ def match():
                            leftWINRATE=leftWINRATE,
                            rightNAME=rightNAME,
                            rightMMR=rightMMR,
-                           rightWINRATE=rightWINRATE)
+                           rightWINRATE=rightWINRATE,
+                           username=username)
 
 
 
@@ -273,13 +287,31 @@ def register():
         return redirect(url_for("views.key", password=password))
     return render_template("register.html")
 
+@views.route('/delete-item', methods=['POST'])
+def delete_item():
+    key = request.json['key']
+    if key in session:
+        session.clear()
+        return jsonify({'message': 'Item deleted successfully'})
+    else:
+        return jsonify({'message': 'Item not found in session'})
+
 @views.route("/login", methods=['GET', 'POST'])
 def login():
+
     incorrect_password = False
     not_confirmed = False
+    print("==========================")
+    print(session.items())
+    print("==========================")
+    session.pop('username', None)
+    print("==========================")
+    print(session.items())
+    print("==========================")
 
     if request.method == 'POST':
         password = request.form['password']
+    
         
         conn = sqlite3.connect(database_path)
         cursor = conn.cursor()
@@ -294,6 +326,11 @@ def login():
                 # Account is confirmed, set the session and redirect to the protected page
                 session['logged_in'] = True
                 session['confirmed'] = True
+                 # Retrieve and store the user's name in the session
+                username = user[1]  # Assuming username is at index 1 in the user tuple
+                session['username'] = username
+
+                conn.close()  # Close the database connection
                 return redirect(url_for("views.matchmaking"))
             else:
                 # Account is not confirmed

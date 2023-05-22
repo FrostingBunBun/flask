@@ -18,6 +18,8 @@ body {
   /* height: 100px; */
   /* background-color: red; */
   transition: transform 0.5s ease-in-out;
+  outline: 2px solid #aa3d73;
+  text-shadow: -1px -1px 0 rgb(214, 186, 198), 1px -1px 0 rgb(214, 186, 198), -1px 1px 0 rgb(214, 186, 198), 1px 1px 0 rgb(214, 186, 198);
 }
 
 .list-item.dragging {
@@ -31,12 +33,14 @@ body {
   width: 100%;
   height: 100%;
   z-index: -1;
-  background-image: url("https://my.catgirls.forsale/dKAWF069.png");
+  background-image: url("https://my.catgirls.forsale/xGXMv720.jpg");
   background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
+  /* background-size: cover; */
+  /* background-position: center; */
   /* background-position: center bottom -300px; */
-  /* filter: blur(3px); */
+  /* filter: blur(3px);
+  transition: background-position 0.5s ease-out;
+  transform: scale(1.2); */
 }
 
 .list {
@@ -191,7 +195,7 @@ li:hover {
 
 .rightSide {
   flex: 1;
-  background-color: #616161;
+  background-color: #4b4b4b;
   padding: 20px;
   border-radius: 30px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -254,9 +258,9 @@ li:hover {
   text-align: center;
   animation: slideIn 0.2s forwards;
   position: absolute;
-  top: 22.5%;
+  top: 38%;
   /* Adjust top position */
-  left: 59%;
+  left: 35%;
   /* Adjust left position */
 }
 
@@ -299,6 +303,56 @@ li:hover {
     transform: translateY(0);
   }
 }
+#fixed-container {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  /* additional styles */
+  /* background-color: #000000; */
+
+}
+
+#fixed-container p {
+  color: white;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 20px; 
+  background-color: rgba(0, 0, 0, 0.8); 
+  border-radius: 10px; 
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); 
+  text-transform: uppercase;
+  letter-spacing: 2px; 
+  animation-name: slideInn;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+}
+#fixed-container button {
+  background-color: #363636;
+  color: white;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 10px;
+  animation-name: slideInn;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+}
+
+#fixed-container button:hover {
+  background-color: #181818;
+}
+
+
+
+
 
 .match-container {
   text-align: center;

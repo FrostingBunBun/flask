@@ -236,7 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
       (1 +
         Math.pow(
           10,
-          Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 400
+          Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 300
         ));
     K = 50;
     console.log("========================================================")
@@ -303,14 +303,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function handleRightWin() {
     // ====================================================================================== RIGHT WON
-
-    var expected_score =
-      1 /
-      (1 +
-        Math.pow(
-          10,
-          Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 400
-        ));
+    // 300 orig
+    var expected_score = 1 /(1 + Math.pow(10, Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 300));
     K = 50;
     console.log("========================================================")
     left_mmr = parseInt(leftRatingValue[0]);
@@ -390,27 +384,13 @@ document.addEventListener("DOMContentLoaded", function () {
   left_mmr = parseInt(leftRatingValue[0]);
   right_mmr = parseInt(rightRatingValue[0]);
 
-  // // session.pop('leftMMR', None)
-  // //   session.pop('leftNAME', None)
-  // //   session.pop('leftWINRATE', None)
-  // //   session.pop('rightNAME', None)
-  // //   session.pop('rightMMR', None)
-  // //   session.pop('rightWINRATE', None)
-  // console.log("BEFORE SESSION", sessionStorage);
-  // sessionStorage.removeItem('leftMMR');
-  // sessionStorage.removeItem('leftNAME');
-  // sessionStorage.removeItem('leftWINRATE');
-  // sessionStorage.removeItem('rightNAME');
-  // sessionStorage.removeItem('rightMMR');
-  // sessionStorage.removeItem('rightWINRATE');
-  // console.log("AFTER SESSION", sessionStorage)
 
 
   // ===================win left
   var expected_score_left =
     1 /
     (1 +
-      Math.pow(10, Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 400));
+      Math.pow(10, Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 300));
   K = 50;
   if (left_mmr < right_mmr) {
     var shift_left = Math.abs(Math.round(K * (1 - expected_score_left)));
@@ -424,7 +404,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var expected_score_right =
     1 /
     (1 +
-      Math.pow(10, Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 400));
+      Math.pow(10, Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 300));
   K = 50;
   if (left_mmr > right_mmr) {
     var shift_right = Math.abs(Math.round(K * (1 - expected_score_right)));
@@ -511,10 +491,41 @@ document.addEventListener("DOMContentLoaded", function () {
     avatarImage.src = defaultImageUrl;
   }
 });
+// Get the button element
+var logOutButton = document.getElementById('logout');
 
-// if (!sessionStorage.getItem('pageReloaded')) {
-//   setTimeout(function() {
-//   sessionStorage.setItem('pageReloaded', 'true');
-//   location.reload(); // Reload the page
-// }, 400);
-// }
+// Add event listener to the button
+logOutButton.addEventListener('click', function() {
+    var key = 'username'; // Replace with the key of the item you want to delete
+    
+    // Make an AJAX request to the Flask route
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/delete-item', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                console.log(response.message);
+                window.location.href = "/login"
+                // Handle the response as needed
+            } else {
+                console.log('Error: ' + xhr.status);
+                // Handle the error as needed
+            }
+        }
+    };
+    xhr.send(JSON.stringify({ 'key': key }));
+});
+
+var backgroundImage = document.querySelector('.background-image');
+
+document.addEventListener('mousemove', function(event) {
+  var mouseX = event.clientX;
+  var mouseY = event.clientY;
+  
+  var percentX = (mouseX / window.innerWidth) * 10;
+  var percentY = (mouseY / window.innerHeight) * 300;
+  
+  backgroundImage.style.backgroundPosition = percentX + '% ' + percentY + '%';
+});

@@ -13,8 +13,6 @@ function drag(event) {
     return;
   }
 
-
-
   
 
   let string = target.textContent;
@@ -73,29 +71,29 @@ function drop(event) {
   var leftField = document.getElementById("field1");
   var rightField = document.getElementById("field2");
 
-  // Remove the name and mmr from the other field if they match the dropped name and mmr
-  var otherField = targetField === leftField ? rightField : leftField;
-  var otherNameElement = otherField.querySelector(".dragged-item p");
-  var otherMmrElement = otherField.querySelector(".dragged-item span");
-  var otherName = otherNameElement ? otherNameElement.textContent.trim() : "";
-  var otherMmr = otherMmrElement ? otherMmrElement.textContent.trim() : "";
+ // Remove the name and mmr from the other field if they match the dropped name and mmr
+var otherField = targetField === leftField ? rightField : leftField;
+var otherNameElement = otherField.querySelector(".dragged-item p");
+var otherMmrElement = otherField.querySelector(".dragged-item span");
+var otherName = otherNameElement ? otherNameElement.textContent.trim() : "";
+var otherMmr = otherMmrElement ? otherMmrElement.textContent.trim() : "";
 
-  if (otherName === name && otherMmr === "(mmr: " + mmr + ")") {
-    otherNameElement.remove();
-    otherMmrElement.remove();
+if (otherName === name && otherMmr === "(mmr: " + mmr + ")") {
+  var otherFieldContainer = otherField.querySelector("#field1Small, #field2Small");
+  if (otherFieldContainer) {
+    otherFieldContainer.remove();
   }
+}
 
-  // Remove existing content from target field before appending the new name and mmr
-  var existingContent = targetField.querySelector(".dragged-item");
-  if (existingContent) {
-    existingContent.remove();
-  }
+// Remove existing content from target field before appending the new name and mmr
+var existingContent = targetField.querySelector(".dragged-item");
+if (existingContent) {
+  existingContent.remove();
+}
 
-  targetField.appendChild(container);
-  container.id = targetField.id + "Small"; // Set the ID of the container
+targetField.appendChild(container);
+container.id = targetField.id + "Small"; // Set the ID of the container
 
-  // Show the list after items have been moved to the left
-  document.getElementById("list").classList.remove("list-hidden");
 }
 
 
@@ -330,3 +328,31 @@ document.addEventListener("dragstart", function (event) {
     event.preventDefault();
   }
 });
+
+// Get the button element
+var logOutButton = document.getElementById('logout');
+
+// Add event listener to the button
+logOutButton.addEventListener('click', function() {
+    var key = 'username'; // Replace with the key of the item you want to delete
+    
+    // Make an AJAX request to the Flask route
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/delete-item', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                console.log(response.message);
+                window.location.href = "/login"
+                // Handle the response as needed
+            } else {
+                console.log('Error: ' + xhr.status);
+                // Handle the error as needed
+            }
+        }
+    };
+    xhr.send(JSON.stringify({ 'key': key }));
+});
+

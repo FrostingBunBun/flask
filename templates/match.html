@@ -20,13 +20,18 @@
   <body>
       <div class="background-image"></div>
       <div class="gradient-overlay"></div>
+      <div id="fixed-container">
+        <!-- Content of your container goes here -->
+        <p>Logged on as: {{ username }}</p>
+        <button id="logout">Log out</button>
+      </div>
 
 
 
       <div class="match-container" id="match-container">
         <div class="player">
           <div class="player-image">
-            <img class="vs-image" id="1vsImg" src="" alt="VS" />
+            <img class="vs-image" id="1vsImg" src="" alt="Avatar" />
           </div>
       
           <div class="player-info">
@@ -85,7 +90,11 @@
 
     <div id="error-message" class="error-message"></div>
 
-    <!-- <script src="{{ url_for('static', filename='scripts/match.js') }}"></script> -->
+    <!-- <div id="fixed-scale">
+      <p>SCALE</p>
+    </div> -->
+
+    <script src="{{ url_for('static', filename='scripts/match.js') }}"></script>
   </div>
 
   </body>
