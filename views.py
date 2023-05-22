@@ -388,7 +388,7 @@ def get_left_avatar():
 
     matching_results = difflib.get_close_matches(name, [result[0] for result in results], n=1, cutoff=0.1)
 
-    print("TESTTTTTT: ", matching_results)
+    # print("TESTTTTTT: ", matching_results)
 
     if matching_results:
         matching_name = matching_results[0]
