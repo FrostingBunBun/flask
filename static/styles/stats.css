@@ -1,0 +1,176 @@
+/* Global styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #222;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+  }
+  
+  
+  h1, h2 {
+    color: #ff5e8c;
+  }
+  
+  a {
+    color: #ff5e8c;
+  }
+  
+  /* Header styles */
+  header {
+    background-color: #111;
+    padding: 20px;
+    /* Add additional styles as needed */
+  }
+  
+  nav {
+    background-color: #333;
+    padding: 10px;
+    /* Add additional styles as needed */
+  }
+  nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 10px;
+  }
+  
+  
+  /* Search section styles */
+  .search {
+    text-align: center;
+    margin: 50px 0;
+  }
+  
+  .search h1 {
+    font-size: 32px;
+  }
+  
+  .search form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .search input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+  }
+
+  section {
+    background-color: #333;
+    padding: 20px;
+    margin: 10px;
+    /* Add additional styles as needed */
+  }
+  
+  .search button {
+    padding: 10px 20px;
+    background-color: #ff5e8c;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  /* Profile section styles */
+  .profile {
+    text-align: center;
+    padding: 40px 0;
+  }
+  
+  .player-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 30px;
+  }
+  
+  /* Leaderboards section styles */
+  .leaderboards {
+    text-align: center;
+    padding: 40px 0;
+  }
+  
+  .leaderboard-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    justify-items: center;
+    margin-top: 30px;
+  }
+  
+  /* Recent Matches section styles */
+  .recent-matches {
+    text-align: center;
+    padding: 40px 0;
+  }
+  
+  .match-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+  }
+  
+  /* Achievements section styles */
+  .achievements {
+    text-align: center;
+    padding: 40px 0;
+  }
+  
+  .achievement-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 30px;
+  }
+  
+  /* Community section styles */
+  .community {
+    text-align: center;
+    padding: 40px 0;
+  }
+  
+  .forum {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    justify-items: center;
+    margin-top: 30px;
+  }
+  
+
+  main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 20px;
+  }
+  #recent-matches {
+    width: 100%;
+  }
+  
+  #stats {
+    width: 600px;
+  }
+  
+  #achievements {
+    width: 400px;
+  }
+  
+  #community {
+    width: 800px;
+  }
+  
+  footer {
+    background-color: #111;
+    padding: 20px;
+    /* Add additional styles as needed */
+  }

@@ -40,6 +40,10 @@ header h1 {
 }
 
 header {
+    opacity: 0; /* Set initial opacity to 0 */
+    position: relative; /* Set position to relative for animation */
+    bottom: -20px; /* Set initial position below its actual position */
+    animation: fadeAndMove 1s ease forwards; /* Apply animation */
     background-color: #333;
     padding: 20px;
 }
@@ -89,7 +93,7 @@ main {
 }
 
 section {
-    background-color: #333;
+    background-color: #181818;
     padding: 20px;
     margin-bottom: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
@@ -179,5 +183,21 @@ footer {
     outline: none;
     box-shadow: 0 0 0 2px #FF4081;
   }
-  
-  
+  main {
+    opacity: 0; /* Set initial opacity to 0 */
+    position: relative; /* Set position to relative for animation */
+    bottom: -40px; /* Set initial position below its actual position */
+    animation: fadeAndMove 1.5s ease forwards; /* Apply animation */
+  }
+
+  /* Keyframes for the animation */
+  @keyframes fadeAndMove {
+    0% {
+      opacity: 0;
+      bottom: -20px;
+    }
+    100% {
+      opacity: 1;
+      bottom: 0;
+    }
+  }

@@ -8,3 +8,8 @@ register.addEventListener("click", function() {
     // Redirect to the registration page or perform necessary actions
     window.location.href = "register";
 });
+var stats = document.getElementById("stats");
+stats.addEventListener("click", function() {
+    // Redirect to the registration page or perform necessary actions
+    window.location.href = "stats";
+});

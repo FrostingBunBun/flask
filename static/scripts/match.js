@@ -10,6 +10,18 @@ window.addEventListener("load", function () {
   bottomPartElement.classList.add("fade-in");
 });
 
+function convertDurationToSeconds(duration) {
+  var timeParts = duration.split(':');
+  var hours = parseInt(timeParts[0]);
+  var minutes = parseInt(timeParts[1]);
+  var seconds = parseInt(timeParts[2]);
+
+  var totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
+
+  return totalSeconds;
+}
+
+
 document.addEventListener("DOMContentLoaded", function () {
   function calculateWinProbabilities(
     leftRating,
@@ -182,6 +194,11 @@ document.addEventListener("DOMContentLoaded", function () {
       // Second click on left button
       console.log("Left button clicked (2nd time). Redirecting...");
       // Perform the redirect action for left button
+      var matchDurationElement = document.getElementById('match-duration');
+      var duration = matchDurationElement.textContent;
+
+      var totalSeconds = convertDurationToSeconds(duration);
+      console.log('Match Duration (seconds):', totalSeconds);
       handleLeftWin();
       resetButtons();
       sessionStorage.clear();
@@ -202,6 +219,11 @@ document.addEventListener("DOMContentLoaded", function () {
       // Second click on right button
       console.log("Right button clicked (2nd time). Redirecting...");
       // Perform the redirect action for right button
+      var matchDurationElement = document.getElementById('match-duration');
+      var duration = matchDurationElement.textContent;
+          
+      var totalSeconds = convertDurationToSeconds(duration);
+      console.log('Match Duration (seconds):', totalSeconds);
       handleRightWin();
       resetButtons();
       sessionStorage.clear();
@@ -294,50 +316,46 @@ document.addEventListener("DOMContentLoaded", function () {
       .catch(error => {
         console.error('Error:', error);
       });
-    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+      // +++++++++++++++++++++++++++++++++++++++++ DATABASE STUFF
+
+      
+
+
+    var matchDurationElement = document.getElementById('match-duration');
+    var duration = matchDurationElement.textContent;  
+    var totalSeconds = convertDurationToSeconds(duration);
+    var currentTimestamp = new Date().toISOString();
+
+    playerLeftWinData = {
+    playerLeft: leftName,
+    playerRight: rightName,
+    winner: leftName,
+    loser: rightName,
+    timestamp: currentTimestamp,
+    duration: totalSeconds,
+    shift: Math.abs(shift)
+    }
+
+    fetch('/leftWonProcess', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(playerLeftWinData)
+    })
+      .then(response => response.json())
+      .then(responseData => {
+        console.log(responseData);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
+
+    // +++++++++++++++++++++++++++++++++++++++++ DATABASE STUFF
 
     // ====================================================================================== LEFT WON
     window.location.href = "/matchmaking/match/processing/calculate";
-
-    const sqlite3 = require('sqlite3').verbose();
-
-    function createTable() {
-      const db = new sqlite3.Database('mydatabase.db');
-    
-      // Create the table if it doesn't exist
-db.run(`
-CREATE TABLE IF NOT EXISTS results (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  playerLeft TEXT,
-  playerRight TEXT,
-  score INTEGER,
-  date TEXT
-)
-`);
-    
-      db.close();
-    }
-    
-    function addResults(playerName, score) {
-      const db = new sqlite3.Database('mydatabase.db');
-    
-      // Insert the results into the table
-      db.run('INSERT INTO results (player, score) VALUES (?, ?)', playerName, score);
-    
-      db.close();
-    }
-    
-    // Call the createTable function to ensure the table exists
-    createTable();
-    
-    // Usage example
-    const playerName = 'John Doe';
-    const score = 100;
-    
-    addResults(playerName, score);
-    
-
-
   }
 
 
@@ -401,7 +419,43 @@ CREATE TABLE IF NOT EXISTS results (
       .catch(error => {
         console.error('Error:', error);
       });
-    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    // +++++++++++++++++++++++++++++++++++++++++ DATABASE STUFF
+
+      
+
+
+    var matchDurationElement = document.getElementById('match-duration');
+    var duration = matchDurationElement.textContent;  
+    var totalSeconds = convertDurationToSeconds(duration);
+    var currentTimestamp = new Date().toISOString();
+
+    playerLeftWinData = {
+    playerLeft: leftName,
+    playerRight: rightName,
+    winner: rightName,
+    loser: leftName,
+    timestamp: currentTimestamp,
+    duration: totalSeconds,
+    shift: Math.abs(shift)
+    }
+
+    fetch('/rightWonProcess', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(playerLeftWinData)
+    })
+      .then(response => response.json())
+      .then(responseData => {
+        console.log(responseData);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
+
+    // +++++++++++++++++++++++++++++++++++++++++ DATABASE STUFF
 
     // ====================================================================================== RIGHT WON
     window.location.href = "/matchmaking/match/processing/calculate";
@@ -569,3 +623,36 @@ document.addEventListener('mousemove', function(event) {
   
   backgroundImage.style.backgroundPosition = percentX + '% ' + percentY + '%';
 });
+
+
+// Get the element where you want to display the match duration
+const matchDurationElement = document.getElementById('match-duration');
+
+// Start time of the match
+const startTime = new Date();
+
+// Update the match duration every second
+setInterval(updateMatchDuration, 1000);
+
+function updateMatchDuration() {
+  // Current time
+  const currentTime = new Date();
+
+  // Calculate the elapsed time in milliseconds
+  const elapsedTime = currentTime - startTime;
+
+  // Convert elapsed time to hours, minutes, and seconds
+  const hours = Math.floor(elapsedTime / 3600000);
+  const minutes = Math.floor((elapsedTime % 3600000) / 60000);
+  const seconds = Math.floor((elapsedTime % 60000) / 1000);
+
+  // Format the time with leading zeros
+  const formattedTime = `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
+
+  // Update the match duration element
+  matchDurationElement.textContent = formattedTime;
+}
+
+function padZero(number) {
+  return number.toString().padStart(2, '0');
+}

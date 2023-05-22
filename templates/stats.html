@@ -1,51 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stats Tracker</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/stats.css') }}">
 </head>
 <body>
-    <!-- Navigation bar -->
+  <header>
     <nav>
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Leaderboards</a></li>
-            <li><a href="#">Game Performance</a></li>
-        </ul>
+        <a href="#profile">Profile</a>
+        <a href="#leaderboards">Leaderboards</a>
+        <a href="#recent-matches">Recent Matches</a>
+        <a href="#achievements">Achievements</a>
+        <a href="#community">Community</a>
     </nav>
+  </header>
 
-    <!-- Leaderboards section -->
-    <section id="leaderboards">
-        <h2>Leaderboards</h2>
-        <!-- Add your leaderboard content here -->
-        <table>
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Player</th>
-                    <th>Score</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Player 1</td>
-                    <td>1000</td>
-                </tr>
-                <!-- Add more rows as needed -->
-            </tbody>
-        </table>
+  <main>
+    <section class="search">
+      <h1>Rocket League Tracker</h1>
+      <form>
+        <input type="text" placeholder="Enter your Rocket League username">
+        <button type="submit">Search</button>
+      </form>
     </section>
 
-    <!-- Game performance section -->
-    <section id="game-performance">
-        <h2>Game Performance</h2>
-        <!-- Add your game performance content here -->
-        <p>Game statistics and performance details go here.</p>
+    <section class="profile">
+      <h2>Player Profile</h2>
+      <div class="player-info">
+        <!-- Display player statistics and information -->
+      </div>
     </section>
 
+    <section class="leaderboards">
+      <h2>Leaderboards</h2>
+      <div class="leaderboard-list">
+        <!-- Display top players or teams -->
+      </div>
+    </section>
+
+    <section class="recent-matches">
+      <h2>Recent Matches</h2>
+      <div class="match-list">
+        <!-- Display recent match details -->
+      </div>
+    </section>
+
+    <section class="achievements">
+      <h2>Achievements</h2>
+      <div class="achievement-list">
+        <!-- Display player achievements and progression -->
+      </div>
+    </section>
+
+    <section class="community">
+      <h2>Community</h2>
+      <div class="forum">
+        <!-- Display community forums or discussion boards -->
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <!-- Footer content -->
+  </footer>
+  <script src="{{ url_for('static', filename='scripts/stats.js') }}"></script>
 </body>
 </html>

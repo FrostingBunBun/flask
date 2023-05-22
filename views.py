@@ -106,29 +106,57 @@ def add_header(response):
 
 @views.route("/matchmaking", methods=['GET', 'POST'])
 @login_required
+@mod_required
 def matchmaking():
     # ===================================================
 
-    # # Connect to the database (creates a new database if it doesn't exist)
-    # conn = sqlite3.connect('./db/matches_data.db')
-    # cursor = conn.cursor()
-    # # Create the Matches table if it doesn't exist
-    # cursor.execute('''
-    #     CREATE TABLE IF NOT EXISTS Matches (
-    #         match_id INTEGER PRIMARY KEY,
-    #         playerLeft TEXT,
-    #         playerRight TEXT,
-    #         winner TEXT,
-    #         loser TEXT,
-    #         timestamp DATETIME,
-    #         duration INTEGER,
-    #         shift INTEGER
-    #     )
-    # ''')
+    # Connect to the database
+    conn = sqlite3.connect('./db/players_data.db')
+    cursor = conn.cursor()
 
-    # # Commit the changes and close the connection
-    # conn.commit()
-    # conn.close()
+    # Get column values
+    player_names = wks_mmr.col_values(4)[3:]
+    mmr_values = wks_mmr.col_values(3)[3:]
+    total_matches_values = wks_mmr.col_values(10)[3:]
+    wins_values = wks_mmr.col_values(6)[3:]
+    losses_values = wks_mmr.col_values(7)[3:]
+
+    # Loop through the data
+    for i in range(len(player_names)):
+        player_name = player_names[i]
+        mmr_str = mmr_values[i]
+        total_matches_str = total_matches_values[i]
+        wins_str = wins_values[i]
+        losses_str = losses_values[i]
+
+        # Check for empty cells
+        if player_name and mmr_str and total_matches_str and wins_str and losses_str:
+            mmr = int(mmr_str)
+            total_matches = int(total_matches_str)
+            wins = int(wins_str)
+            losses = int(losses_str)
+
+            # Check if the player already exists in the database
+            cursor.execute('SELECT * FROM Players WHERE player_name = ?', (player_name,))
+            existing_player = cursor.fetchone()
+
+            if existing_player:
+                # Player exists, update their information
+                cursor.execute('''
+                    UPDATE Players
+                    SET mmr = ?, total_matches = ?, wins = ?, losses = ?
+                    WHERE player_name = ?
+                ''', (mmr, total_matches, wins, losses, player_name))
+            else:
+                # Player doesn't exist, insert a new row
+                cursor.execute('''
+                    INSERT INTO Players (player_name, mmr, total_matches, wins, losses)
+                    VALUES (?, ?, ?, ?, ?)
+                ''', (player_name, mmr, total_matches, wins, losses))
+
+    # Commit the changes and close the connection
+    conn.commit()
+    conn.close()
     # ===================================================
     
     playersNames = wks_mmr.get("D4:D")
@@ -150,7 +178,10 @@ def matchmaking():
     return render_template("matchmaking.html", my_dict=nameMmr_dict, username=username)
 
 @views.route('/process-data', methods=['POST'])
+@login_required
+@mod_required
 def process_data():
+    
 
     
 
@@ -186,10 +217,170 @@ def process_data():
     }
     return jsonify(response)
 
+@views.route('/leftWonProcess', methods=['POST'])
+@login_required
+@mod_required
+def leftWonProcess():
+    data = request.get_json()
+    left_name = data['playerLeft']
+    right_name = data['playerRight']
+    winner = data['winner']
+    loser = data['loser']
+    timestamp = data['timestamp']
+    duration = data['duration']
+    shift = data['shift']
+    print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+    print(left_name)
+    print(right_name)
+    print(winner)
+    print(loser)
+    print(timestamp)
+    print(duration)
+    print(shift)
+    print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+
+    conn = sqlite3.connect('./db/matches_data.db')
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Matches (
+        playerLeft TEXT,
+        playerRight TEXT,
+        winner TEXT,
+        loser TEXT,
+        timestamp TEXT,
+        duration INTEGER,
+        shift INTEGER
+    )
+''')
+
+    cursor.execute("INSERT INTO Matches (playerLeft, playerRight, winner, loser, timestamp, duration, shift) VALUES (?, ?, ?, ?, ?, ?, ?)",
+               (left_name, right_name, left_name, right_name, timestamp, duration, abs(shift)))
+
+
+
+    conn.commit()
+    conn.close()
+
+
+
+
+
+    # Process the received data as needed
+    # Example: Store the data in the database
+
+    return {'message': 'Data received successfully'}
+
+@views.route('/rightWonProcess', methods=['POST'])
+@login_required
+@mod_required
+def rightWonProcess():
+    data = request.get_json()
+    left_name = data['playerLeft']
+    right_name = data['playerRight']
+    winner = data['winner']
+    loser = data['loser']
+    timestamp = data['timestamp']
+    duration = data['duration']
+    shift = data['shift']
+    print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+    print(left_name)
+    print(right_name)
+    print(winner)
+    print(loser)
+    print(timestamp)
+    print(duration)
+    print(shift)
+    print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+
+    conn = sqlite3.connect('./db/matches_data.db')
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Matches (
+        playerLeft TEXT,
+        playerRight TEXT,
+        winner TEXT,
+        loser TEXT,
+        timestamp TEXT,
+        duration INTEGER,
+        shift INTEGER
+    )
+''')
+
+    cursor.execute("INSERT INTO Matches (playerLeft, playerRight, winner, loser, timestamp, duration, shift) VALUES (?, ?, ?, ?, ?, ?, ?)",
+               (left_name, right_name, right_name, left_name, timestamp, duration, abs(shift)))
+
+
+
+    conn.commit()
+    conn.close()
+
+
+
+
+
+    # Process the received data as needed
+    # Example: Store the data in the database
+
+    return {'message': 'Data received successfully'}
+
 
 @views.route("/matchmaking/match", methods=['GET', 'POST'])
 @login_required
+@mod_required
 def match():
+
+    # ===================================================
+
+    # Connect to the database
+    conn = sqlite3.connect('./db/players_data.db')
+    cursor = conn.cursor()
+
+    # Get column values
+    player_names = wks_mmr.col_values(4)[3:]
+    mmr_values = wks_mmr.col_values(3)[3:]
+    total_matches_values = wks_mmr.col_values(10)[3:]
+    wins_values = wks_mmr.col_values(6)[3:]
+    losses_values = wks_mmr.col_values(7)[3:]
+
+    # Loop through the data
+    for i in range(len(player_names)):
+        player_name = player_names[i]
+        mmr_str = mmr_values[i]
+        total_matches_str = total_matches_values[i]
+        wins_str = wins_values[i]
+        losses_str = losses_values[i]
+
+        # Check for empty cells
+        if player_name and mmr_str and total_matches_str and wins_str and losses_str:
+            mmr = int(mmr_str)
+            total_matches = int(total_matches_str)
+            wins = int(wins_str)
+            losses = int(losses_str)
+
+            # Check if the player already exists in the database
+            cursor.execute('SELECT * FROM Players WHERE player_name = ?', (player_name,))
+            existing_player = cursor.fetchone()
+
+            if existing_player:
+                # Player exists, update their information
+                cursor.execute('''
+                    UPDATE Players
+                    SET mmr = ?, total_matches = ?, wins = ?, losses = ?
+                    WHERE player_name = ?
+                ''', (mmr, total_matches, wins, losses, player_name))
+            else:
+                # Player doesn't exist, insert a new row
+                cursor.execute('''
+                    INSERT INTO Players (player_name, mmr, total_matches, wins, losses)
+                    VALUES (?, ?, ?, ?, ?)
+                ''', (player_name, mmr, total_matches, wins, losses))
+
+    # Commit the changes and close the connection
+    conn.commit()
+    conn.close()
+    # ===================================================
     
 
     # Clear the session variables to prevent reusing old values
@@ -214,7 +405,7 @@ def match():
     print("==========================")
     print(session.items())
     print("==========================")
-
+    
     
 
     return render_template("match.html",
@@ -231,6 +422,8 @@ def match():
 
 
 @views.route("/processUserInfo/<string:userInfo>", methods=['POST'])
+@login_required
+@mod_required
 def processUserInfo(userInfo):
 
     range_str = "C4:D"
@@ -297,13 +490,14 @@ def processUserInfo(userInfo):
 
 
 @views.route("/test")
+@login_required
+@mod_required
 def test():
     var = "DYN"
     return render_template("test.html", var=var)
 
 
 @views.route("/main")
-# @mod_required
 def main():
     print("==========================")
     print(session.items())
@@ -313,13 +507,19 @@ def main():
         return render_template("main_logged.html", username=username)
     else:
         return render_template("main.html")
-
+@views.route("/stats")
+def stats():
+    return render_template("stats.html")
 
 @views.route("/matchmaking/match/processing")
+@login_required
+@mod_required
 def processing():
     return render_template("processing.html")
 
 @views.route("/matchmaking/match/processing/calculate")
+@login_required
+@mod_required
 def calculate():
     return render_template("calculate.html")
 
@@ -341,6 +541,8 @@ def register():
     return render_template("register.html")
 
 @views.route('/delete-item', methods=['POST'])
+@login_required
+@mod_required
 def delete_item():
     key = request.json['key']
     if key in session:
@@ -402,6 +604,8 @@ from flask import jsonify, request
 import difflib
 
 @views.route('/avatar', methods=['POST'])
+@login_required
+@mod_required
 def get_avatar():
     name = request.form['name']  # Get the name from the request data
 
@@ -429,6 +633,8 @@ def get_avatar():
 
 
 @views.route('/left-avatar', methods=['POST'])
+@login_required
+@mod_required
 def get_left_avatar():
     name = request.form['name']  # Get the name from the request data
 

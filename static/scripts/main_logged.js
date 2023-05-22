@@ -30,3 +30,8 @@ logOutButton.addEventListener('click', function() {
     };
     xhr.send(JSON.stringify({ 'key': key }));
 });
+var stats = document.getElementById("stats");
+stats.addEventListener("click", function() {
+    // Redirect to the registration page or perform necessary actions
+    window.location.href = "stats";
+});
