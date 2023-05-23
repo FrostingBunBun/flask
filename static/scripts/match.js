@@ -150,6 +150,11 @@ document.addEventListener("DOMContentLoaded", function () {
     : "";
   // console.log("right Winrate value:", rightWinrateValue);
 
+  console.log("leftWinrate MATCH: ", leftWinrateValue)
+  console.log("leftWinrate MATCH TYPE: ", typeof(leftWinrateValue))
+  console.log("rightWinrate MATCH: ", rightWinrateValue)
+  console.log("rightWinrate MATCH TYPE: ",typeof(rightWinrateValue))
+
   var [rightProbability, leftProbability] = calculateWinProbabilities(
     leftRatingValue,
     rightRatingValue,

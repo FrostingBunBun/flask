@@ -497,3 +497,84 @@ li:hover {
 .flag{
   float: right;
 }
+
+
+
+
+.gauge-container {
+  display: flex;
+  justify-content: center;
+  width: 600px;
+  height: 40px;
+  margin: 0 auto;
+  border: 5px solid #383838;
+  margin-top: 60px;
+  position: relative;
+  border-radius: 5px;
+  opacity: 0.95;
+}
+
+.gauge {
+  width: 0; /* Start with 0 width */
+  height: 100%;
+  background-color: #eee;
+  position: relative;
+  animation: fillGauge 1.5s ease-out forwards; /* Add animation */
+  
+}
+
+@keyframes fillGauge {
+  0% {
+    width: 0; /* Start with 0 width */
+  }
+  100% {
+    width: 100%; /* Animate to 100% width */
+  }
+}
+
+
+
+.fill {
+  height: 100%;
+  position: absolute;
+  top: 0;
+}
+
+#fill1 {
+  background-color: #3faa96; /* Set fill color for value 1 */
+  z-index: 1; /* Added */
+}
+
+#fill2 {
+  background-color:  #f6d26b ; /* Set fill color for value 2 */
+  z-index: 2; /* Added */
+}
+.prob{
+  position: absolute;
+  text-align: center;
+  color: #ffffff;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: bold;
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black; /* Apply multiple shadows to create the outline */
+  font-size: 20px;
+}
+
+.gauge-label {
+  position: absolute;
+  top: -35px;
+  font-weight: bold;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  font: bold 16px Arial, sans-serif;
+  color: #ffffff;
+  text-align: center;
+  letter-spacing: 2px;
+  line-height: 1.5;
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black; /* Apply multiple shadows to create the outline */
+  transition: opacity 1s ease-in; /* Add transition for opacity */
+  font-size: 25px;
+  padding-bottom: 10px;
+  margin-left: -45px;
+}

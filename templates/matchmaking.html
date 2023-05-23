@@ -40,7 +40,8 @@
           {% for name, value in my_dict.items() %}
           <li class="list-item" draggable="true" ondragstart="drag(event)">
             {{ name }}
-            <span id="flag_{{ name }}">({{ value }})</span>
+            <span id="flag_{{ name }}">({{ value[0] }})</span>
+            <span id="flag_{{ name }}">({{ value[1] }}%)</span>
           </li>
           {% endfor %}
         </ul>
@@ -98,42 +99,6 @@
           </div>
         </div>
 
-        <!-- MATCH AREA DISPLAY -->
-
-        <!-- <div class="match-container" id="match-container">
-          <div class="player">
-            <div class="player-image">
-              <img
-                class="vs-image"
-                id="1vsImg"
-                src=""
-                alt="VS"
-              />
-            </div>
-            <div class="player-info">
-              <h3 id="playerName1"></h3>
-              <div class="rating1" id="test"></div>
-              <div class="additionalNumber1"></div>
-            </div>
-          </div>
-          <div class="player">
-            <div class="player-image">
-              <img
-                class="vs-image"
-                id="2vsImg"
-                src=""
-                alt="VS"
-              />
-            </div>
-            <div class="player-info">
-              <h3 id="playerName2"></h3>
-              <div class="rating2"></div>
-              <div class="additionalNumber2"></div>
-            </div>
-          </div>
-        </div> -->
-
-        <!-- MATCH AREA DISPLAY -->
 
         <div class="button-container">
           <button class="my-button" id="cancelButton">Cancel</button>
@@ -144,6 +109,19 @@
             Clear ALL
           </button>
         </div>
+
+
+    <div class="prob">Win Probability</div>
+    <div class="gauge-container">
+      <div class="gauge">
+        <div class="fill" id="fill1">
+          <div id="leftGauge" class="gauge-label gauge-label1"></div>
+        </div>
+        <div class="fill" id="fill2">
+          <div id="rightGauge" class="gauge-label gauge-label2"></div>
+        </div>
+      </div>
+    </div>
 
         <div id="error-message" class="error-message"></div>
       </div>

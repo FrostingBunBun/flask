@@ -104,6 +104,10 @@ def add_header(response):
     response.headers['Expires'] = '0'
     return response
 
+
+
+
+
 @views.route("/matchmaking", methods=['GET', 'POST'])
 @login_required
 @mod_required
@@ -164,14 +168,25 @@ def matchmaking():
 
     playersMmr = wks_mmr.get("C4:C")
     flat_mmrs = [item for sublist in playersMmr for item in sublist]
+    
+    playersWinLose = wks_mmr.get("F4:G")
+    # print(playersWinLose)
+
+    winrate_list = []
+    for player in playersWinLose:
+        winrate = "{:.2f}".format((int(player[0]) / (int(player[0]) + int(player[1]))) * 100, 2) if int(player[0]) + int(player[1]) > 0 else 0
+
+        winrate_list.append(winrate)
+    print(winrate_list)
 
     nameMmr_dict = {}
 
     for i in range(len(flat_names)):
-        nameMmr_dict[flat_names[i]] = flat_mmrs[i]
+        nameMmr_dict[flat_names[i]] = flat_mmrs[i], winrate_list[i]
     username = ''
     if 'username' in session:
         username = session['username']
+    
     print("==========================")
     print(session.items())
     print("==========================")
