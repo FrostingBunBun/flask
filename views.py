@@ -208,8 +208,6 @@ def process_data():
     wks_mmr.update_cell(playerLeft_row, 3, left_new_mmr)
     wks_mmr.update_cell(playerRight_row, 3, right_new_mmr)
 
-    wks_mmr.update_cell(playerLeft_row, 6, int(wks_mmr.cell(playerLeft_row, 6).value) + 1)
-    wks_mmr.update_cell(playerRight_row, 7, int(wks_mmr.cell(playerRight_row, 7).value) + 1)
 
     # Prepare the response
     response = {
@@ -238,6 +236,12 @@ def leftWonProcess():
     print(duration)
     print(shift)
     print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+
+    playerLeft_row = wks_mmr.cell(wks_mmr.find(left_name).row, 4).row
+    playerRight_row = wks_mmr.cell(wks_mmr.find(right_name).row, 4).row
+
+    wks_mmr.update_cell(playerLeft_row, 6, int(wks_mmr.cell(playerLeft_row, 6).value) + 1)
+    wks_mmr.update_cell(playerRight_row, 7, int(wks_mmr.cell(playerRight_row, 7).value) + 1)
 
     conn = sqlite3.connect('./db/matches_data.db')
     cursor = conn.cursor()
@@ -292,6 +296,12 @@ def rightWonProcess():
     print(duration)
     print(shift)
     print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+
+    playerLeft_row = wks_mmr.cell(wks_mmr.find(left_name).row, 4).row
+    playerRight_row = wks_mmr.cell(wks_mmr.find(right_name).row, 4).row
+
+    wks_mmr.update_cell(playerLeft_row, 7, int(wks_mmr.cell(playerLeft_row, 7).value) + 1)
+    wks_mmr.update_cell(playerRight_row, 6, int(wks_mmr.cell(playerRight_row, 6).value) + 1)
 
     conn = sqlite3.connect('./db/matches_data.db')
     cursor = conn.cursor()

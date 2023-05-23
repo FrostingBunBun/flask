@@ -1,70 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stats Tracker</title>
+  <title>Private Account Stats</title>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/stats.css') }}">
 </head>
-<body>
-  <header>
-    <nav>
-        <a href="#profile">Profile</a>
-        <a href="#leaderboards">Leaderboards</a>
-        <a href="#recent-matches">Recent Matches</a>
-        <a href="#achievements">Achievements</a>
-        <a href="#community">Community</a>
-    </nav>
-  </header>
-
-  <main>
-    <section class="search">
-      <h1>Rocket League Tracker</h1>
-      <form>
-        <input type="text" placeholder="Enter your Rocket League username">
-        <button type="submit">Search</button>
-      </form>
-    </section>
-
-    <section class="profile">
-      <h2>Player Profile</h2>
-      <div class="player-info">
-        <!-- Display player statistics and information -->
+<body>   
+    <div class="top-block">
+        <div class="mainInfo">
+            <div class="profile-picture"><img src="https://cdn.discordapp.com/avatars/1009282728040071189/c2acbef366c5fcc7bdc3d85bc041fa0a.png?size=1024" alt="Avatar"></div>
+            <h2 class="nickname">Nickname</h2>
+        </div>
+        <div class="profile-info">
+            <p>Last Match: <span class="last-match-value">2023-05-20</span></p>
+            <p>Wins: <span class="wins-value">75</span></p>
+            <p>Losses: <span class="losses-value">22</span></p>
+            <p>Win Rate: <span class="win-rate-value">77%</span></p>
+          </div>
       </div>
-    </section>
-
-    <section class="leaderboards">
-      <h2>Leaderboards</h2>
-      <div class="leaderboard-list">
-        <!-- Display top players or teams -->
-      </div>
-    </section>
-
-    <section class="recent-matches">
-      <h2>Recent Matches</h2>
-      <div class="match-list">
-        <!-- Display recent match details -->
-      </div>
-    </section>
-
-    <section class="achievements">
-      <h2>Achievements</h2>
-      <div class="achievement-list">
-        <!-- Display player achievements and progression -->
-      </div>
-    </section>
-
-    <section class="community">
-      <h2>Community</h2>
-      <div class="forum">
-        <!-- Display community forums or discussion boards -->
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <!-- Footer content -->
-  </footer>
-  <script src="{{ url_for('static', filename='scripts/stats.js') }}"></script>
+      
+    <main>
+        
+</main>
 </body>
 </html>

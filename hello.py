@@ -8,7 +8,7 @@ application.secret_key = "secretKey"  # Set a secret key for session management
 application.register_blueprint(views, url_prefix="/")
 
 if __name__ == "__main__":
-    application.run(debug=True, host="0.0.0.0")
+    application.run(host="0.0.0.0")
 
 
 # if __name__ == "__main__":
