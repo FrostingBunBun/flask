@@ -115,14 +115,14 @@ function drag(event) {
 
     if (matchMmr && matchMmr.length > 1) {
       mmr_number = matchMmr[1];
-      console.log(mmr_number);
+      // console.log(mmr_number);
     } else {
       console.log("MMR number not found");
     }
 
     if (matchWinrate && matchWinrate.length > 1) {
       winrate = matchWinrate[1];
-      console.log(winrate);
+      // console.log(winrate);
     } else {
       console.log("Winrate not found");
     }
@@ -134,7 +134,7 @@ function drag(event) {
 
   // Get the name and remove everything after whitespace
   var name = target.innerText.trim().split(" ")[0];
-  console.log("BEFORE SENDING: ", winrate);
+  // console.log("BEFORE SENDING: ", winrate);
 
   event.dataTransfer.setData("application/json", JSON.stringify({ name: name, mmr: mmr_number, winrate: winrate}));
 }
@@ -161,7 +161,7 @@ function drop(event) {
 
   
   var droppedElementWinRate = document.createElement("div");
-  droppedElementWinRate.textContent = "Win Rate: " + winrate + "%";
+  droppedElementWinRate.textContent = "Winrate: " + winrate;
 
 
 
@@ -203,6 +203,7 @@ function drop(event) {
 
   targetField.appendChild(container);
   container.id = targetField.id + "Small"; // Set the ID of the container
+  droppedElementWinRate.className = targetField.id + "Winrate"
 
 
 
@@ -279,9 +280,9 @@ rightWinrate = rightWinrate.toString() + "%";
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   // console.log("left Winrate value:", leftWinrateValue);
 
-  console.log("leftWinrate SCRIPT: ", leftWinrate)
+  // console.log("leftWinrate SCRIPT: ", leftWinrate)
   // console.log("leftWinrate SCRIPT TYPE: ", typeof(leftWinrate))
-  console.log("rightWinrate SCRIPT: ", rightWinrate)
+  // console.log("rightWinrate SCRIPT: ", rightWinrate)
   // console.log("rightWinrate SCRIPT TYPE: ", typeof(rightWinrate))
 
   
