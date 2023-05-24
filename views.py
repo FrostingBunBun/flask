@@ -145,7 +145,7 @@ def leaderboards():
     for name in names:
         cursor1.execute("SELECT avatar_url, name FROM dsLinks")
         results = cursor1.fetchall()
-        matched_names = get_close_matches(name[0], [result[1] for result in results], n=1, cutoff=0.4)
+        matched_names = get_close_matches(name[0], [result[1] for result in results], n=1, cutoff=0.5)
 
         if matched_names:
             matched_name = matched_names[0]

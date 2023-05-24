@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <link
     rel="stylesheet"
     type="text/css"
@@ -16,6 +18,12 @@
     <div class="leaderboard-container">
         <button id="home">Home</button>
         <h1>Dogfight Club Leaderboard</h1>
+
+        <div class="chart-container">
+          <canvas id="myChart"></canvas>
+        </div>
+
+
         <table class="table">
             <thead>
                 <tr>
@@ -26,21 +34,25 @@
                 </tr>
             </thead>
             
-            <tbody>
+
+            <table id="mmrTable">
+              <tbody>
                 {% for name, value in my_dict.items() %}
                 <tr class="slide-up-fade-in">
                   <td>{{ loop.index }}</td>
                   <td>
                     <div class="avatar-name">
-                      <img src="{{ value[2] }}" alt="Avatar" id="avatar">
+                      <img src="{{ value[2] }}" alt="Avatar" id="avatar" onerror="this.src='https://my.catgirls.forsale/QukeB047.png'">
                       <a href="#">{{ name }}</a>
                     </div>
                   </td>
-                  <td>{{ value[0] }}</td>
+                  <td class="mmr-value">{{ value[0] }}</td>
                   <td>{{ value[1] }}%</td>
                 </tr>
                 {% endfor %}
               </tbody>
+            </table>
+          
               
         </table>
     </div>

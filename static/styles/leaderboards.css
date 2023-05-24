@@ -1,157 +1,179 @@
 body {
-    background-color: #000000;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    color: #b6b6b6;
-  }
-  
-  .leaderboard-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    animation-name: slide-up-fade-in;
+  background-color: #000000;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  color: #b6b6b6;
+}
+
+.leaderboard-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  animation-name: slide-up-fade-in;
   animation-duration: 1s;
   animation-timing-function: ease-out;
   animation-fill-mode: forwards;
 
 
 
-  }
-
-  
-  
-  h1 {
-    text-align: center;
-    font-size: 28px;
-    font-weight: bold;
-    color: #e960bb;
-    margin-bottom: 20px;
-  }
-  
-  table {
-    width: 100%;
-    background-color: #333;
-    border-collapse: collapse;
-    border: 1px solid #555;
-  }
-  
-  th, td {
-    padding: 12px;
-    text-align: center;
-    border: 1px solid #555;
-  }
-  
-  th {
-    background-color: #ff66cc;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-  
-  tr:nth-child(even) {
-    background-color: #444;
-  }
-  
-  tr:hover {
-    background-color: #666;
-  }
-  
-  td:nth-child(1) {
-    color: #ff66cc;
-  }
-  
-  td:nth-child(4) {
-    font-weight: bold;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
 }
 
-th, td {
-    padding: 10px;
-    text-align: center;
-    border-bottom: 1px solid #525252;
+
+
+h1 {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: #e960bb;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  background-color: #333;
+  border-collapse: collapse;
+  border: 1px solid #555;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: center;
+  border: 1px solid #555;
 }
 
 th {
-    background-color: #814559;
-    color: #fff;
+  background-color: #ff66cc;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+tr:nth-child(even) {
+  background-color: #444;
+}
+
+tr:hover {
+  background-color: #666;
+}
+
+td:nth-child(1) {
+  color: #ff66cc;
+}
+
+td:nth-child(4) {
+  font-weight: bold;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #525252;
+}
+
+th {
+  background-color: #814559;
+  color: #fff;
 }
 
 a {
-    text-decoration: none;
-    color: rgb(255, 153, 192);
+  text-decoration: none;
+  color: rgb(255, 153, 192);
 }
 
 a:hover {
-    color: #ff4081;
+  color: #ff4081;
 }
-#avatar{
-    max-width: 40px;
-    height: 40px;
-    margin-right: 10px;
+
+#avatar {
+  max-width: 40px;
+  height: 40px;
+  margin-right: 10px;
 }
+
 .avatar-name {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
+
 .gradient-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 70%;
-    background-image: linear-gradient(to bottom, rgba(255, 0, 85, 0.1), rgba(255, 0, 0, 0));
-    z-index: -1;
+  position: fixed;
+  top: 1;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to top, rgba(255, 0, 85, 0.1), rgba(255, 0, 0, 0));
+  /* z-index: -1; */
 }
 
-  .table{
-    opacity: 0.95;
+.table {
+  opacity: 0.95;
+}
+.chart-container {
+  position: relative;
+  background-color: rgba(231, 84, 128, 0.1);
+}
+
+
+.background-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("https://my.catgirls.forsale/xGXMv720.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  transform: translate3d(0, 0, 0);
+  filter: blur(5px);
+}
+
+#home {
+  position: absolute;
+  /* left: 600px; */
+  background-color: #4b4b4b;
+  /* Set the background color */
+  color: white;
+  /* Set the text color */
+  padding: 10px 20px;
+  /* Set the padding around the button */
+  border: none;
+  /* Remove the button border */
+  border-radius: 4px;
+  /* Apply rounded corners */
+  text-align: center;
+  /* Center the button text */
+  text-decoration: none;
+  /* Remove underlines from the text */
+  display: inline-block;
+  /* Make the button display as an inline element */
+  font-size: 16px;
+  /* Set the font size */
+  transition-duration: 0.4s;
+  /* Add a smooth transition effect */
+  cursor: pointer;
+  /* Change the cursor to a pointer on hover */
+}
+
+#home:hover {
+  background-color: #45a049;
+  /* Change the background color on hover */
+}
+
+@keyframes slide-up-fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
   }
 
-  
-  .background-image {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("https://my.catgirls.forsale/xGXMv720.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    transform: translate3d(0, 0, 0);
-    filter: blur(5px);
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
-
-  #home {
-    position:absolute;
-    /* left: 600px; */
-    background-color: #4b4b4b; /* Set the background color */
-    color: white; /* Set the text color */
-    padding: 10px 20px; /* Set the padding around the button */
-    border: none; /* Remove the button border */
-    border-radius: 4px; /* Apply rounded corners */
-    text-align: center; /* Center the button text */
-    text-decoration: none; /* Remove underlines from the text */
-    display: inline-block; /* Make the button display as an inline element */
-    font-size: 16px; /* Set the font size */
-    transition-duration: 0.4s; /* Add a smooth transition effect */
-    cursor: pointer; /* Change the cursor to a pointer on hover */
-  }
-  
-  #home:hover {
-    background-color: #45a049; /* Change the background color on hover */
-  }
-
-  @keyframes slide-up-fade-in {
-    0% {
-      opacity: 0;
-      transform: translateY(-50px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
+}
