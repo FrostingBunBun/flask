@@ -8,6 +8,8 @@ import json
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from difflib import get_close_matches
+from datetime import date
+
 
 
 
@@ -630,9 +632,26 @@ def main():
         return render_template("main_logged.html", username=username)
     else:
         return render_template("main.html")
-@views.route("/stats")
-def stats():
-    return render_template("stats.html")
+    
+
+
+    
+
+@views.route('/stats')
+@login_required
+def profile_details():
+    name = session['username']
+    return render_template("stats.html", name=name)
+
+
+@views.route('/stats/<name>')
+def profile_details_leaderboard(name):
+
+    return render_template('stats.html', name=name)
+
+
+
+
 
 @views.route("/matchmaking/match/processing")
 @login_required

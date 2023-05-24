@@ -117,7 +117,7 @@ a:hover {
 }
 .chart-container {
   position: relative;
-  background-color: rgba(231, 84, 128, 0.1);
+  background-color: rgba(255, 147, 197, 0.3);
 }
 
 
@@ -177,3 +177,4 @@ a:hover {
     transform: translateY(0);
   }
 }
+

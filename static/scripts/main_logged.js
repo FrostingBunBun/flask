@@ -30,11 +30,19 @@ logOutButton.addEventListener('click', function() {
     };
     xhr.send(JSON.stringify({ 'key': key }));
 });
-var stats = document.getElementById("stats");
-stats.addEventListener("click", function() {
-    // Redirect to the registration page or perform necessary actions
-    window.location.href = "stats";
+
+
+
+window.addEventListener('DOMContentLoaded', function() {
+    var statsButton = document.getElementById("stats");
+    statsButton.addEventListener("click", function() {
+        window.location.href = "/stats";
+    });
 });
+
+
+
+
 var leaderBoardsBtn = document.getElementById("leaderboards");
 leaderBoardsBtn.addEventListener("click", function() {
   // Redirect to the login page or perform necessary actions

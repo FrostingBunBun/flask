@@ -4,22 +4,56 @@
   <title>Private Account Stats</title>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/stats.css') }}">
 </head>
-<body>   
+<body>
+  <button id="home">Home</button>
     <div class="top-block">
         <div class="mainInfo">
             <div class="profile-picture"><img src="https://cdn.discordapp.com/avatars/1009282728040071189/c2acbef366c5fcc7bdc3d85bc041fa0a.png?size=1024" alt="Avatar"></div>
-            <h2 class="nickname">Nickname</h2>
+            <h2 class="nickname">{{ name }}</h2>
         </div>
         <div class="profile-info">
             <p>Last Match: <span class="last-match-value">2023-05-20</span></p>
             <p>Wins: <span class="wins-value">75</span></p>
             <p>Losses: <span class="losses-value">22</span></p>
             <p>Win Rate: <span class="win-rate-value">77%</span></p>
-          </div>
-      </div>
+        </div>
+    </div>
       
     <main>
-        
-</main>
+        <div class="container">
+            <div class="left-container">
+              <div></div>
+                <!-- Left container content here -->
+            </div>
+
+
+
+
+            <div class="right-container">
+              <div></div>
+              <div class="calendar">
+
+                <div class="weekdays">
+                  <div>Sun</div>
+                  <div>Mon</div>
+                  <div>Tue</div>
+                  <div>Wed</div>
+                  <div>Thu</div>
+                  <div>Fri</div>
+                  <div>Sat</div>
+                </div>
+                <div class="days">
+                  <!-- Calendar days dynamically generated here -->
+                </div>
+              </div>
+            </div>
+
+
+            
+            
+            
+        </div>
+    </main>
+    <script src="{{ url_for('static', filename='scripts/stats.js') }}"></script>
 </body>
 </html>
