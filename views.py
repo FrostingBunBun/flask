@@ -7,6 +7,7 @@ from functools import wraps
 import json
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
+from difflib import get_close_matches
 
 
 
@@ -104,8 +105,105 @@ def add_header(response):
     response.headers['Expires'] = '0'
     return response
 
+@views.route("/leaderboards", methods=['GET', 'POST'])
+def leaderboards():
 
 
+
+
+    # Connect to the databases
+    conn1 = sqlite3.connect('user_dsAvis.db')
+    conn2 = sqlite3.connect('./db/players_data.db')
+
+    cursor1 = conn1.cursor()
+    cursor2 = conn2.cursor()
+
+    # Fetch the names from players_data.db in the desired order
+    cursor2.execute("SELECT player_name FROM Players ORDER BY mmr DESC")
+    names2 = cursor2.fetchall()
+
+    # print("NAMES")
+    # print(names)
+    # print("NAMES")
+
+    playersNames = wks_mmr.get("D4:D")
+    names = [(item[0],) for item in playersNames]
+
+
+    # print("NAMES2")
+    # print(formatted_string)
+    print("OLD: ", type(names2))
+    print("NEW: ", type(names))
+    # print("NAMES2")
+
+
+
+    # Create a list to store the avatar URLs
+    avatar_urls = []
+
+    # Iterate over the names and fetch the corresponding avatar URLs from dsLinks
+    for name in names:
+        cursor1.execute("SELECT avatar_url, name FROM dsLinks")
+        results = cursor1.fetchall()
+        matched_names = get_close_matches(name[0], [result[1] for result in results], n=1, cutoff=0.4)
+
+        if matched_names:
+            matched_name = matched_names[0]
+            result = next((result for result in results if result[1] == matched_name), None)
+            if result:
+                avatar_url = result[0]
+                avatar_urls.append(avatar_url)
+            else:
+                avatar_urls.append("https://my.catgirls.forsale/QukeB047.png")
+        else:
+            avatar_urls.append("https://my.catgirls.forsale/QukeB047.png")
+
+
+    # Close the database connections
+    conn1.close()
+    conn2.close()
+
+
+    # print("+++++++++++++++++++++++++++++++++++")
+    # print(avatar_urls)
+
+
+
+    # print(avatar_urls)
+
+    flat_names = [item for sublist in playersNames for item in sublist]
+
+    playersMmr = wks_mmr.get("C4:C")
+    flat_mmrs = [item for sublist in playersMmr for item in sublist]
+    
+    playersWinLose = wks_mmr.get("F4:G")
+    # print(playersWinLose)
+
+    winrate_list = []
+    for player in playersWinLose:
+        winrate = "{:.2f}".format((int(player[0]) / (int(player[0]) + int(player[1]))) * 100, 2) if int(player[0]) + int(player[1]) > 0 else 0
+
+        winrate_list.append(winrate)
+    # print(winrate_list)
+
+    nameMmr_dict = {}
+
+    for i in range(len(flat_names)):
+
+        nameMmr_dict[flat_names[i]] = flat_mmrs[i], winrate_list[i], avatar_urls[i]
+    username = ''
+    if 'username' in session:
+        username = session['username']
+
+
+
+
+
+
+
+
+
+    return render_template("leaderboards.html", username=username, my_dict=nameMmr_dict)
 
 
 @views.route("/matchmaking", methods=['GET', 'POST'])

@@ -13,3 +13,8 @@ stats.addEventListener("click", function() {
     // Redirect to the registration page or perform necessary actions
     window.location.href = "stats";
 });
+var leaderBoardsBtn = document.getElementById("leaderboards");
+leaderBoardsBtn.addEventListener("click", function() {
+  // Redirect to the login page or perform necessary actions
+  window.location.href = "/leaderboards";
+});

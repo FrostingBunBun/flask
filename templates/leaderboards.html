@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link
+    rel="stylesheet"
+    type="text/css"
+    href="{{ url_for('static', filename='styles/leaderboards.css') }}"
+  />
+
+</head>
+<body>
+
+        <div class="background-image"></div>
+
+    <div class="gradient-overlay"></div>
+    <div class="leaderboard-container">
+        <button id="home">Home</button>
+        <h1>Dogfight Club Leaderboard</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th>MMR</th>
+                    <th>Win Rate</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                {% for name, value in my_dict.items() %}
+                <tr class="slide-up-fade-in">
+                  <td>{{ loop.index }}</td>
+                  <td>
+                    <div class="avatar-name">
+                      <img src="{{ value[2] }}" alt="Avatar" id="avatar">
+                      <a href="#">{{ name }}</a>
+                    </div>
+                  </td>
+                  <td>{{ value[0] }}</td>
+                  <td>{{ value[1] }}%</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              
+        </table>
+    </div>
+    <script src="{{ url_for('static', filename='scripts/leaderboards.js') }}"></script>
+</body>
+</html>
