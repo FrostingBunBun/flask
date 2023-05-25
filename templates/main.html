@@ -7,6 +7,9 @@
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}">
 </head>
 <body>
+  <div id="login-message" class="hidden">
+    <p>Please log in or Register to see your private stats</p>
+  </div>
     <div class="gradient-overlay"></div>
   <header>
     <div class="login-container">
@@ -19,7 +22,7 @@
     <nav>
       <ul>
         <li><a href="/" id="login">Entry</a></li>
-        <li><a href="#" id="stats">Stats</a></li>
+        <li><a href="#" onclick="showLoginMessage()">Stats</a></li>
         <li><a href="#">Matches</a></li>
         <li><a href="#" id="leaderboards">Leaderboards</a></li>
       </ul>

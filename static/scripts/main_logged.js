@@ -18,8 +18,8 @@ logOutButton.addEventListener('click', function() {
     xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                console.log(response.message);
+                // var response = JSON.parse(xhr.responseText);
+                // console.log(response.message);
                 window.location.href = "/main"
                 // Handle the response as needed
             } else {

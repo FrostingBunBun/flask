@@ -646,8 +646,9 @@ def main():
     print("==========================")
     print(session.items())
     print("==========================")
+    username = ""
     if session.get('logged_in'):
-        username = session['username']
+        username = session.get('username', '')
         if session.get('mod'):
             mod = "MOD ACCOUNT"
         else:
@@ -698,11 +699,34 @@ def profile_details():
     
     history = get_matches_by_player(name)
 
+    if check_player_exists(name):
+        lastMatch = history[-1]
+        print(lastMatch)
+    else:
+        tempList = ("NaN", 'NaN', 'NaN', 'NaN', 'NaN', 'NaN', "NaN", "NaN")
+        lastMatch = tempList
+
+
+    player_data = get_wins_loses_mmr(name)
+    print("--------------------------------")
+    if player_data:
+        wins, losses, mmr = player_data
+        print(f"Player: {name}")
+        print(f"Wins: {wins}")
+        print(f"Losses: {losses}")
+        print(f"MMR: {mmr}")
+    else:
+        print(f"Player '{name}' not found.")
 
 
 
 
-    return render_template('stats.html', name=name, avatar_url=avatar_url, history=history)
+
+
+
+
+
+    return render_template('stats.html', name=name, avatar_url=avatar_url, history=history, lastMatch=lastMatch, wins=wins, losses=losses, mmr=mmr)
 
 
 
@@ -738,18 +762,75 @@ def profile_details_leaderboard(name):
             avatar_url = "https://my.catgirls.forsale/QukeB047.png"
 
 
-    
-    
     history = get_matches_by_player(name)
 
+    if check_player_exists(name):
+        lastMatch = history[-1]
+        print(lastMatch)
+    else:
+        tempList = ("NaN", 'NaN', 'NaN', 'NaN', 'NaN', 'NaN', "NaN", "NaN")
+        lastMatch = tempList
+
+
+    player_data = get_wins_loses_mmr(name)
+    print("--------------------------------")
+    if player_data:
+        wins, losses, mmr = player_data
+        print(f"Player: {name}")
+        print(f"Wins: {wins}")
+        print(f"Losses: {losses}")
+        print(f"MMR: {mmr}")
+    else:
+        print(f"Player '{name}' not found.")
 
 
 
 
-    return render_template('stats.html', name=name, avatar_url=avatar_url, history=history)
+
+
+
+
+
+    return render_template('stats.html', name=name, avatar_url=avatar_url, history=history, lastMatch=lastMatch, wins=wins, losses=losses, mmr=mmr)
 
 
 from datetime import datetime
+
+def check_player_exists(player_name):
+    conn = sqlite3.connect('./db/matches_data.db')
+    cursor = conn.cursor()
+
+    query = "SELECT COUNT(*) FROM Matches WHERE playerLeft = ? OR playerRight = ?"
+    cursor.execute(query, (player_name, player_name))
+    result = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    if result and result[0] > 0:
+        return True
+    else:
+        return False
+
+
+
+
+def get_wins_loses_mmr(player_name):
+    conn = sqlite3.connect('./db/players_data.db')
+    cursor = conn.cursor()
+
+    query = "SELECT wins, losses, mmr FROM Players WHERE player_name = ?"
+    cursor.execute(query, (player_name,))
+    result = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+
+    if result:
+        wins, losses, mmr = result
+        return wins, losses, mmr
+    else:
+        return None
 
 def get_matches_by_player(player_name):
     conn = sqlite3.connect("./db/matches_data.db")
@@ -832,7 +913,6 @@ def register():
 
 @views.route('/delete-item', methods=['POST'])
 @login_required
-@mod_required
 def delete_item():
     key = request.json['key']
     if key in session:
