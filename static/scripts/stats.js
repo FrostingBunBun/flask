@@ -114,3 +114,50 @@ const currentMonth = currentDate.getMonth();
 
 // Generate the calendar for the current month
 generateCalendar(currentYear, currentMonth, gameData);
+
+
+
+
+function handleCheckboxChange() {
+    var checkbox = document.getElementById("check-flag-checkbox");
+    if (checkbox.checked) {
+      console.log("Checkbox is checked!");
+      // Perform your desired action here when the checkbox is checked
+    } else {
+      console.log("Checkbox is unchecked!");
+      // Perform any actions you want when the checkbox is unchecked
+    }
+  }
+
+  var applyBtns = document.getElementsByClassName("apply");
+  for (var i = 0; i < applyBtns.length; i++) {
+    applyBtns[i].addEventListener("click", function() {
+      var checkbox = document.getElementById("check-flag-checkbox");
+      var isChecked = checkbox.checked;
+      
+      // Create a data object to send to the server
+    var data = {
+        isPublic: isChecked
+      };
+  
+      // Send an HTTP POST request to the server
+      fetch('/save', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        if (response.ok) {
+          console.log('Checkbox value sent to the server successfully');
+          // Handle the response from the server if needed
+        } else {
+          console.log('Error sending checkbox value to the server');
+        }
+      })
+      .catch(error => {
+        console.log('Error:', error);
+      });
+    });
+  }

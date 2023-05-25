@@ -9,10 +9,30 @@
   <button id="home">Home</button>
   <button onclick="goBack()" id="back">Back</button>
     <div class="top-block">
+
+
+
         <div class="mainInfo">
+          
             <div class="profile-picture"><img src={{ avatar_url }} alt="Avatar"></div>
             <h2 class="nickname">{{ name }}</h2>
         </div>
+
+
+        
+        {% if is_own_profile %}
+  <div class="check-flag">
+    <span class="profile-info">Private Account:</span>
+    <input type="checkbox" id="check-flag-checkbox" {% if not is_public %}checked{% endif %} onchange="handleCheckboxChange()">
+    <label for="check-flag-checkbox"></label>
+  </div>
+  <div>
+    <button class="apply">APPLY</button>
+  </div>
+{% endif %}
+
+
+
         <div class="profile-info">
           <p>Last Match: <span class="last-match-value">{{ lastMatch[5].split(' ')[0] }}</span></p>
             <p>Wins: <span class="wins-value">{{wins}}</span></p>

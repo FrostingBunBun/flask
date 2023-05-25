@@ -692,6 +692,7 @@ def profile_details():
             avatar_url = "https://my.catgirls.forsale/QukeB047.png"
 
 
+
     
     
     history = get_matches_by_player(name)
@@ -755,14 +756,27 @@ def profile_details():
     print("////////////////////////////////////////////////")
 
 
+    conn3 = sqlite3.connect('./db/users.db')
+    cursor3 = conn3.cursor()
 
+    # Execute the SELECT query with a WHERE clause to search for the name
+    cursor3.execute("SELECT is_public FROM users WHERE username=?", (name,))
+
+    # Fetch the result (URL) from the query
+    result = cursor3.fetchone()
+
+    is_public = result[0]
+    print(is_public)
+
+
+    is_own_profile = True
 
 
 
 
 
     return render_template('stats.html', name=name, avatar_url=avatar_url, history=history, lastMatch=lastMatch, wins=wins, losses=losses, mmr=mmr, 
-                           games_per_day=games_per_day)
+                           games_per_day=games_per_day, is_public=is_public, is_own_profile=is_own_profile)
 
 
 
@@ -861,15 +875,61 @@ def profile_details_leaderboard(name):
     print("////////////////////////////////////////////////")
 
 
-
+    sessionName = session.get('username')
+    if sessionName == name:
+        is_own_profile = True
+    else:
+        is_own_profile = False
 
 
 
 
 
     return render_template('stats.html', name=name, avatar_url=avatar_url, history=history, lastMatch=lastMatch, wins=wins, losses=losses, mmr=mmr, 
-                           games_per_day=games_per_day)
+                           games_per_day=games_per_day, is_own_profile=is_own_profile)
 
+@views.route('/save', methods=['POST'])
+def save_checkbox_value():
+    data = request.get_json()
+    is_public = data.get('isPublic')
+
+    # Handle the Boolean value as needed
+    if is_public:
+
+        
+        # Checkbox is checked
+        # Perform appropriate actions
+        print("Checkbox is checked")
+
+        name = session['username']
+
+        conn3 = sqlite3.connect('./db/users.db')
+        cursor3 = conn3.cursor()
+
+        # Execute the SELECT query with a WHERE clause to search for the name
+        cursor3.execute("UPDATE users SET is_public = ? WHERE username = ?", (0, name,))
+
+        conn3.commit()
+
+
+    else:
+        # Checkbox is unchecked
+        # Perform appropriate actions
+        print("Checkbox is unchecked")
+
+        name = session['username']
+
+        conn3 = sqlite3.connect('./db/users.db')
+        cursor3 = conn3.cursor()
+
+        # Execute the SELECT query with a WHERE clause to search for the name
+        cursor3.execute("UPDATE users SET is_public = ? WHERE username = ?", (1, name,))
+
+        conn3.commit()
+
+
+    # Return a response if needed
+    return 'Checkbox value received'
 
 
 @views.route('/matches')
@@ -933,21 +993,25 @@ def get_wins_loses_mmr(player_name):
     else:
         return None
 
-def get_matches_by_player(player_name):
+def get_matches_by_player(player_name, page=1, games_per_page=10):
     conn = sqlite3.connect("./db/matches_data.db")
     cursor = conn.cursor()
 
-    query = "SELECT * FROM Matches WHERE playerLeft = ? OR playerRight = ?;"
-    cursor.execute(query, (player_name, player_name))
+    query = "SELECT * FROM Matches WHERE playerLeft = ? OR playerRight = ? LIMIT ? OFFSET ?;"
+    offset = (page - 1) * games_per_page
+    cursor.execute(query, (player_name, player_name, games_per_page, offset))
     matches = cursor.fetchall()
 
     # Convert date format for each match
     matches = [(match[0], match[1], match[2], match[3], match[4], convert_date(match[5]), match[6], match[7]) for match in matches]
-    
+
     cursor.close()
     conn.close()
-
+    
     return matches
+
+
+
 
 def convert_date(date_str):
     datetime_obj = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%S.%fZ")
