@@ -914,6 +914,8 @@ def profile_details_leaderboard(name):
 
 
     sessionName = session.get('username')
+    print("PAGE NAME: ", name)
+    print("MY NAME: ", sessionName)
     if sessionName == name:
         is_own_profile = True
     else:
@@ -927,17 +929,15 @@ def profile_details_leaderboard(name):
     conn5 = sqlite3.connect('./db/users.db')
     cursor5 = conn5.cursor()
     
-    # Initialize is_public with a default value
-    is_public = False
-    
     cursor5.execute("SELECT is_public FROM users WHERE username = ?", (name,))
     result = cursor5.fetchone()
     
-    # Check the result
+    # Check if the result is not None
     if result is not None:
         is_public = result[0]
         print(f"The value of 'is_public' for {name} is {is_public}.")
     else:
+        is_public = 0  # Assign a default value of 0 when the username is not found
         print(f"No record found for {name}.")
     
     return render_template('stats.html', name=name, avatar_url=avatar_url, history=history, lastMatch=lastMatch, wins=wins, losses=losses, mmr=mmr, 

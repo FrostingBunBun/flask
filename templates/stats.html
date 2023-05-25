@@ -55,7 +55,7 @@
 
 
 
-              {% if is_public %}
+              {% if is_public or is_own_profile %}
   <div class="match-history-container">
     <h2>Match History</h2>
     <div class="start">(starts from 2023-05-23)</div>
@@ -100,7 +100,7 @@
                 <!-- Left container content here -->
             </div>
 
-            {% if is_public %}
+            {% if is_public or is_own_profile %}
             <div class="right-container">
               <div></div>
               <div class="calendar">
