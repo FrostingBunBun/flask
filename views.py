@@ -8,7 +8,7 @@ import json
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from difflib import get_close_matches
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from flask import jsonify, request
 import difflib
 
@@ -658,9 +658,6 @@ def main():
         return render_template("main.html")
     
 
-
-    
-
 @views.route('/stats')
 @login_required
 def profile_details():
@@ -718,6 +715,44 @@ def profile_details():
     else:
         print(f"Player '{name}' not found.")
 
+# ------------------------------------------------------------------
+
+    # Connect to the SQLite database
+    conn = sqlite3.connect('./db/matches_data.db')
+    cursor = conn.cursor()
+
+    # Get the current date and the first day of the month
+    current_date = datetime.now().date()
+    first_day = datetime(current_date.year, current_date.month, 1)
+
+    # Get the last registered date in the database
+    query = "SELECT MAX(timestamp) FROM Matches"
+    cursor.execute(query)
+    last_registered = cursor.fetchone()[0].split('T')[0]
+
+    # Calculate the number of days between the first day of the month and the last registered date
+    num_days = (datetime.strptime(last_registered, "%Y-%m-%d") - first_day).days + 1
+
+    # Initialize a list to store the number of games per day
+    games_per_day = [0] * num_days
+
+    # Retrieve game data from the database for a specific player
+    query = "SELECT timestamp FROM Matches WHERE playerLeft = ? OR playerRight = ?"
+    cursor.execute(query, (name, name))
+    game_timestamps = cursor.fetchall()
+
+    # Iterate over the game timestamps and update the games_per_day list
+    for timestamp in game_timestamps:
+        game_date = datetime.strptime(timestamp[0].split('T')[0], "%Y-%m-%d").date()
+        day_index = (game_date - first_day.date()).days
+        games_per_day[day_index] += 1
+
+    # Close the database connection
+    cursor.close()
+    conn.close()
+    print("////////////////////////////////////////////////")
+    print(games_per_day)
+    print("////////////////////////////////////////////////")
 
 
 
@@ -726,7 +761,8 @@ def profile_details():
 
 
 
-    return render_template('stats.html', name=name, avatar_url=avatar_url, history=history, lastMatch=lastMatch, wins=wins, losses=losses, mmr=mmr)
+    return render_template('stats.html', name=name, avatar_url=avatar_url, history=history, lastMatch=lastMatch, wins=wins, losses=losses, mmr=mmr, 
+                           games_per_day=games_per_day)
 
 
 
@@ -783,6 +819,46 @@ def profile_details_leaderboard(name):
     else:
         print(f"Player '{name}' not found.")
 
+    
+
+# ------------------------------------------------------------------
+
+    # Connect to the SQLite database
+    conn = sqlite3.connect('./db/matches_data.db')
+    cursor = conn.cursor()
+
+    # Get the current date and the first day of the month
+    current_date = datetime.now().date()
+    first_day = datetime(current_date.year, current_date.month, 1)
+
+    # Get the last registered date in the database
+    query = "SELECT MAX(timestamp) FROM Matches"
+    cursor.execute(query)
+    last_registered = cursor.fetchone()[0].split('T')[0]
+
+    # Calculate the number of days between the first day of the month and the last registered date
+    num_days = (datetime.strptime(last_registered, "%Y-%m-%d") - first_day).days + 1
+
+    # Initialize a list to store the number of games per day
+    games_per_day = [0] * num_days
+
+    # Retrieve game data from the database for a specific player
+    query = "SELECT timestamp FROM Matches WHERE playerLeft = ? OR playerRight = ?"
+    cursor.execute(query, (name, name))
+    game_timestamps = cursor.fetchall()
+
+    # Iterate over the game timestamps and update the games_per_day list
+    for timestamp in game_timestamps:
+        game_date = datetime.strptime(timestamp[0].split('T')[0], "%Y-%m-%d").date()
+        day_index = (game_date - first_day.date()).days
+        games_per_day[day_index] += 1
+
+    # Close the database connection
+    cursor.close()
+    conn.close()
+    print("////////////////////////////////////////////////")
+    print(games_per_day)
+    print("////////////////////////////////////////////////")
 
 
 
@@ -791,10 +867,35 @@ def profile_details_leaderboard(name):
 
 
 
-    return render_template('stats.html', name=name, avatar_url=avatar_url, history=history, lastMatch=lastMatch, wins=wins, losses=losses, mmr=mmr)
+    return render_template('stats.html', name=name, avatar_url=avatar_url, history=history, lastMatch=lastMatch, wins=wins, losses=losses, mmr=mmr, 
+                           games_per_day=games_per_day)
 
 
-from datetime import datetime
+
+@views.route('/matches')
+def matches_history():
+    historyAll = get_all_matches()
+
+    return render_template('matches.html', historyAll=historyAll)
+
+
+
+def get_all_matches():
+    conn = sqlite3.connect('./db/matches_data.db')
+    cursor = conn.cursor()
+
+    query = "SELECT match_id, playerLeft, playerRight, winner, loser, timestamp, duration, shift, plane FROM Matches"
+    cursor.execute(query)
+    results = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    if results:
+        return results
+    else:
+        return None
+
 
 def check_player_exists(player_name):
     conn = sqlite3.connect('./db/matches_data.db')
@@ -912,7 +1013,6 @@ def register():
     return render_template("register.html")
 
 @views.route('/delete-item', methods=['POST'])
-@login_required
 def delete_item():
     key = request.json['key']
     if key in session:

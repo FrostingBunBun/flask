@@ -1,8 +1,10 @@
 from flask import Flask
 from views import views
+from filters import format_datetime
 
 application = Flask(__name__)
 application.secret_key = "secretKey"  # Set a secret key for session management
+application.jinja_env.filters['datetime'] = format_datetime
 
 
 application.register_blueprint(views, url_prefix="/")

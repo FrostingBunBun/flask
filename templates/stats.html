@@ -23,7 +23,10 @@
     </div>
       
     <main>
+      <div id="calendarData">{{ games_per_day }}</div>
         <div class="container">
+
+          
             <div class="left-container">
               <div></div>
 
@@ -31,6 +34,7 @@
 
               <div class="match-history-container">
                 <h2>Match History</h2>
+                <div class="start">(starts from 2023-05-23)</div>
                 <table>
                   <thead>
                     <tr>
@@ -41,6 +45,10 @@
                       <th>Date</th>
                     </tr>
                   </thead>
+
+
+
+                  
                   <tbody>
                     {% for match in history|reverse %}
                       <tr>
@@ -56,17 +64,20 @@
                       </tr>
                     {% endfor %}
                   </tbody>
+
+
+
+
+
+
+
+
                 </table>
               </div>
               
               
               
               
-
-
-
-
-
                 <!-- Left container content here -->
             </div>
 
@@ -78,15 +89,12 @@
               <div class="calendar">
 
                 <div class="weekdays">
-                  <div>Sun</div>
-                  <div>Mon</div>
-                  <div>Tue</div>
-                  <div>Wed</div>
-                  <div>Thu</div>
-                  <div>Fri</div>
-                  <div>Sat</div>
+  
                 </div>
                 <div class="days">
+                  <h1></h1>
+    
+    <div id="calendar"></div>
                   <!-- Calendar days dynamically generated here -->
                 </div>
               </div>

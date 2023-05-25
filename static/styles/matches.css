@@ -1,0 +1,92 @@
+/* matches.css */
+
+/* Body Styles */
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #1f1f1f;
+    color: #b81358;
+    width: calc(100% - 700px);
+    margin-left: 350px;
+    margin-right: 350px;
+    margin-top: 20px;
+  }
+  .winner {
+    color: rgb(0, 182, 0);
+    font-weight: bold;
+}
+
+.loser {
+    color: rgb(207, 0, 0);
+    font-weight: bold;
+}
+  
+  /* Button Styles */
+  #back {
+    background-color: #b81358;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  #back:hover {
+    background-color: #8b0d3d;
+  }
+  
+  /* Table Styles */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #444;
+    font-size: 14px;
+  }
+  
+  th {
+    background-color: #b81358;
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  /* Table Row Styles */
+  tr:nth-child(even) {
+    background-color: #551d34;
+  }
+  
+  tr:nth-child(even) td {
+    background-color: #551d34;
+  }
+  
+  /* Table Cell Styles */
+  td {
+    color: #fff;
+  }
+  
+  /* JavaScript Message Styles */
+  .js-message {
+    margin-top: 20px;
+    font-style: italic;
+    color: #888;
+  }
+  
+  .shift {
+    color: white;
+    font-weight: bold;
+    padding: 5px;
+  }
+  
+  .shift-1 {
+    background: linear-gradient(to right, #FF0000, #00FF00); /* Red to Green gradient */
+  }
+  

@@ -40,6 +40,13 @@ window.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+window.addEventListener('DOMContentLoaded', function() {
+    var statsButton = document.getElementById("matches");
+    statsButton.addEventListener("click", function() {
+        window.location.href = "/matches";
+    });
+});
+
 
 
 
