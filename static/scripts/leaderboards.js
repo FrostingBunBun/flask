@@ -12,9 +12,9 @@ var logOutButton = document.getElementById('home');
 
 document.addEventListener("DOMContentLoaded", function() {
     var mmrValues = Array.from(document.querySelectorAll("#mmrTable .mmr-value")).map(element => parseInt(element.textContent));
-    console.log("##############################")
-    console.log(mmrValues)
-    console.log("##############################")
+    // console.log("##############################")
+    // console.log(mmrValues)
+    // console.log("##############################")
   
     var mmrDistribution = {};
 

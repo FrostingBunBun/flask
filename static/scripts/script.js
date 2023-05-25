@@ -618,9 +618,10 @@ homeBtn.addEventListener("click", function() {
 
 
 
+
+
 var selectElement = document.getElementById("image-select");
 var selectedImageElement = document.getElementById("selected-image");
-var submitButton = document.getElementById("confirmYes");
 
 // Function to handle the selection change
 function handleSelectionChange() {
@@ -630,15 +631,6 @@ function handleSelectionChange() {
 
   // Update the displayed image
   selectedImageElement.src = selectedImage;
-  return selectedName;
-}
-
-// Add event listener for selection change
-selectElement.addEventListener("change", handleSelectionChange);
-
-// Function to handle button click event
-function handleButtonClick() {
-  var selectedName = handleSelectionChange();
 
   // Make an HTTP request to the Flask server
   var xhr = new XMLHttpRequest();
@@ -659,11 +651,11 @@ function handleButtonClick() {
   };
 
   xhr.send(JSON.stringify({ selectedName: selectedName }));
+  console.log(selectedName); // Log the selected name
 }
 
-
-// Add event listener for button click
-submitButton.addEventListener("click", handleButtonClick);
+// Add event listener for selection change
+selectElement.addEventListener("change", handleSelectionChange);
 
 // Trigger selection change on page load
 handleSelectionChange();

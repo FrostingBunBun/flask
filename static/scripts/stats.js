@@ -131,6 +131,8 @@ function handleCheckboxChange() {
 
   var applyBtns = document.getElementsByClassName("apply");
   for (var i = 0; i < applyBtns.length; i++) {
+
+
     applyBtns[i].addEventListener("click", function() {
       var checkbox = document.getElementById("check-flag-checkbox");
       var isChecked = checkbox.checked;
@@ -160,4 +162,6 @@ function handleCheckboxChange() {
         console.log('Error:', error);
       });
     });
+
+    
   }

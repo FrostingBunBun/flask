@@ -390,7 +390,7 @@ def leftWonProcess():
     conn = sqlite3.connect('./db/matches_data.db')
     cursor = conn.cursor()
 
-
+    jet = session['jet']
     print("FINAL JET: ", jet)
     
 
@@ -456,7 +456,7 @@ def rightWonProcess():
     cursor = conn.cursor()
 
     
-
+    jet = session['jet']
     print("FINAL JET: ", jet)
 
     cursor.execute('''
@@ -510,14 +510,6 @@ def sendJet():
 @mod_required
 def match():
 
-    print("Session Data MATCH!!!:", session)
-    
-    
-
-
-    print("==========================")
-    print("SESSION ON LOAD", session.items())
-    print("==========================")
 
     # ===================================================
 
@@ -594,7 +586,9 @@ def match():
     # print(session.items())
     # print("==========================")
     
-    
+    print("==========================")
+    print(session.items())
+    print("==========================")
 
     return render_template("match.html",
                            leftNAME=leftNAME,
@@ -927,10 +921,28 @@ def profile_details_leaderboard(name):
 
 
 
+        
 
-
+    
+    conn5 = sqlite3.connect('./db/users.db')
+    cursor5 = conn5.cursor()
+    
+    # Initialize is_public with a default value
+    is_public = False
+    
+    cursor5.execute("SELECT is_public FROM users WHERE username = ?", (name,))
+    result = cursor5.fetchone()
+    
+    # Check the result
+    if result is not None:
+        is_public = result[0]
+        print(f"The value of 'is_public' for {name} is {is_public}.")
+    else:
+        print(f"No record found for {name}.")
+    
     return render_template('stats.html', name=name, avatar_url=avatar_url, history=history, lastMatch=lastMatch, wins=wins, losses=losses, mmr=mmr, 
-                           games_per_day=games_per_day, is_own_profile=is_own_profile)
+                           games_per_day=games_per_day, is_own_profile=is_own_profile, is_public=is_public)
+
 
 @views.route('/save', methods=['POST'])
 def save_checkbox_value():
@@ -1248,13 +1260,15 @@ def key():
     password = request.args.get('password')
     return render_template("key.html", password=password)
 
+
 @views.route('/sendJet', methods=['POST'])
 def receive_data():
     data = request.get_json()
     selected_name = data.get('selectedName')
-    # Process the received data here
-    print("222222222222222222222222222222222")
-    print(selected_name)
+    
+    print("Selected Name:", selected_name)  # Print the selected name in Python
+    
     session['jet'] = selected_name
-    print("222222222222222222222222222222222")
-    return 'Data received'
+    print("Session Items:", session.items())  # Print the session items
+    
+    return jsonify(session=session)

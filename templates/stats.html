@@ -52,58 +52,55 @@
 
 
 
-              <div class="match-history-container">
-                <h2>Match History</h2>
-                <div class="start">(starts from 2023-05-23)</div>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Plane</th>
-                      <th>Result</th>
-                      <th>Duration</th>
-                      <th>MMR Shift</th>
-                      <th>Date</th>
-                    </tr>
-                  </thead>
 
 
 
-                  
-                  <tbody>
-                    {% for match in history|reverse %}
-                      <tr>
-                        <td class="plane-type">f-14</td>
-                        <td class="result {% if match[3].split()[0] == name %}win{% else %}loss{% endif %}">
-                          {% if match[3].split()[0] == name %}Won Match{% else %}Lost Match{% endif %}
-                        </td>
-                        <td class="duration">{{ match[6] // 60 }}:{{ "%02d" % (match[6] % 60) }}</td>
-                        <td class="mmr-shift {% if match[3].split()[0] == name %}positive{% else %}negative{% endif %}">
-                          {% if match[3].split()[0] == name %}+{{ match[7] }}{% else %}-{{ match[7] }}{% endif %}
-                        </td>
-                        <td class="date">{{ match[5] }}</td>
-                      </tr>
-                    {% endfor %}
-                  </tbody>
+              {% if is_public %}
+  <div class="match-history-container">
+    <h2>Match History</h2>
+    <div class="start">(starts from 2023-05-23)</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Plane</th>
+          <th>Result</th>
+          <th>Duration</th>
+          <th>MMR Shift</th>
+          <th>Date</th>
+        </tr>
+      </thead>
 
-
-
-
-
-
-
-
-                </table>
-              </div>
+      <tbody>
+        {% for match in history|reverse %}
+          <tr>
+            <td class="plane-type">f-14</td>
+            <td class="result {% if match[3].split()[0] == name %}win{% else %}loss{% endif %}">
+              {% if match[3].split()[0] == name %}Won Match{% else %}Lost Match{% endif %}
+            </td>
+            <td class="duration">{{ match[6] // 60 }}:{{ "%02d" % (match[6] % 60) }}</td>
+            <td class="mmr-shift {% if match[3].split()[0] == name %}positive{% else %}negative{% endif %}">
+              {% if match[3].split()[0] == name %}+{{ match[7] }}{% else %}-{{ match[7] }}{% endif %}
+            </td>
+            <td class="date">{{ match[5] }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="private-profile">Private Profile</div>
+{% endif %}
               
               
               
+
+
+
               
                 <!-- Left container content here -->
             </div>
 
-
-
-
+            {% if is_public %}
             <div class="right-container">
               <div></div>
               <div class="calendar">
@@ -119,6 +116,9 @@
                 </div>
               </div>
             </div>
+            {% else %}
+  <div class="private-profile">Private Profile</div>
+{% endif %}
 
 
             
