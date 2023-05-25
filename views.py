@@ -8,8 +8,9 @@ import json
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from difflib import get_close_matches
-from datetime import date
-
+from datetime import date, datetime
+from flask import jsonify, request
+import difflib
 
 
 
@@ -51,14 +52,32 @@ for i in range(len(flat_names)):
 
 database_path = './db/users.db'
 
+def is_profile_public(username):
+    # Retrieve the user profile based on the username and check the `public_profile` flag
+    # Return True if the profile is public, False otherwise
+    # Implement your logic to retrieve and check the user profile visibility here
+    # For example, if you are using a database, you can query the user profile table/model
+    # and check the value of the `public_profile` field for the given username
+    return True  # Modify this based on your implementation
+
 
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not session.get('logged_in') or not session.get('confirmed'):
             return redirect(url_for('views.login'))
-        return f(*args, **kwargs)
+
+        # Retrieve the username from the URL parameter
+        username = kwargs.get('username')
+
+        if username == session.get('username') or is_profile_public(username):
+            return f(*args, **kwargs)
+        else:
+            return render_template('unauthorized.html')
+
     return decorated_function
+
+
 
 def mod_required(func):
     @wraps(func)
@@ -629,7 +648,11 @@ def main():
     print("==========================")
     if session.get('logged_in'):
         username = session['username']
-        return render_template("main_logged.html", username=username)
+        if session.get('mod'):
+            mod = "MOD ACCOUNT"
+        else:
+            mod = ""
+        return render_template("main_logged.html", username=username, mod=mod)
     else:
         return render_template("main.html")
     
@@ -641,13 +664,138 @@ def main():
 @login_required
 def profile_details():
     name = session['username']
-    return render_template("stats.html", name=name)
+
+    conn = sqlite3.connect('user_dsAvis.db')
+    cursor = conn.cursor()
+
+    # Execute the SELECT query with a WHERE clause to search for the name
+    cursor.execute("SELECT avatar_url FROM dsLinks WHERE name=?", (name,))
+
+    # Fetch the result (URL) from the query
+    result = cursor.fetchone()
+
+    # Check if a matching record was found
+    if result:
+        avatar_url = result[0]
+    else:
+        # No exact match found, use get_close_matches to find similar names
+        cursor.execute("SELECT name FROM dsLinks")
+        all_names = [row[0] for row in cursor.fetchall()]
+
+        # Adjust the cutoff value as desired (e.g., 0.7 for a higher similarity threshold)
+        close_matches = difflib.get_close_matches(name, all_names, cutoff=0.5)
+
+        if close_matches:
+            closest_name = close_matches[0]
+            cursor.execute("SELECT avatar_url FROM dsLinks WHERE name=?", (closest_name,))
+            closest_result = cursor.fetchone()
+            avatar_url = closest_result[0] if closest_result else "https://my.catgirls.forsale/QukeB047.png"
+        else:
+            avatar_url = "https://my.catgirls.forsale/QukeB047.png"
+
+
+    
+    
+    history = get_matches_by_player(name)
+
+
+
+
+
+    return render_template('stats.html', name=name, avatar_url=avatar_url, history=history)
+
+
 
 
 @views.route('/stats/<name>')
 def profile_details_leaderboard(name):
+    conn = sqlite3.connect('user_dsAvis.db')
+    cursor = conn.cursor()
 
-    return render_template('stats.html', name=name)
+    # Execute the SELECT query with a WHERE clause to search for the name
+    cursor.execute("SELECT avatar_url FROM dsLinks WHERE name=?", (name,))
+
+    # Fetch the result (URL) from the query
+    result = cursor.fetchone()
+
+    # Check if a matching record was found
+    if result:
+        avatar_url = result[0]
+    else:
+        # No exact match found, use get_close_matches to find similar names
+        cursor.execute("SELECT name FROM dsLinks")
+        all_names = [row[0] for row in cursor.fetchall()]
+
+        # Adjust the cutoff value as desired (e.g., 0.7 for a higher similarity threshold)
+        close_matches = difflib.get_close_matches(name, all_names, cutoff=0.5)
+
+        if close_matches:
+            closest_name = close_matches[0]
+            cursor.execute("SELECT avatar_url FROM dsLinks WHERE name=?", (closest_name,))
+            closest_result = cursor.fetchone()
+            avatar_url = closest_result[0] if closest_result else "https://my.catgirls.forsale/QukeB047.png"
+        else:
+            avatar_url = "https://my.catgirls.forsale/QukeB047.png"
+
+
+    
+    
+    history = get_matches_by_player(name)
+
+
+
+
+
+    return render_template('stats.html', name=name, avatar_url=avatar_url, history=history)
+
+
+from datetime import datetime
+
+def get_matches_by_player(player_name):
+    conn = sqlite3.connect("./db/matches_data.db")
+    cursor = conn.cursor()
+
+    query = "SELECT * FROM Matches WHERE playerLeft = ? OR playerRight = ?;"
+    cursor.execute(query, (player_name, player_name))
+    matches = cursor.fetchall()
+
+    # Convert date format for each match
+    matches = [(match[0], match[1], match[2], match[3], match[4], convert_date(match[5]), match[6], match[7]) for match in matches]
+    
+    cursor.close()
+    conn.close()
+
+    return matches
+
+def convert_date(date_str):
+    datetime_obj = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%S.%fZ")
+    formatted_date = datetime_obj.strftime("%Y-%m-%d %H:%M:%S")
+    return formatted_date
+
+
+
+def setDefaultMmr():
+        mmr_dict = {}
+
+        for x in range(len(flat_names)):
+            mmr_dict[flat_names[x]] = flat_mmrs[x]
+
+        print(mmr_dict)
+
+
+        conn2 = sqlite3.connect('./db/players_data.db')
+        cursor2 = conn2.cursor()
+
+
+        for name, mmr in mmr_dict.items():
+            # Update MMR value in the database for the given player name
+            query = "UPDATE Players SET startingMmr = ? WHERE player_name = ?;"
+            cursor2.execute(query, (mmr, name))
+
+        # Commit the changes and close the database connection
+        conn2.commit()
+        cursor2.close()
+        conn2.close()
 
 
 
@@ -742,8 +890,7 @@ def login():
 
     return render_template("login.html", incorrect_password=incorrect_password, not_confirmed=not_confirmed)
 
-from flask import jsonify, request
-import difflib
+
 
 @views.route('/avatar', methods=['POST'])
 @login_required
@@ -789,7 +936,7 @@ def get_left_avatar():
 
     conn.close()
 
-    matching_results = difflib.get_close_matches(name, [result[0] for result in results], n=1, cutoff=0.1)
+    matching_results = difflib.get_close_matches(name, [result[0] for result in results], n=1, cutoff=0.5)
 
     # print("TESTTTTTT: ", matching_results)
 

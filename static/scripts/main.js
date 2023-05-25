@@ -1,20 +1,41 @@
-var login = document.getElementById("login");
-login.addEventListener("click", function() {
-    // Redirect to the registration page or perform necessary actions
-    window.location.href = "login";
+
+
+
+
+window.addEventListener('DOMContentLoaded', function() {
+    var statsButton = document.getElementById("stats");
+    statsButton.addEventListener("click", function() {
+        window.location.href = "#";
+    });
 });
-var register = document.getElementById("register");
-register.addEventListener("click", function() {
-    // Redirect to the registration page or perform necessary actions
-    window.location.href = "register";
+
+window.addEventListener('DOMContentLoaded', function() {
+    var statsButton = document.getElementById("leaderboards");
+    statsButton.addEventListener("click", function() {
+        window.location.href = "leaderboards";
+    });
 });
-var stats = document.getElementById("stats");
-stats.addEventListener("click", function() {
-    // Redirect to the registration page or perform necessary actions
-    window.location.href = "stats";
+
+window.addEventListener('DOMContentLoaded', function() {
+    var statsButton = document.getElementById("login");
+    statsButton.addEventListener("click", function() {
+        window.location.href = "login";
+    });
 });
-var leaderBoardsBtn = document.getElementById("leaderboards");
-leaderBoardsBtn.addEventListener("click", function() {
-  // Redirect to the login page or perform necessary actions
-  window.location.href = "/leaderboards";
+
+window.addEventListener('DOMContentLoaded', function() {
+    var statsButton = document.getElementById("register");
+    statsButton.addEventListener("click", function() {
+        window.location.href = "register";
+    });
 });
+
+
+
+
+
+// var leaderBoardsBtn = document.getElementById("leaderboards");
+// leaderBoardsBtn.addEventListener("click", function() {
+//   // Redirect to the login page or perform necessary actions
+//   window.location.href = "/leaderboards";
+// });

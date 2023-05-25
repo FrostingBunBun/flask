@@ -604,3 +604,10 @@ homeBtn.addEventListener("click", function() {
     window.location.href = "/main";
 });
 
+
+function changePlane(planeName) {
+  var selectedPlaneButton = document.getElementById("selectedPlane");
+  var planeImage = document.getElementById("planeImage");
+  selectedPlaneButton.textContent = planeName;
+  planeImage.alt = planeName;
+}

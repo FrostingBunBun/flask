@@ -132,7 +132,7 @@ p {
   text-decoration: underline;
 }
 
-#fixed-container p {
+#fixed-container p{
   color: white;
   font-size: 14px;
   font-family: Arial, sans-serif;
@@ -141,6 +141,19 @@ p {
   background-color: rgba(0, 0, 0, 0.8);
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  animation-name: slideInn;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+}
+
+#fixed-container span {
+  color: rgb(255, 179, 179);
+  font-size: 12px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  border-radius: 10px;
   text-transform: uppercase;
   letter-spacing: 2px;
   animation-name: slideInn;

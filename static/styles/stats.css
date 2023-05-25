@@ -19,8 +19,8 @@ body{
   }
   
   .top-block .profile-picture img {
-    width: 70%;
-    height: 70%;
+    width: 170px;
+    height: 170px;
     object-fit: cover;
     border-radius: 10%;
   }
@@ -41,6 +41,16 @@ body{
     margin: 0;
     font-size: 20px;
     margin-bottom: 10px;
+  }
+  .left-container h2 {
+    text-align: center;
+    font-size: 24px;
+    color: #868686;
+    margin-bottom: 20px;
+    /* Additional styling properties */
+    text-transform: uppercase;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   }
   
   .top-block .profile-info p {
@@ -126,7 +136,21 @@ body{
     cursor: pointer;
     transition: background-color 0.3s ease; /* Add transition property for background-color */
   }
-  #home:hover {
+
+  #back {
+    position: absolute;
+    top: 10px;
+    left: 100px;
+    background-color: #838383;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Add transition property for background-color */
+  }
+  #home:hover,
+  #back:hover {
     background-color: #6b6b6b;
   }
   
@@ -201,4 +225,81 @@ body{
     background-color: #ff69b4;
   }
   
+  table {
+    width: 100%;
+    background-color: #333;
+    border-collapse: collapse;
+    border: 1px solid #555;
+  }
+  
+  th,
+  td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #555;
+  }
+  
+  th {
+    background-color: #ff66cc;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #444;
+  }
+  
+  tr:hover {
+    background-color: #666;
+  }
+  
+  td:nth-child(1) {
+    color: #bebebe;
+  }
+  
+  td:nth-child(4) {
+    font-weight: bold;
+  }
+
+  /* Result styles */
+.result {
+  font-weight: bold;
+}
+
+.win {
+  color: green;
+}
+
+.loss {
+  color: red;
+}
+
+/* MMR shift styles */
+.mmr-shift {
+  font-weight: bold;
+}
+
+.positive {
+  color: green;
+}
+
+.negative {
+  color: red;
+}
+
+/* Date styles */
+.date {
+  font-style: italic;
+  color: #bbbbbb;
+}
+
+/* Other styles */
+.plane-type {
+  text-transform: uppercase;
+}
+.duration{
+  color: #b986a0;
+}
+
+
   
