@@ -1,4 +1,5 @@
 window.addEventListener("load", function () {
+
   var leftGaugeElement = document.getElementById("leftGauge");
   leftGaugeElement.classList.add("fade-in");
 
@@ -23,6 +24,7 @@ function convertDurationToSeconds(duration) {
 
 
 document.addEventListener("DOMContentLoaded", function () {
+  console.log("LENGTH COOKIE: ", document.cookie.length);
   function calculateWinProbabilities(
     leftRating,
     rightRating,

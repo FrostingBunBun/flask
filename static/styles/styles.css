@@ -617,53 +617,54 @@ li:hover {
 
 
 
-.dropdown {
+
+
+
+
+.select-wrapper {
   position: relative;
   display: inline-block;
 }
 
-.dropbtn {
-  background-color: transparent;
-  color: white;
-  padding: 12px;
+.select-wrapper select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding: 10px 30px 10px 10px;
   font-size: 16px;
-  border: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  background-image: linear-gradient(45deg, transparent 50%, #ccc 50%), linear-gradient(135deg, #ccc 50%, transparent 50%);
+  background-position: calc(100% - 20px) center, calc(100% - 15px) center;
+  background-size: 5px 5px, 2px 2.5em;
+  background-repeat: no-repeat;
   cursor: pointer;
-  display: flex;
-  align-items: center;
+}
+.beforeSelect{
+  color: #c0c0c0;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  /* margin: 20px; */
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
 }
 
-.dropdown-content {
+.select-wrapper select::-ms-expand {
   display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
 }
 
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
+.select-wrapper select option {
+  padding: 10px;
+  font-size: 16px;
 }
 
-.dropdown-content a img {
-  width: 24px;
-  height: 24px;
-  margin-right: 8px;
-}
-
-.dropdown-content a:hover {
-  background-color: #f1f1f1;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-.dropdown:hover .dropbtn {
-  background-color: #3e8e41;
+.selected-image {
+  max-width: 200px;
+  max-height: 200px;
+  margin-top: 10px;
 }

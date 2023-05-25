@@ -231,7 +231,9 @@ def leaderboards():
 @login_required
 @mod_required
 def matchmaking():
-    # ===================================================
+
+    # =========================
+    # =========================
 
     # Connect to the database
     conn = sqlite3.connect('./db/players_data.db')
@@ -311,6 +313,14 @@ def matchmaking():
     print("==========================")
     return render_template("matchmaking.html", my_dict=nameMmr_dict, username=username)
 
+
+
+
+
+
+
+
+
 @views.route('/process-data', methods=['POST'])
 @login_required
 @mod_required
@@ -339,8 +349,8 @@ def process_data():
     print("playerRight_row: ", playerRight_row)
     print("===================================")
 
-    wks_mmr.update_cell(playerLeft_row, 3, left_new_mmr)
-    wks_mmr.update_cell(playerRight_row, 3, right_new_mmr)
+    # wks_mmr.update_cell(playerLeft_row, 3, left_new_mmr)
+    # wks_mmr.update_cell(playerRight_row, 3, right_new_mmr)
 
 
     # Prepare the response
@@ -374,11 +384,15 @@ def leftWonProcess():
     playerLeft_row = wks_mmr.cell(wks_mmr.find(left_name).row, 4).row
     playerRight_row = wks_mmr.cell(wks_mmr.find(right_name).row, 4).row
 
-    wks_mmr.update_cell(playerLeft_row, 6, int(wks_mmr.cell(playerLeft_row, 6).value) + 1)
-    wks_mmr.update_cell(playerRight_row, 7, int(wks_mmr.cell(playerRight_row, 7).value) + 1)
+    # wks_mmr.update_cell(playerLeft_row, 6, int(wks_mmr.cell(playerLeft_row, 6).value) + 1)
+    # wks_mmr.update_cell(playerRight_row, 7, int(wks_mmr.cell(playerRight_row, 7).value) + 1)
 
     conn = sqlite3.connect('./db/matches_data.db')
     cursor = conn.cursor()
+
+
+    print("FINAL JET: ", jet)
+    
 
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS Matches (
@@ -388,12 +402,13 @@ def leftWonProcess():
         loser TEXT,
         timestamp TEXT,
         duration INTEGER,
-        shift INTEGER
+        shift INTEGER,
+        plane TEXT
     )
 ''')
 
-    cursor.execute("INSERT INTO Matches (playerLeft, playerRight, winner, loser, timestamp, duration, shift) VALUES (?, ?, ?, ?, ?, ?, ?)",
-               (left_name, right_name, left_name, right_name, timestamp, duration, abs(shift)))
+    cursor.execute("INSERT INTO Matches (playerLeft, playerRight, winner, loser, timestamp, duration, shift, plane) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+               (left_name, right_name, right_name, left_name, timestamp, duration, abs(shift), jet))
 
 
 
@@ -434,11 +449,15 @@ def rightWonProcess():
     playerLeft_row = wks_mmr.cell(wks_mmr.find(left_name).row, 4).row
     playerRight_row = wks_mmr.cell(wks_mmr.find(right_name).row, 4).row
 
-    wks_mmr.update_cell(playerLeft_row, 7, int(wks_mmr.cell(playerLeft_row, 7).value) + 1)
-    wks_mmr.update_cell(playerRight_row, 6, int(wks_mmr.cell(playerRight_row, 6).value) + 1)
+    # wks_mmr.update_cell(playerLeft_row, 7, int(wks_mmr.cell(playerLeft_row, 7).value) + 1)
+    # wks_mmr.update_cell(playerRight_row, 6, int(wks_mmr.cell(playerRight_row, 6).value) + 1)
 
     conn = sqlite3.connect('./db/matches_data.db')
     cursor = conn.cursor()
+
+    
+
+    print("FINAL JET: ", jet)
 
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS Matches (
@@ -448,12 +467,13 @@ def rightWonProcess():
         loser TEXT,
         timestamp TEXT,
         duration INTEGER,
-        shift INTEGER
+        shift INTEGER,
+        plane TEXT
     )
 ''')
 
-    cursor.execute("INSERT INTO Matches (playerLeft, playerRight, winner, loser, timestamp, duration, shift) VALUES (?, ?, ?, ?, ?, ?, ?)",
-               (left_name, right_name, right_name, left_name, timestamp, duration, abs(shift)))
+    cursor.execute("INSERT INTO Matches (playerLeft, playerRight, winner, loser, timestamp, duration, shift, plane) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+               (left_name, right_name, right_name, left_name, timestamp, duration, abs(shift), jet))
 
 
 
@@ -470,10 +490,34 @@ def rightWonProcess():
     return {'message': 'Data received successfully'}
 
 
+
+@views.route("/sendJet", methods=["POST"])
+@login_required
+@mod_required
+def sendJet():
+
+    selected_name = request.json.get("selectedName")
+
+    session['jet'] = selected_name
+
+    # print("Session Data AFTER:", session)
+    # Return a response if necessary
+    return "Name received and processed successfully."
+
+
 @views.route("/matchmaking/match", methods=['GET', 'POST'])
 @login_required
 @mod_required
 def match():
+
+    print("Session Data MATCH!!!:", session)
+    
+    
+
+
+    print("==========================")
+    print("SESSION ON LOAD", session.items())
+    print("==========================")
 
     # ===================================================
 
@@ -541,14 +585,14 @@ def match():
     rightNAME = session.get('rightNAME')
     rightMMR = session.get('rightMMR')
     rightWINRATE = session.get('rightWINRATE')
-    print("==========================")
-    print(session.items())
-    print("==========================")
+    # print("==========================")
+    # print(session.items())
+    # print("==========================")
     if 'username' in session:
         username = session['username']
-    print("==========================")
-    print(session.items())
-    print("==========================")
+    # print("==========================")
+    # print(session.items())
+    # print("==========================")
     
     
 
@@ -1204,3 +1248,13 @@ def key():
     password = request.args.get('password')
     return render_template("key.html", password=password)
 
+@views.route('/sendJet', methods=['POST'])
+def receive_data():
+    data = request.get_json()
+    selected_name = data.get('selectedName')
+    # Process the received data here
+    print("222222222222222222222222222222222")
+    print(selected_name)
+    session['jet'] = selected_name
+    print("222222222222222222222222222222222")
+    return 'Data received'

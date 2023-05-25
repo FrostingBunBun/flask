@@ -417,6 +417,9 @@ document.addEventListener("DOMContentLoaded", function () {
         errorMessage.classList.remove("show");
       }, 2000);
     }
+
+
+
   });
   
 
@@ -477,6 +480,10 @@ document.addEventListener("DOMContentLoaded", function () {
     sessionStorage.removeItem("refreshFlag");
     var leftField = document.getElementById("field1Small");
     var rightField = document.getElementById("field2Small");
+
+
+
+    
   
     if (
       leftField.textContent.trim() !== "" &&
@@ -605,9 +612,58 @@ homeBtn.addEventListener("click", function() {
 });
 
 
-function changePlane(planeName) {
-  var selectedPlaneButton = document.getElementById("selectedPlane");
-  var planeImage = document.getElementById("planeImage");
-  selectedPlaneButton.textContent = planeName;
-  planeImage.alt = planeName;
+
+
+
+
+
+
+var selectElement = document.getElementById("image-select");
+var selectedImageElement = document.getElementById("selected-image");
+var submitButton = document.getElementById("confirmYes");
+
+// Function to handle the selection change
+function handleSelectionChange() {
+  var selectedOption = selectElement.options[selectElement.selectedIndex];
+  var selectedImage = selectedOption.getAttribute("data-image");
+  var selectedName = selectedOption.text;
+
+  // Update the displayed image
+  selectedImageElement.src = selectedImage;
+  return selectedName;
 }
+
+// Add event listener for selection change
+selectElement.addEventListener("change", handleSelectionChange);
+
+// Function to handle button click event
+function handleButtonClick() {
+  var selectedName = handleSelectionChange();
+
+  // Make an HTTP request to the Flask server
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "/sendJet", true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+
+  // Send the selected name to the Flask server
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      if (xhr.status === 200) {
+        // Request succeeded, handle the response here
+        console.log(xhr.responseText);
+      } else {
+        // Request failed, handle the error here
+        console.error("Error:", xhr.status);
+      }
+    }
+  };
+
+  xhr.send(JSON.stringify({ selectedName: selectedName }));
+}
+
+
+// Add event listener for button click
+submitButton.addEventListener("click", handleButtonClick);
+
+// Trigger selection change on page load
+handleSelectionChange();
