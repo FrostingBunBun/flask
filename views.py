@@ -349,8 +349,8 @@ def process_data():
     print("playerRight_row: ", playerRight_row)
     print("===================================")
 
-    # wks_mmr.update_cell(playerLeft_row, 3, left_new_mmr)
-    # wks_mmr.update_cell(playerRight_row, 3, right_new_mmr)
+    wks_mmr.update_cell(playerLeft_row, 3, left_new_mmr)
+    wks_mmr.update_cell(playerRight_row, 3, right_new_mmr)
 
 
     # Prepare the response
@@ -384,8 +384,8 @@ def leftWonProcess():
     playerLeft_row = wks_mmr.cell(wks_mmr.find(left_name).row, 4).row
     playerRight_row = wks_mmr.cell(wks_mmr.find(right_name).row, 4).row
 
-    # wks_mmr.update_cell(playerLeft_row, 6, int(wks_mmr.cell(playerLeft_row, 6).value) + 1)
-    # wks_mmr.update_cell(playerRight_row, 7, int(wks_mmr.cell(playerRight_row, 7).value) + 1)
+    wks_mmr.update_cell(playerLeft_row, 6, int(wks_mmr.cell(playerLeft_row, 6).value) + 1)
+    wks_mmr.update_cell(playerRight_row, 7, int(wks_mmr.cell(playerRight_row, 7).value) + 1)
 
     conn = sqlite3.connect('./db/matches_data.db')
     cursor = conn.cursor()
@@ -449,8 +449,8 @@ def rightWonProcess():
     playerLeft_row = wks_mmr.cell(wks_mmr.find(left_name).row, 4).row
     playerRight_row = wks_mmr.cell(wks_mmr.find(right_name).row, 4).row
 
-    # wks_mmr.update_cell(playerLeft_row, 7, int(wks_mmr.cell(playerLeft_row, 7).value) + 1)
-    # wks_mmr.update_cell(playerRight_row, 6, int(wks_mmr.cell(playerRight_row, 6).value) + 1)
+    wks_mmr.update_cell(playerLeft_row, 7, int(wks_mmr.cell(playerLeft_row, 7).value) + 1)
+    wks_mmr.update_cell(playerRight_row, 6, int(wks_mmr.cell(playerRight_row, 6).value) + 1)
 
     conn = sqlite3.connect('./db/matches_data.db')
     cursor = conn.cursor()
@@ -809,6 +809,20 @@ def profile_details():
 
     is_own_profile = True
 
+    conn5 = sqlite3.connect('./db/users.db')
+    cursor5 = conn5.cursor()
+    
+    cursor5.execute("SELECT is_public FROM users WHERE username = ?", (name,))
+    result = cursor5.fetchone()
+    
+    # Check if the result is not None
+    if result is not None:
+        is_public = result[0]
+        print(f"The value of 'is_public' for {name} is {is_public}.")
+    else:
+        is_public = 0  # Assign a default value of 0 when the username is not found
+        print(f"No record found for {name}.")
+
 
 
 
@@ -821,6 +835,9 @@ def profile_details():
 
 @views.route('/stats/<name>')
 def profile_details_leaderboard(name):
+
+    
+
     conn = sqlite3.connect('user_dsAvis.db')
     cursor = conn.cursor()
 
@@ -940,8 +957,120 @@ def profile_details_leaderboard(name):
         is_public = 0  # Assign a default value of 0 when the username is not found
         print(f"No record found for {name}.")
     
+
     return render_template('stats.html', name=name, avatar_url=avatar_url, history=history, lastMatch=lastMatch, wins=wins, losses=losses, mmr=mmr, 
                            games_per_day=games_per_day, is_own_profile=is_own_profile, is_public=is_public)
+
+
+@views.route('/planes_data/<name>', methods=['GET'])
+def planes_data(name):
+    plane_data = get_planes_value(name)
+    return jsonify(plane_data)
+
+
+def get_progression_history(name):
+    # Connect to the SQLite database
+    conn = sqlite3.connect('./db/matches_data.db')
+    cursor = conn.cursor()
+
+    # Query the database for match results
+    cursor.execute("SELECT playerLeft, playerRight, winner, shift, timestamp FROM Matches")
+    matches = cursor.fetchall()
+
+    mmr_data = []
+
+    conn2 = sqlite3.connect('./db/players_data.db')
+    cursor2 = conn2.cursor()
+
+    cursor2.execute("SELECT startingMmr FROM Players WHERE player_name = ?", (name,))
+    result = cursor2.fetchone()
+    startingMmr = 666 #TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+    if result:
+        startingMmr = result[0]
+        print("Starting MMR:", startingMmr)
+    else:
+        print("Player not found")
+
+    conn2.close()
+
+
+
+
+    # Iterate over the matches to calculate MMR progression
+    for match in matches:
+        player_left, player_right, winner, shift, timestamp = match
+
+        date_object = datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%fZ")
+        formatted_date = date_object.strftime("%Y-%m-%d")
+
+        if player_left == name:
+            if winner == player_left:
+                mmr_data.append({'date': formatted_date, 'mmr_change': shift, 'initial_mmr': startingMmr})
+                startingMmr += shift
+            else:
+                mmr_data.append({'date': formatted_date, 'mmr_change': -shift, 'initial_mmr': startingMmr})
+                startingMmr -= shift
+
+        if player_right == name:
+            if winner == player_right:
+                mmr_data.append({'date': formatted_date, 'mmr_change': shift, 'initial_mmr': startingMmr})
+                startingMmr += shift
+            else:
+                mmr_data.append({'date': formatted_date, 'mmr_change': -shift, 'initial_mmr': startingMmr})
+                startingMmr -= shift
+
+    conn.close()
+    print("000000000000000000000000000000000000000")
+    print(mmr_data)  # Print the mmr_data list for debugging
+    print("000000000000000000000000000000000000000")
+
+    return mmr_data
+
+
+@views.route('/progression/<name>', methods=['GET'])
+def progression_data(name):
+    mmr_data = get_progression_history(name)
+    print("myDATA: ", mmr_data)
+
+
+    return jsonify(mmr_data)
+
+
+
+def get_planes_value(name):
+
+    # Connect to the SQLite database
+    conn = sqlite3.connect('./db/matches_data.db')
+    cursor = conn.cursor()
+
+    # Execute the query to count occurrences of planes for the given name
+    cursor.execute("""
+        SELECT plane, COUNT(*) AS count
+        FROM Matches
+        WHERE playerLeft = ? OR playerRight = ?
+        GROUP BY plane
+    """, (name, name))
+
+    # Fetch the results
+    results = cursor.fetchall()
+
+    # Create a list to store the game counts for each plane
+    game_counts = []
+
+    # Iterate over the results and append the game counts to the list in the same order as the planes
+    planes = ["F-14", "F-18", "Viggen", "Mig-29", "Eurofighter"]  # Specify the order of planes
+    for plane in planes:
+        count = next((result[1] for result in results if result[0] == plane), 0)
+        game_counts.append(count)
+
+    print(game_counts)  # Output: [10, 5, 8, 12, 6]
+
+    # Close the database connection
+    conn.close()
+
+    return(game_counts)
+
+
 
 
 @views.route('/save', methods=['POST'])

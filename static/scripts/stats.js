@@ -165,3 +165,162 @@ function handleCheckboxChange() {
 
     
   }
+
+
+
+// ===============================================
+
+
+var nicknameElement = document.querySelector('.nickname');
+var userProfileName = nicknameElement.textContent;
+
+fetch('/planes_data/' + userProfileName)  // Include the name as a URL parameter
+  .then(response => response.json())
+  .then(data => {
+    var jsonData = data;
+    console.log(userProfileName)
+    console.log(jsonData)
+
+
+
+
+
+    Highcharts.chart('chart-container', {
+      chart: {
+        polar: true,
+        backgroundColor: 'rgba(255, 255, 255, 0)' // Transparent background
+      },
+      title: {
+        text: 'Most Played Planes',
+        style: {
+          color: '#000000' // Title color (black)
+        }
+      },
+      pane: {
+        background: {
+          backgroundColor: 'rgba(255, 255, 255, 0.7)' // Pane background color (semi-transparent white)
+        }
+      },
+      xAxis: {
+        categories: ["F-14", "F-18", "Viggen", "Mig-29", "Eurofighter"],
+        lineColor: '#000000', // Axis line color (black)
+        labels: {
+          style: {
+            color: '#000000' // Axis label color (black)
+          }
+        }
+      },
+      yAxis: {
+        min: 0, // Set the minimum value for the radial axis
+        max: 1, // Set the maximum value for the radial axis
+        gridLineColor: '#000000', // Grid line color (black)
+        labels: {
+          format: '{value:.0%}', // Display values as percentage
+          style: {
+            color: '#000000' // Axis label color (black)
+          }
+        }
+      },
+      plotOptions: {
+        series: {
+          color: '#ff2a8d', // Series color (orange)
+          fillOpacity: 0.5 // Series fill opacity (semi-transparent)
+        }
+      },
+      series: [{
+        type: 'area',
+        name: 'Game Count',
+        data: jsonData.map(value => value / 20), // Scale the values to proportions (assuming 20 is the maximum count)
+        pointPlacement: 'on'
+      }],
+      credits: {
+        enabled: false // Disable credits
+      }
+    });
+
+
+
+
+
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+
+
+
+
+
+
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const playerName = window.location.pathname.split('/').pop(); // Extract the player name from the URL
+  
+    fetch(`/progression/${playerName}`)
+      .then(response => response.json())
+      .then(data => {
+        // Process the MMR data
+        const startingMMR = data[0].initial_mmr;
+        const mmrChanges = data.map(entry => ({
+          date: entry.date,
+          change: entry.mmr_change
+        }));
+        console.log("STARTING: ", startingMMR)
+  
+        let currentMMR = startingMMR;
+        const mmrProgression = mmrChanges.map(entry => {
+          currentMMR += entry.change;
+          return [new Date(entry.date).getTime(), currentMMR];
+        });
+  
+        // Create the chart
+        Highcharts.chart('chart-container2', {
+          chart: {
+            type: 'line',
+            backgroundColor: '#595f7e',
+          },
+          title: {
+            text: 'MMR Progression Chart',
+            style: {
+              color: '#FF6B8A',
+            },
+          },
+          xAxis: {
+            type: 'datetime',
+            title: {
+              text: 'Date',
+              style: {
+                color: '#FF6B8A',
+              },
+            },
+            labels: {
+              style: {
+                color: '#FFFFFF',
+              },
+            },
+          },
+          yAxis: {
+            title: {
+              text: 'MMR',
+              style: {
+                color: '#FF6B8A',
+              },
+            },
+            labels: {
+              style: {
+                color: '#FFFFFF',
+              },
+            },
+          },
+          series: [{
+            name: 'MMR Progression',
+            data: mmrProgression,
+            color: '#FF6B8A',
+          }],
+        });
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  });

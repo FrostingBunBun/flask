@@ -5,7 +5,11 @@
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/stats.css') }}">
 </head>
 <body>
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <!-- <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> -->
+  
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/highcharts-more.js"></script>
+  
   <button id="home">Home</button>
   <button onclick="goBack()" id="back">Back</button>
     <div class="top-block">
@@ -101,24 +105,40 @@
             </div>
 
             {% if is_public or is_own_profile %}
-            <div class="right-container">
-              <div></div>
-              <div class="calendar">
 
-                <div class="weekdays">
-  
-                </div>
-                <div class="days">
-                  <h1></h1>
-    
-    <div id="calendar"></div>
-                  <!-- Calendar days dynamically generated here -->
-                </div>
-              </div>
-            </div>
+            <div class="holder">
+  <div class="right-container">
+    <div></div>
+    <div class="calendar">
+      <div class="weekdays"></div>
+      <div class="days">
+        <h1></h1>
+        <div id="calendar"></div>
+        <!-- Calendar days dynamically generated here -->
+      </div>
+    </div>
+  </div>
+
+  <div class="below-container">
+    <div id="chart-container"></div>
+    <!-- Content of the below container goes here -->
+  </div>
+
+
+  <div class="below-container2">
+    <div id="chart-container2"></div>
+    <!-- Content of the below container goes here -->
+  </div>
+
+
+</div>
+
+
+
             {% else %}
   <div class="private-profile">Private Profile</div>
 {% endif %}
+
 
 
             
@@ -127,5 +147,6 @@
         </div>
     </main>
     <script src="{{ url_for('static', filename='scripts/stats.js') }}"></script>
+    
 </body>
 </html>

@@ -32,12 +32,20 @@ logOutButton.addEventListener('click', function() {
 });
 
 
-
+{/* <a href="/stats/{{ name }}">{{ name }}</a> */}
 window.addEventListener('DOMContentLoaded', function() {
+    
+
+    var container = document.getElementById('fixed-container');
+    var paragraph = container.getElementsByTagName('p')[0];
+    var loggedOnAs = paragraph.textContent;
+    var name = loggedOnAs.split(': ')[1];
+
     var statsButton = document.getElementById("stats");
-    statsButton.addEventListener("click", function() {
-        window.location.href = "/stats";
+    statsButton.addEventListener("click", function () {
+        window.location.href = "/stats/" + name;
     });
+    
 });
 
 window.addEventListener('DOMContentLoaded', function() {
