@@ -832,6 +832,27 @@ def profile_details():
 
 
 
+@views.route('/register_username', methods=['POST'])
+def process_username():
+    data = request.get_json()
+    username = data.get('username')
+    
+    # Perform actions with the received username
+    # Example: Print the username
+    print('Received username:', username)
+    whole_list = wks_mmr.get("D4:D")
+    if (wks_mmr.cell(4, 3).value == None):
+        new_last_row = 4
+    else:
+        new_last_row = len(whole_list) + 4
+
+    wks_mmr.update_cell(new_last_row, 4, username)
+    wks_mmr.update_cell(new_last_row, 3, 600)
+    wks_mmr.update_cell(new_last_row, 6, 0)
+    wks_mmr.update_cell(new_last_row, 7, 0)
+    
+    # Return a response if needed
+    return 'Username received'
 
 @views.route('/stats/<name>')
 def profile_details_leaderboard(name):

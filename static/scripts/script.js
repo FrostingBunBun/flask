@@ -659,3 +659,105 @@ selectElement.addEventListener("change", handleSelectionChange);
 
 // Trigger selection change on page load
 handleSelectionChange();
+
+
+
+function openWindow() {
+  // JavaScript function to open a new window or pop-up
+  window.open("https://example.com", "_blank", "width=500,height=400");
+}
+
+function openModal2() {
+  document.getElementById('modal2').style.display = 'block';
+
+  // Check if the userInput element exists
+  var userInput = document.getElementById('userInput');
+  if (userInput) {
+    userInput.value = ''; // Clear the input field
+  }
+}
+
+function closeModal2() {
+  var modal2 = document.getElementById('modal2');
+  if (modal2) {
+    modal2.style.display = 'none';
+    document.getElementById('usernameInput').value = '';
+  }
+}
+
+function addUsername() {
+  var username = document.getElementById('usernameInput').value;
+  var confirmField = document.querySelector('.confirmField');
+  var addBtn = document.querySelector('.add2');
+  var cancelBtn = document.querySelector('.cancel2');
+
+  confirmField.innerHTML = ''; // Clear the confirm field
+
+  if (username.trim() !== '') {
+    var usernameElement = document.createElement('span');
+    usernameElement.textContent = username;
+
+    confirmField.appendChild(usernameElement);
+    document.getElementById('usernameInput').value = '';
+
+    addBtn.style.display = 'inline-block'; // Show the confirm button
+    cancelBtn.style.display = 'inline-block'; // Show the cancel button
+  }
+}
+
+
+
+
+function cancelConfirmation() {
+  var confirmField = document.getElementById('confirmField');
+  confirmField.innerHTML = ''; // Clear the confirm field
+  document.getElementById('usernameInput').value = '';
+  var addBtn = document.querySelector('.add2');
+  var cancelBtn = document.querySelector('.cancel2');
+  addBtn.style.display = 'none'; // Hide the confirm button
+  cancelBtn.style.display = 'none'; // Hide the cancel button
+}
+
+
+
+
+function confirmUsername() {
+  var confirmField = document.getElementById('confirmField');
+  var username = confirmField.textContent.trim();
+
+  if (username !== '') {
+    // Show loading animation
+    var loadingMessage = document.createElement('span');
+    loadingMessage.classList.add('loading-animation');
+    confirmField.appendChild(loadingMessage);
+
+    // Create an HTTP request object
+    var xhr = new XMLHttpRequest();
+    var url = '/register_username'; // Replace with your Python API URL
+
+    // Configure the request
+    xhr.open('POST', url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    // Define the data to send
+    var data = JSON.stringify({ username: username });
+
+    // Handle the response
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        console.log('Request successful');
+        console.log('Response:', xhr.responseText);
+
+
+
+          location.reload();
+
+      } else {
+        console.log('Request failed');
+      }
+    };
+
+    // Send the request
+    xhr.send(data);
+  }
+}

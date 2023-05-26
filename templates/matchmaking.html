@@ -26,7 +26,25 @@
         <p>Logged on as: {{ username }} </p>
         <button id="logout">Log out</button>
         <button id="home">Home</button>
+        <button class="registerUser" onclick="openModal2()">Add User</button>
       </div>
+
+
+            <!-- Modal -->
+            <div id="modal2" class="modal2">
+              <div class="modal-content2">
+                <button class="close-button" onclick="closeModal2()">&times;</button>
+                <p>Write the username lower and click Submit</p>
+                <p></p>
+                <input type="text" id="usernameInput" placeholder="Enter username...">
+                <button class="modal-button" onclick="addUsername()">Submit</button>
+                <div class="confirmField" id="confirmField"></div>
+            
+                <button class="add2" onclick="confirmUsername()" style="display: none;">Confirm</button>
+                <button class="cancel2" onclick="cancelConfirmation()" style="display: none;">Cancel</button>
+              </div>
+            </div>
+
 
       <div class="list" id="list">
         <div class="search-container">
