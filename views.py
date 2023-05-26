@@ -854,8 +854,27 @@ def process_username():
     # Return a response if needed
     return 'Username received'
 
+# @views.route("/leaderboardRegister")
+# def leaderboardRegister():
+
+#     return render_template('registerLeaderboard.html')
+
 @views.route('/stats/<name>')
 def profile_details_leaderboard(name):
+
+    conn3 = sqlite3.connect('./db/players_data.db')
+    cursor3 = conn3.cursor()
+
+    cursor3.execute("SELECT * FROM Players WHERE player_name=?", (name,))
+    result3 = cursor3.fetchone()
+
+    if not result3:
+        # Name found in the database
+        print("Name exists NOT in the database.")
+        return render_template('registerLeaderboard.html')
+
+
+    conn3.close()
 
     
 
