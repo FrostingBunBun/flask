@@ -11,6 +11,7 @@ from difflib import get_close_matches
 from datetime import date, datetime, timedelta
 from flask import jsonify, request
 import difflib
+from collections import defaultdict
 
 
 
@@ -859,6 +860,43 @@ def process_username():
 
 #     return render_template('registerLeaderboard.html')
 
+
+
+
+@views.route('/getMatchesData', methods=['POST'])
+def get_data():
+
+    profile_player = request.json.get('profilePlayer')
+
+    conn = sqlite3.connect('./db/matches_data.db')
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT playerLeft, playerRight, duration FROM Matches WHERE playerLeft = ? OR playerRight = ?', (profile_player, profile_player))
+    rows = cursor.fetchall()
+
+    data = defaultdict(list)
+    for row in rows:
+        player_left, player_right, duration = row
+        if player_left == profile_player:
+            data[player_right].append(duration)
+        else:
+            data[player_left].append(duration)
+
+    formatted_data = []
+    for opponent in data.keys():
+        durations = data[opponent]
+        average_duration = sum(durations) / len(durations)
+        formatted_data.append([profile_player, opponent, int(average_duration)])
+
+    conn.close()
+
+    # print("DDDDDDAAAAAATTTTTTTTAAAAAA; ", formatted_data)
+
+    return jsonify({'opponents': [item[1] for item in formatted_data], 'averageDurations': [item[2] for item in formatted_data]})
+
+
+
+
 @views.route('/stats/<name>')
 def profile_details_leaderboard(name):
 
@@ -1060,9 +1098,9 @@ def get_progression_history(name):
                 startingMmr -= shift
 
     conn.close()
-    print("000000000000000000000000000000000000000")
-    print(mmr_data)  # Print the mmr_data list for debugging
-    print("000000000000000000000000000000000000000")
+    # print("000000000000000000000000000000000000000")
+    # print(mmr_data)  # Print the mmr_data list for debugging
+    # print("000000000000000000000000000000000000000")
 
     return mmr_data
 
@@ -1070,7 +1108,7 @@ def get_progression_history(name):
 @views.route('/progression/<name>', methods=['GET'])
 def progression_data(name):
     mmr_data = get_progression_history(name)
-    print("myDATA: ", mmr_data)
+    # print("myDATA: ", mmr_data)
 
 
     return jsonify(mmr_data)

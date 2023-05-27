@@ -427,7 +427,8 @@ body{
   width: 500px;
 }
 .below-container,
-.below-container2 {
+.below-container2,
+.below-container3 {
   margin-top: 20px; /* Adjust the margin as needed */
   padding: 10px;
   border: 1px solid #5a5a5a;
@@ -438,7 +439,8 @@ body{
 }
 
 #chart-container,
-#chart-container2 {
+#chart-container2,
+#radarChart {
   width: 100%; /* Adjust the width as needed */
   height: 400px; /* Adjust the height as needed */
   background-color: rgb(73, 73, 73); /* Custom background color */
@@ -446,15 +448,6 @@ body{
 
 }
 
-.below-container2 {
-  margin-top: 20px; /* Adjust the margin as needed */
-  padding: 10px;
-  border: 1px solid #79093d;
-  height: 400px;
-  background-color: #333;
-  padding: 20px;
-  border-radius: 8px;
-}
 
 #chart-container2 {
   width: 100%; /* Adjust the width as needed */

@@ -121,10 +121,10 @@ generateCalendar(currentYear, currentMonth, gameData);
 function handleCheckboxChange() {
     var checkbox = document.getElementById("check-flag-checkbox");
     if (checkbox.checked) {
-      console.log("Checkbox is checked!");
+      // console.log("Checkbox is checked!");
       // Perform your desired action here when the checkbox is checked
     } else {
-      console.log("Checkbox is unchecked!");
+      // console.log("Checkbox is unchecked!");
       // Perform any actions you want when the checkbox is unchecked
     }
   }
@@ -178,8 +178,8 @@ fetch('/planes_data/' + userProfileName)  // Include the name as a URL parameter
   .then(response => response.json())
   .then(data => {
     var jsonData = data;
-    console.log(userProfileName)
-    console.log(jsonData)
+    // console.log(userProfileName)
+    // console.log(jsonData)
 
 
 
@@ -266,7 +266,7 @@ fetch('/planes_data/' + userProfileName)  // Include the name as a URL parameter
           date: entry.date,
           change: entry.mmr_change
         }));
-        console.log("STARTING: ", startingMMR)
+        // console.log("STARTING: ", startingMMR)
   
         let currentMMR = startingMMR;
         const mmrProgression = mmrChanges.map(entry => {
@@ -318,9 +318,96 @@ fetch('/planes_data/' + userProfileName)  // Include the name as a URL parameter
             data: mmrProgression,
             color: '#FF6B8A',
           }],
+          credits: {
+            enabled: false // Disable credits
+          }
         });
       })
       .catch(error => {
         console.error('Error:', error);
       });
   });
+
+
+
+
+
+// ------------------------------------------------------------------------
+
+
+// Retrieve the data from your database
+const matches = [
+  ['Player A', 'Player B', 112],
+  ['Player A', 'Player C', 186],
+  ['Player A', 'Player D', 82],
+  ['Player A', 'Player E', 112],
+  ['Player A', 'Player F', 134],
+  ['Player A', 'Player G', 104],
+  ['Player A', 'Player H', 118],
+  ['Player A', 'Player I', 99],
+  ['Player A', 'Player J', 163],
+  ['Player A', 'Player K', 120],
+  // Add more matches involving Player A here...
+];
+
+
+
+const profilePlayer = window.location.pathname.split('/').pop();
+
+fetch('/getMatchesData', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({ profilePlayer }),
+})
+  .then(response => response.json())
+  .then(data => {
+    const opponents = data.opponents;
+    const averageDurations = data.averageDurations;
+
+    const radarChart = document.getElementById('radarChart');
+
+new Chart(radarChart, {
+  type: 'radar',
+  data: {
+    labels: opponents,
+    datasets: [
+      {
+        label: 'Average Duration',
+        data: Object.values(averageDurations),
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1,
+      },
+    ],
+  },
+  options: {
+    scales: {
+      r: {
+        beginAtZero: true,
+        suggestedMax: 40, // Adjust the maximum value based on your data
+      },
+    },
+    elements: {
+      line: {
+        tension: 0.4, // Adjust the tension value (0 to 1) for smoother or sharper curves
+      },
+    },
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: function (context) {
+            const label = context.label || '';
+            const value = context.raw || '';
+            return "VS " + label + ' Average Match Duration: ' + value + ' Seconds';
+          },
+        },
+      },
+    },
+  },
+});
+})
+.catch(error => {
+  console.error('Error:', error);
+});
