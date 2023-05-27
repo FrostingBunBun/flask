@@ -140,23 +140,27 @@ def leaderboards():
     cursor1 = conn1.cursor()
     cursor2 = conn2.cursor()
 
-    # Fetch the names from players_data.db in the desired order
-    cursor2.execute("SELECT player_name FROM Players ORDER BY mmr DESC")
-    names2 = cursor2.fetchall()
-
-    # print("NAMES")
-    # print(names)
-    # print("NAMES")
-
-    playersNames = wks_mmr.get("D4:D")
-    names = [(item[0],) for item in playersNames]
 
 
-    # print("NAMES2")
-    # print(formatted_string)
-    print("OLD: ", type(names2))
-    print("NEW: ", type(names))
-    # print("NAMES2")
+    cursor2.execute("SELECT player_name, mmr, wins, losses FROM Players ORDER BY mmr DESC")
+    player_data = cursor2.fetchall()
+ 
+    flat_names = []
+    mmr_fixed = []
+    playersWinLose = []
+
+    for name in player_data:
+        flat_names.append(name[0])
+        mmr_fixed.append(name[1])
+        playersWinLose.append([str(name[2]), str(name[3])])
+        
+    
+    
+
+
+
+    print("==============================")
+    
 
 
 
@@ -164,7 +168,7 @@ def leaderboards():
     avatar_urls = []
 
     # Iterate over the names and fetch the corresponding avatar URLs from dsLinks
-    for name in names:
+    for name in player_data:
         cursor1.execute("SELECT avatar_url, name FROM dsLinks")
         results = cursor1.fetchall()
         matched_names = get_close_matches(name[0], [result[1] for result in results], n=1, cutoff=0.5)
@@ -186,33 +190,25 @@ def leaderboards():
     conn2.close()
 
 
-    # print("+++++++++++++++++++++++++++++++++++")
-    # print(avatar_urls)
 
 
 
-    # print(avatar_urls)
 
-    flat_names = [item for sublist in playersNames for item in sublist]
-
-    playersMmr = wks_mmr.get("C4:C")
-    flat_mmrs = [item for sublist in playersMmr for item in sublist]
     
-    playersWinLose = wks_mmr.get("F4:G")
-    # print(playersWinLose)
 
     winrate_list = []
     for player in playersWinLose:
         winrate = "{:.2f}".format((int(player[0]) / (int(player[0]) + int(player[1]))) * 100, 2) if int(player[0]) + int(player[1]) > 0 else 0
 
         winrate_list.append(winrate)
-    # print(winrate_list)
+
+
 
     nameMmr_dict = {}
 
     for i in range(len(flat_names)):
 
-        nameMmr_dict[flat_names[i]] = flat_mmrs[i], winrate_list[i], avatar_urls[i]
+        nameMmr_dict[flat_names[i]] = mmr_fixed[i], winrate_list[i], avatar_urls[i]
     username = ''
     if 'username' in session:
         username = session['username']
@@ -511,57 +507,6 @@ def sendJet():
 @mod_required
 def match():
 
-
-    # ===================================================
-
-    # Connect to the database
-    conn = sqlite3.connect('./db/players_data.db')
-    cursor = conn.cursor()
-
-    # Get column values
-    player_names = wks_mmr.col_values(4)[3:]
-    mmr_values = wks_mmr.col_values(3)[3:]
-    total_matches_values = wks_mmr.col_values(10)[3:]
-    wins_values = wks_mmr.col_values(6)[3:]
-    losses_values = wks_mmr.col_values(7)[3:]
-
-    # Loop through the data
-    for i in range(len(player_names)):
-        player_name = player_names[i]
-        mmr_str = mmr_values[i]
-        total_matches_str = total_matches_values[i]
-        wins_str = wins_values[i]
-        losses_str = losses_values[i]
-
-        # Check for empty cells
-        if player_name and mmr_str and total_matches_str and wins_str and losses_str:
-            mmr = int(mmr_str)
-            total_matches = int(total_matches_str)
-            wins = int(wins_str)
-            losses = int(losses_str)
-
-            # Check if the player already exists in the database
-            cursor.execute('SELECT * FROM Players WHERE player_name = ?', (player_name,))
-            existing_player = cursor.fetchone()
-
-            if existing_player:
-                # Player exists, update their information
-                cursor.execute('''
-                    UPDATE Players
-                    SET mmr = ?, total_matches = ?, wins = ?, losses = ?
-                    WHERE player_name = ?
-                ''', (mmr, total_matches, wins, losses, player_name))
-            else:
-                # Player doesn't exist, insert a new row
-                cursor.execute('''
-                    INSERT INTO Players (player_name, mmr, total_matches, wins, losses)
-                    VALUES (?, ?, ?, ?, ?)
-                ''', (player_name, mmr, total_matches, wins, losses))
-
-    # Commit the changes and close the connection
-    conn.commit()
-    conn.close()
-    # ===================================================
     
 
     # Clear the session variables to prevent reusing old values
