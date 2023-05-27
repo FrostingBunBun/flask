@@ -24,10 +24,12 @@ wks_mmr = sh_mmr.worksheet("Leaderboards")
 
 playersNames = wks_mmr.get("D4:D")
 flat_names = [item for sublist in playersNames for item in sublist]
+print(flat_names)
+print("======================")
 
 playersMmr = wks_mmr.get("C4:C")
 flat_mmrs = [item for sublist in playersMmr for item in sublist]
-
+print(flat_mmrs)
 nameMmr_dict = {}
 
 for i in range(len(flat_names)):
@@ -36,11 +38,6 @@ for i in range(len(flat_names)):
 # print(nameMmr_dict)
 
 
-# =========================================================================
-# flags = wks_mmr.get("E4:E")
-# Get the cell value
-
-# =========================================================================
 
 
 
@@ -236,13 +233,31 @@ def matchmaking():
     conn = sqlite3.connect('./db/players_data.db')
     cursor = conn.cursor()
 
-    # Get column values
-    player_names = wks_mmr.col_values(4)[3:]
-    mmr_values = wks_mmr.col_values(3)[3:]
-    total_matches_values = wks_mmr.col_values(10)[3:]
-    wins_values = wks_mmr.col_values(6)[3:]
-    losses_values = wks_mmr.col_values(7)[3:]
 
+
+    values = wks_mmr.get_values()
+
+    player_names = [row[3] for row in values[3:] if row[3]]
+    mmr_values = [row[2] for row in values[3:] if row[2]]
+    total_matches_values = [row[9] for row in values[3:] if row[9]]
+    wins_values = [row[5] for row in values[3:] if row[5]]
+    losses_values = [row[6] for row in values[3:] if row[6]]
+
+    print("++++++++++++++++++++++++++++")
+    # print("Player Names: ", player_names)
+
+
+    # print("MMR Values: ", mmr_values)
+
+    # print("Total Matches: ", total_matches_values)
+
+    # print("Wins: ", wins_values)
+
+
+    # print("Losses: ", losses_values)
+
+
+    # print("++++++++++++++++++++++++++++")
     # Loop through the data
     for i in range(len(player_names)):
         player_name = player_names[i]
@@ -281,21 +296,25 @@ def matchmaking():
     conn.close()
     # ===================================================
     
-    playersNames = wks_mmr.get("D4:D")
+    data_range = wks_mmr.batch_get(["D4:D", "C4:C", "F4:G"])
+
+    playersNames = data_range[0]
     flat_names = [item for sublist in playersNames for item in sublist]
 
-    playersMmr = wks_mmr.get("C4:C")
+    playersMmr = data_range[1]
     flat_mmrs = [item for sublist in playersMmr for item in sublist]
-    
-    playersWinLose = wks_mmr.get("F4:G")
-    # print(playersWinLose)
+
+    playersWinLose = data_range[2]
 
     winrate_list = []
     for player in playersWinLose:
-        winrate = "{:.2f}".format((int(player[0]) / (int(player[0]) + int(player[1]))) * 100, 2) if int(player[0]) + int(player[1]) > 0 else 0
-
+        wins = int(player[0])
+        losses = int(player[1])
+        winrate = "{:.2f}".format((wins / (wins + losses)) * 100, 2) if wins + losses > 0 else 0
         winrate_list.append(winrate)
-    print(winrate_list)
+
+
+    # print(winrate_list)
 
     nameMmr_dict = {}
 
