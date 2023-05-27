@@ -1,76 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GameStats - Home</title>
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main_logged.css') }}">
-</head>
-<body>
-    <div class="gradient-overlay"></div>
-  <header>
-    <div class="login-container">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GameStats - Home</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/main_logged.css') }}"
+    />
+  </head>
+  <body>
+    <div class="sidebar-container">
+      <div class="profile-data">
+        <img class="profile-pic" src="/static/pics/profile-pic.svg" />
+        <p class="profile-username">{{ username }}</p>
+        <span class="profile-mmr">(0)</span>
+      </div>
+
+      <nav class="navigaton-container">
+        <button class="navigation-item" id="main">
+          <img src="/static/icons/home.svg" /> Home
+        </button>
+        <button class="navigation-item" id="matchmaking">
+          <img src="/static/icons/matchmaking.svg" /> Matchmaking
+        </button>
+        <button class="navigation-item" id="stats">
+          <img src="/static/icons/stats.svg" /> Statistics
+        </button>
+        <button class="navigation-item" id="matchmaking">
+          <img src="/static/icons/matches.svg" /> Matches
+        </button>
+        <button class="navigation-item" id="leaderboards">
+          <img src="/static/icons/leaderboard.svg" /> Leaderboard
+        </button>
+      </nav>
+
+      <button class="navigation-item" id="logout">
+        <img src="/static/icons/signout.svg" /> Sign Out
+      </button>
+    </div>
+
+    <div class="page-container">
+      <div class="page-heading">
+        <img src="/static/icons/plane-heading.png" />
+        <h2>Welcome to Dogfight Club</h2>
+      </div>
+      <div class="page-cards">
+        <div class="page-card">
+          <h3>About Dogfight Club</h3>
+          <p>
+            Dogfight club is an exclusive hub for competitive dogfighting and
+            learning BFM amongst the best pilots in VRC aviation. Join our
+            community of passionate pilots and take your dogfighting skills to
+            the next level!
+          </p>
+          <h3>Info</h3>
+          <p>
+            Private ranked/unranked lobbies for scrims will be hosted regularly,
+            link to the instance and ping will be sent in the server. Feel free
+            to join instance by clicking the link in the scrim-ping channel
+            whenever available
+          </p>
+        </div>
+        <div class="page-card">
+          <h3>
+            Upcoming Scrims
+            <button class="page-card-info-button">
+              <img src="/static/icons/info-circle.svg" />
+            </button>
+          </h3>
+
+          <div class="page-card-content">There are none for now</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="gradient-overlay"></div>
+    <header>
+      <div class="login-container">
         <button class="match" id="logout">Log out</button>
         <button class="match" id="matchmaking">Matchmaking</button>
         <div id="fixed-container">
-            <!-- Content of your container goes here -->
-            <p>Logged on as: {{ username }}</p>
-        
-          </div>
+          <p>Logged on as: {{ username }}</p>
+        </div>
       </div>
       <div class="topWrap">
         <div class="background-wrap">
-    <h1>Welcome to Dogfight Club</h1>
-    <nav>
-      <ul>
-        <li><a href="/" id="login">Entry</a></li>
-        <li><a href="#" id="stats">Stats</a></li>
-        <li><a href="#">Matches</a></li>
-        <li><a href="#" id="leaderboards">Leaderboards</a></li>
-      </ul>
-    </nav>
-    </div>
-</div>
-  </header>
-  <main>
-    <div class="container">
-      <section>
-        <h2>About Dogfight Club</h2>
-        <p>
-          Dogfight club is an exclusive hub for competitive dogfighting and learning BFM amongst the best pilots in VRC aviation.
-        </p>
-        <p>
-          Join our community of passionate pilots and take your dogfighting skills to the next level!
-        </p>
-      </section>
-      <section>
-        <h2>Info</h2>
-        <article>
-          <!-- <h3>Scrims</h3> -->
+          <h1>Welcome to Dogfight Club</h1>
+          <nav>
+            <ul>
+              <li><a href="/" id="login">Entry</a></li>
+              <li><a href="#" id="stats">Stats</a></li>
+              <li><a href="#">Matches</a></li>
+              <li><a href="#" id="leaderboards">Leaderboards</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="container">
+        <section>
+          <h2>About Dogfight Club</h2>
           <p>
-            Private ranked/unranked lobbies for scrims will be hosted regularly, link to the instance and ping will be sent in the server.
-          </p>
-          <p>Feel free to join instance by clicking the link in the scrim-ping channel whenever available.</p>
-          <p>
-
-          </p>
-        </article>
-      </section>
-      <section>
-        <h2>Upcoming Scrims</h2>
-        <article>
-          <h3>SCRIMS</h3>
-          <p>
-            Get ready for the most thrilling dogfighting of vrchat! The Scrim will bring together the best pilots from around vrchat to compete for the ultimate glory.
+            Dogfight club is an exclusive hub for competitive dogfighting and
+            learning BFM amongst the best pilots in VRC aviation.
           </p>
           <p>
-            All skill levels are welcomed, sportsmanship is encouraged. DM @r3aper#0013 to become a member.
+            Join our community of passionate pilots and take your dogfighting
+            skills to the next level!
           </p>
-          <p class="read-more"><a href="#">Learn todo</a></p>
-        </article>
-      </section>
-    </div>
-  </main>
-  <script src="{{ url_for('static', filename='scripts/main_logged.js') }}"></script>
-</body>
+        </section>
+        <section>
+          <h2>Info</h2>
+          <article>
+            <h3>Scrims</h3>
+            <p>
+              Private ranked/unranked lobbies for scrims will be hosted
+              regularly, link to the instance and ping will be sent in the
+              server.
+            </p>
+            <p>
+              Feel free to join instance by clicking the link in the scrim-ping
+              channel whenever available.
+            </p>
+            <p></p>
+          </article>
+        </section>
+        <section>
+          <h2>Upcoming Scrims</h2>
+          <article>
+            <h3>SCRIMS</h3>
+            <p>
+              Get ready for the most thrilling dogfighting of vrchat! The Scrim
+              will bring together the best pilots from around vrchat to compete
+              for the ultimate glory.
+            </p>
+            <p>
+              All skill levels are welcomed, sportsmanship is encouraged. DM
+              @r3aper#0013 to become a member.
+            </p>
+            <p class="read-more"><a href="#">Learn todo</a></p>
+          </article>
+        </section>
+      </div>
+    </main>
+    -->
+    <script src="{{ url_for('static', filename='scripts/main_logged.js') }}"></script>
+  </body>
 </html>

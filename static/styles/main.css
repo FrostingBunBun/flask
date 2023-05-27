@@ -6,162 +6,165 @@ h3,
 p,
 ul,
 li {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    background-color: #222;
-    color: #fff;
-    padding: 0 20px;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  background-color: #222;
+  color: #fff;
+  padding: 0 20px;
 }
 header {
-    padding: 20px;
-    text-align: center;
-    height: 250px; /* Adjust the height as needed */
-    background-image: url("https://my.catgirls.forsale/xGXMv720.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-    border-radius: 8px;
-    
-  }
+  padding: 20px;
+  text-align: center;
+  height: 250px; /* Adjust the height as needed */
+  background-image: url("https://my.catgirls.forsale/xGXMv720.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  border-radius: 8px;
+}
 header h1 {
-    color: #dddddd;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; /* Outline effect */
+  color: #dddddd;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000; /* Outline effect */
 }
 
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 header {
-    background-color: #333;
-    padding: 20px;
+  background-color: #333;
+  padding: 20px;
 }
 /* .topWrap{
     
 } */
 
 .background-wrap {
-    background-color: #000;
-    margin: 0 auto;
-    max-width: 450px; /* Adjust the value as needed */
-    padding: 20px;
-    border-radius: 10px;
-    opacity: 0.95;
-  }
+  background-color: #000;
+  margin: 0 auto;
+  max-width: 450px; /* Adjust the value as needed */
+  padding: 20px;
+  border-radius: 10px;
+  opacity: 0.95;
+}
 
 h1 {
-    font-size: 24px;
-    color: #fff;
+  font-size: 24px;
+  color: #fff;
 }
 
 nav ul {
-    list-style: none;
+  list-style: none;
 }
 
 nav ul li {
-    display: inline;
-    margin-right: 10px;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; /* Outline effect */
+  display: inline;
+  margin-right: 10px;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000; /* Outline effect */
 }
 
 nav ul li a {
-    color: #ececec;
-    text-decoration: none;
-    transition: color 0.3s ease;
-    background-color: #2e2e2e;
-    border-radius: 4px;
-    padding: 4px;
+  color: #ececec;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  background-color: #2e2e2e;
+  border-radius: 4px;
+  padding: 4px;
 }
 
 nav ul li a:hover {
-    color: #FF4081;
+  color: #ff4081;
 }
 
 main {
-    margin: 20px 0;
+  margin: 20px 0;
 }
 
 section {
-    background-color: #181818;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  background-color: #181818;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
-    color: #fff;
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #fff;
 }
 
 p {
-    margin-bottom: 10px;
-    color: #ccc;
+  margin-bottom: 10px;
+  color: #ccc;
 }
 
 .read-more a {
-    color: #FF4081;
-    text-decoration: none;
-    font-weight: bold;
-    transition: text-decoration 0.3s ease;
+  color: #ff4081;
+  text-decoration: none;
+  font-weight: bold;
+  transition: text-decoration 0.3s ease;
 }
 
 .read-more a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 footer {
-    background-color: #333;
-    padding: 10px;
-    text-align: center;
-    font-size: 14px;
-    color: #ccc;
+  background-color: #333;
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+  color: #ccc;
 }
 .gradient-overlay {
-    position: fixed;
-    top: 1;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: linear-gradient(to top, rgba(255, 0, 85, 0.1), rgba(255, 0, 0, 0));
-    z-index: -1;
-  }
+  position: fixed;
+  top: 1;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(
+    to top,
+    rgba(255, 0, 85, 0.1),
+    rgba(255, 0, 0, 0)
+  );
+  z-index: -1;
+}
 
-  .login-container {
-    display: flex;
-    justify-content:right;
-    align-items:right;
-    margin-top: 20px;
-  }
-  
-  .login-button,
-  .register-button {
-    background-color: #2e2e2e;
-    color: #ececec;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 20px;
-    margin: 0 10px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .login-button:hover,
-  .register-button:hover {
-    background-color: #1e1e1e;
-  }
-  
-  .login-button:focus,
-  .register-button:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px #FF4081;
-  }
-  
-  
+.login-container {
+  display: flex;
+  justify-content: right;
+  align-items: right;
+  margin-top: 20px;
+}
+
+.login-button,
+.register-button {
+  background-color: #2e2e2e;
+  color: #ececec;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  margin: 0 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.login-button:hover,
+.register-button:hover {
+  background-color: #1e1e1e;
+}
+
+.login-button:focus,
+.register-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #ff4081;
+}

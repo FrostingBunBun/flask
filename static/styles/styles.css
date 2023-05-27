@@ -1,17 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap");
+
+* {
+  font-family: "Montserrat", sans-serif !important;
+}
+
 body {
-  font-family: Arial, sans-serif;
   background-color: #000000;
   margin: 0;
   padding: 100px;
 }
 .gradient-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 70%;
-    background-image: linear-gradient(to bottom, rgba(255, 0, 85, 0.1), rgba(255, 0, 0, 0));
-    z-index: -1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70%;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 0, 85, 0.1),
+    rgba(255, 0, 0, 0)
+  );
+  z-index: -1;
 }
 
 .container {
@@ -61,19 +70,19 @@ body {
   max-width: 600px;
   /* opacity: 0.5; */
   animation: fadeIn 1s forwards;
-
 }
 
 .list h2 {
   opacity: 1 !important;
   font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #dd2179;
-    text-transform: uppercase;
-    text-align: center;
-    letter-spacing: 2px;
-    text-shadow: -1px -1px 0 rgb(82, 82, 82), 1px -1px 0 rgb(82, 82, 82), -1px 1px 0 rgb(82, 82, 82), 1px 1px 0 rgb(82, 82, 82);
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #dd2179;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 2px;
+  text-shadow: -1px -1px 0 rgb(82, 82, 82), 1px -1px 0 rgb(82, 82, 82),
+    -1px 1px 0 rgb(82, 82, 82), 1px 1px 0 rgb(82, 82, 82);
 }
 .list-container {
   display: flex;
@@ -183,7 +192,7 @@ li:hover {
   padding: 10px 20px;
   font-size: 16px;
   font-weight: bold;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -202,7 +211,6 @@ li:hover {
   background-color: #3e8e41;
 }
 
-
 .rightSide {
   flex: 1;
   background-color: #4b4b4b;
@@ -219,8 +227,6 @@ li:hover {
   animation-duration: 1s;
   animation-fill-mode: forwards;
   opacity: 0.95 !important;
-  
-  
 }
 @keyframes slideInn {
   from {
@@ -232,7 +238,6 @@ li:hover {
     transform: translateY(0);
   }
 }
-
 
 .search-container {
   margin-bottom: 20px;
@@ -273,8 +278,6 @@ li:hover {
   left: 35%;
   /* Adjust left position */
 }
-
-
 
 @keyframes slideIn {
   from {
@@ -322,9 +325,8 @@ li:hover {
   align-items: center;
   /* additional styles */
   /* background-color: #000000; */
-
 }
-#home{
+#home {
   position: absolute;
   left: 600px;
 }
@@ -334,12 +336,12 @@ li:hover {
   font-size: 14px;
   font-family: Arial, sans-serif;
   text-align: center;
-  padding: 20px; 
-  background-color: rgba(0, 0, 0, 0.8); 
-  border-radius: 10px; 
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); 
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
   text-transform: uppercase;
-  letter-spacing: 2px; 
+  letter-spacing: 2px;
   animation-name: slideInn;
   animation-duration: 2s;
   animation-fill-mode: forwards;
@@ -363,10 +365,6 @@ li:hover {
 #fixed-container button:hover {
   background-color: #181818;
 }
-
-
-
-
 
 .match-container {
   text-align: center;
@@ -445,24 +443,22 @@ li:hover {
 .dragged-item {
   background-color: #b3cfec;
   border: 2px solid #bb2176;
-  color:#979797 !important;
+  color: #979797 !important;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   font-size: 30px !important;
   margin-top: 20px !important;
 }
-.dragged-item p{
+.dragged-item p {
   background-color: #b3cfec;
-  color:#f12b98 !important;
+  color: #f12b98 !important;
   border-radius: 5px;
   font-size: 30px !important;
 }
 
-
 .match-container {
   display: none;
   justify-content: space-between;
-
 }
 
 /* Styles for player field */
@@ -494,12 +490,9 @@ li:hover {
 .player-info div {
   margin-top: 5px;
 }
-.flag{
+.flag {
   float: right;
 }
-
-
-
 
 .gauge-container {
   display: flex;
@@ -520,7 +513,6 @@ li:hover {
   background-color: #eee;
   position: relative;
   animation: fillGauge 1.5s ease-out forwards; /* Add animation */
-  
 }
 
 @keyframes fillGauge {
@@ -531,8 +523,6 @@ li:hover {
     width: 100%; /* Animate to 100% width */
   }
 }
-
-
 
 .fill {
   height: 100%;
@@ -546,17 +536,18 @@ li:hover {
 }
 
 #fill2 {
-  background-color:  #f6d26b ; /* Set fill color for value 2 */
+  background-color: #f6d26b; /* Set fill color for value 2 */
   z-index: 2; /* Added */
 }
-.prob{
+.prob {
   position: absolute;
   text-align: center;
   color: #ffffff;
   left: 50%;
   transform: translateX(-50%);
   font-weight: bold;
-  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black; /* Apply multiple shadows to create the outline */
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+    1px 1px 0 black; /* Apply multiple shadows to create the outline */
   font-size: 20px;
 }
 
@@ -572,16 +563,16 @@ li:hover {
   text-align: center;
   letter-spacing: 2px;
   line-height: 1.5;
-  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black; /* Apply multiple shadows to create the outline */
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+    1px 1px 0 black; /* Apply multiple shadows to create the outline */
   transition: opacity 1s ease-in; /* Add transition for opacity */
   font-size: 25px;
   padding-bottom: 10px;
   margin-left: -45px;
 }
-.field1Winrate{
-
+.field1Winrate {
   background-color: #b3cfec;
-  color:#979797;
+  color: #979797;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   font-size: 20px;
