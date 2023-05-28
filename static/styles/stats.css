@@ -297,6 +297,13 @@ body{
 .negative {
   color: red;
 }
+.win_streak {
+  color: rgb(0, 201, 0);
+}
+
+.lose_streak {
+  color: rgb(206, 0, 0);
+}
 
 /* Date styles */
 .date {

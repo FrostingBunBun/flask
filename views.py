@@ -24,12 +24,12 @@ wks_mmr = sh_mmr.worksheet("Leaderboards")
 
 playersNames = wks_mmr.get("D4:D")
 flat_names = [item for sublist in playersNames for item in sublist]
-print(flat_names)
-print("======================")
+# print(flat_names)
+# print("======================")
 
 playersMmr = wks_mmr.get("C4:C")
 flat_mmrs = [item for sublist in playersMmr for item in sublist]
-print(flat_mmrs)
+# print(flat_mmrs)
 nameMmr_dict = {}
 
 for i in range(len(flat_names)):
@@ -860,7 +860,6 @@ def get_data():
 
 
 
-
 @views.route('/stats/<name>')
 def profile_details_leaderboard(name):
 
@@ -967,14 +966,14 @@ def profile_details_leaderboard(name):
     # Close the database connection
     cursor.close()
     conn.close()
-    print("////////////////////////////////////////////////")
-    print(games_per_day)
-    print("////////////////////////////////////////////////")
+    # print("////////////////////////////////////////////////")
+    # print(games_per_day)
+    # print("////////////////////////////////////////////////")
 
 
     sessionName = session.get('username')
-    print("PAGE NAME: ", name)
-    print("MY NAME: ", sessionName)
+    # print("PAGE NAME: ", name)
+    # print("MY NAME: ", sessionName)
     if sessionName == name:
         is_own_profile = True
     else:
@@ -998,10 +997,93 @@ def profile_details_leaderboard(name):
     else:
         is_public = 0  # Assign a default value of 0 when the username is not found
         print(f"No record found for {name}.")
-    
+
+
+    # ------------------------------------------------------------------
+
+    player_name = name
+
+    streak_count, result = get_streak(player_name)
+    if streak_count > 0:
+        print(f"{player_name} has a {result} streak of {streak_count}")
+    else:
+        print(f"No streak found for {player_name}")
 
     return render_template('stats.html', name=name, avatar_url=avatar_url, history=history, lastMatch=lastMatch, wins=wins, losses=losses, mmr=mmr, 
-                           games_per_day=games_per_day, is_own_profile=is_own_profile, is_public=is_public)
+                           games_per_day=games_per_day, is_own_profile=is_own_profile, is_public=is_public, streak_count=streak_count, result=result)
+
+
+
+def get_streak(player_name):
+    conn = sqlite3.connect('./db/matches_data.db')
+    cursor = conn.cursor()
+
+    # Retrieve the latest match ID
+    cursor.execute("SELECT MAX(match_id) FROM Matches")
+    latest_match_id = cursor.fetchone()[0]
+
+    current_match_id = latest_match_id
+    initial_result = None
+    streak_count = 0
+
+    # Find the first match involving the player
+    while current_match_id is not None:
+        cursor.execute("SELECT * FROM Matches WHERE match_id = ?", (current_match_id,))
+        match_data = cursor.fetchone()
+
+        # Check if match_data is None
+        if match_data is None:
+            break
+
+        # Check if the player is involved in the match
+        if player_name in [match_data[1], match_data[2]]:
+            # Determine the initial result based on the player's name
+            if match_data[3] == player_name:
+                initial_result = 'win'
+            elif match_data[4] == player_name:
+                initial_result = 'lose'
+            else:
+                initial_result = None
+
+            if initial_result is not None:
+                break
+
+        current_match_id -= 1
+
+    if initial_result is None:
+        conn.close()
+        return 0, None
+
+    # Count the streak
+    while current_match_id is not None:
+        cursor.execute("SELECT * FROM Matches WHERE match_id = ?", (current_match_id,))
+        match_data = cursor.fetchone()
+
+        # Check if match_data is None
+        if match_data is None:
+            break
+
+        # Check if the player is involved in the match
+        if player_name in [match_data[1], match_data[2]]:
+            # Determine the current result based on the player's name
+            if match_data[3] == player_name:
+                current_result = 'win'
+            elif match_data[4] == player_name:
+                current_result = 'lose'
+            else:
+                current_result = None
+
+            if current_result == initial_result:
+                streak_count += 1
+                current_match_id -= 1
+            else:
+                break
+
+        else:
+            current_match_id -= 1
+
+    conn.close()
+    return streak_count, initial_result
 
 
 @views.route('/planes_data/<name>', methods=['GET'])

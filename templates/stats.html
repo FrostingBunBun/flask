@@ -13,6 +13,7 @@
   <button id="home">Home</button>
   <button onclick="goBack()" id="back">Back</button>
     <div class="top-block">
+      
 
 
 
@@ -20,6 +21,7 @@
           
             <div class="profile-picture"><img src={{ avatar_url }} alt="Avatar"></div>
             <h2 class="nickname">{{ name }}</h2>
+
         </div>
 
 
@@ -43,7 +45,17 @@
             <p>Losses: <span class="losses-value">{{losses}}</span></p>
             <p>Mmr: <span class="mmr-value">{{mmr}}</span></p>
             <p>Win Rate: <span class="win-rate-value">77%</span></p>
+            
+            {% if result == 'win' %}
+    <p>Current Win Streak: <span class="streak_value win_streak">{{ streak_count }}</span></p>
+{% elif result == 'lose' %}
+    <p>Current Lose Streak: <span class="streak_value lose_streak">{{ streak_count }}</span></p>
+{% else %}
+    <p>No streak found</p>
+{% endif %}
+
         </div>
+
     </div>
       
     <main>
@@ -126,19 +138,20 @@
     </div>
   </div>
 
-  <div class="below-container">
-    <div id="chart-container"></div>
-    <!-- Content of the below container goes here -->
-  </div>
-
 
   <div class="below-container2">
     <div id="chart-container2"></div>
     <!-- Content of the below container goes here -->
   </div>
 
+
   <div class="below_container3">
     <canvas id="radarChart"></canvas>
+  </div>
+
+  <div class="below-container">
+    <div id="chart-container"></div>
+    <!-- Content of the below container goes here -->
   </div>
   
 
