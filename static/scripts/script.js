@@ -417,6 +417,9 @@ document.addEventListener("DOMContentLoaded", function () {
         errorMessage.classList.remove("show");
       }, 2000);
     }
+
+
+
   });
   
 
@@ -477,6 +480,10 @@ document.addEventListener("DOMContentLoaded", function () {
     sessionStorage.removeItem("refreshFlag");
     var leftField = document.getElementById("field1Small");
     var rightField = document.getElementById("field2Small");
+
+
+
+    
   
     if (
       leftField.textContent.trim() !== "" &&
@@ -604,3 +611,153 @@ homeBtn.addEventListener("click", function() {
     window.location.href = "/main";
 });
 
+
+
+
+
+
+
+
+
+
+var selectElement = document.getElementById("image-select");
+var selectedImageElement = document.getElementById("selected-image");
+
+// Function to handle the selection change
+function handleSelectionChange() {
+  var selectedOption = selectElement.options[selectElement.selectedIndex];
+  var selectedImage = selectedOption.getAttribute("data-image");
+  var selectedName = selectedOption.text;
+
+  // Update the displayed image
+  selectedImageElement.src = selectedImage;
+
+  // Make an HTTP request to the Flask server
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "/sendJet", true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+
+  // Send the selected name to the Flask server
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      if (xhr.status === 200) {
+        // Request succeeded, handle the response here
+        console.log(xhr.responseText);
+      } else {
+        // Request failed, handle the error here
+        console.error("Error:", xhr.status);
+      }
+    }
+  };
+
+  xhr.send(JSON.stringify({ selectedName: selectedName }));
+  console.log(selectedName); // Log the selected name
+}
+
+// Add event listener for selection change
+selectElement.addEventListener("change", handleSelectionChange);
+
+// Trigger selection change on page load
+handleSelectionChange();
+
+
+
+function openWindow() {
+  // JavaScript function to open a new window or pop-up
+  window.open("https://example.com", "_blank", "width=500,height=400");
+}
+
+function openModal2() {
+  document.getElementById('modal2').style.display = 'block';
+
+  // Check if the userInput element exists
+  var userInput = document.getElementById('userInput');
+  if (userInput) {
+    userInput.value = ''; // Clear the input field
+  }
+}
+
+function closeModal2() {
+  var modal2 = document.getElementById('modal2');
+  if (modal2) {
+    modal2.style.display = 'none';
+    document.getElementById('usernameInput').value = '';
+  }
+}
+
+function addUsername() {
+  var username = document.getElementById('usernameInput').value;
+  var confirmField = document.querySelector('.confirmField');
+  var addBtn = document.querySelector('.add2');
+  var cancelBtn = document.querySelector('.cancel2');
+
+  confirmField.innerHTML = ''; // Clear the confirm field
+
+  if (username.trim() !== '') {
+    var usernameElement = document.createElement('span');
+    usernameElement.textContent = username;
+
+    confirmField.appendChild(usernameElement);
+    document.getElementById('usernameInput').value = '';
+
+    addBtn.style.display = 'inline-block'; // Show the confirm button
+    cancelBtn.style.display = 'inline-block'; // Show the cancel button
+  }
+}
+
+
+
+
+function cancelConfirmation() {
+  var confirmField = document.getElementById('confirmField');
+  confirmField.innerHTML = ''; // Clear the confirm field
+  document.getElementById('usernameInput').value = '';
+  var addBtn = document.querySelector('.add2');
+  var cancelBtn = document.querySelector('.cancel2');
+  addBtn.style.display = 'none'; // Hide the confirm button
+  cancelBtn.style.display = 'none'; // Hide the cancel button
+}
+
+
+
+
+function confirmUsername() {
+  var confirmField = document.getElementById('confirmField');
+  var username = confirmField.textContent.trim();
+
+  if (username !== '') {
+    // Show loading animation
+    var loadingMessage = document.createElement('span');
+    loadingMessage.classList.add('loading-animation');
+    confirmField.appendChild(loadingMessage);
+
+    // Create an HTTP request object
+    var xhr = new XMLHttpRequest();
+    var url = '/register_username'; // Replace with your Python API URL
+
+    // Configure the request
+    xhr.open('POST', url, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    // Define the data to send
+    var data = JSON.stringify({ username: username });
+
+    // Handle the response
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        console.log('Request successful');
+        console.log('Response:', xhr.responseText);
+
+
+
+          location.reload();
+
+      } else {
+        console.log('Request failed');
+      }
+    };
+
+    // Send the request
+    xhr.send(data);
+  }
+}

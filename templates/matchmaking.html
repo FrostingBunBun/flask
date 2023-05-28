@@ -23,10 +23,28 @@
     <div class="container">
       <div id="fixed-container">
         <!-- Content of your container goes here -->
-        <p>Logged on as: {{ username }}</p>
+        <p>Logged on as: {{ username }} </p>
         <button id="logout">Log out</button>
         <button id="home">Home</button>
+        <button class="registerUser" onclick="openModal2()">Add User</button>
       </div>
+
+
+            <!-- Modal -->
+            <div id="modal2" class="modal2">
+              <div class="modal-content2">
+                <button class="close-button" onclick="closeModal2()">&times;</button>
+                <p>Write the username lower and click Submit</p>
+                <p></p>
+                <input type="text" id="usernameInput" placeholder="Enter username...">
+                <button class="modal-button" onclick="addUsername()">Submit</button>
+                <div class="confirmField" id="confirmField"></div>
+            
+                <button class="add2" onclick="confirmUsername()" style="display: none;">Confirm</button>
+                <button class="cancel2" onclick="cancelConfirmation()" style="display: none;">Cancel</button>
+              </div>
+            </div>
+
 
       <div class="list" id="list">
         <div class="search-container">
@@ -103,15 +121,13 @@
 
         <div class="button-container">
           <button class="my-button" id="cancelButton">Cancel</button>
-          <a class="my-button" id="submitButton" draggable="false"
-            >Pair</a
-          >
+          <a class="my-button" id="submitButton" draggable="false">Pair</a>
           <button class="clear-button-all" id="clearButtonALL">
             Clear ALL
           </button>
         </div>
 
-
+        
     <div class="prob">Win Probability</div>
     <div class="gauge-container">
       <div class="gauge">
@@ -125,8 +141,23 @@
     </div>
 
         <div id="error-message" class="error-message"></div>
-      </div>
-    </div>
+
+        <div class="select-wrapper">
+          <div class="beforeSelect">select which jet is fighting</div>
+          <select id="image-select">
+            <option value="image1.jpg" data-image="https://upload.wikimedia.org/wikipedia/commons/f/f7/US_Navy_051105-F-5480T-005_An_F-14D_Tomcat_conducts_a_mission_over_the_Persian_Gulf-region.jpg">F-14</option>
+            <option value="image2.jpg" data-image="https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/US_Navy_071203-N-8923M-074_An_F-A-18F_Super_Hornet%2C_from_the_Red_Rippers_of_Strike_Fighter_Squadron_%28VFA%29_11%2C_makes_a_sharp_turn_above_the_flight_deck_aboard_the_Nimitz-class_nuclear-powered_aircraft_carrier_USS_Harry_S._Truman.jpg/800px-thumbnail.jpg">F-18</option>
+            <option value="image3.jpg" data-image="https://upload.wikimedia.org/wikipedia/commons/3/3e/Saab_AJS-37_Viggen_%28angled%29.jpg">Viggen</option>
+            <option value="image3.jpg" data-image="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/RAF_Eurofighter_EF-2000_Typhoon_F2_Lofting-1.jpg/1200px-RAF_Eurofighter_EF-2000_Typhoon_F2_Lofting-1.jpg">Eurofighter</option>
+            <option value="image3.jpg" data-image="https://upload.wikimedia.org/wikipedia/commons/a/af/VVS_100th_IMG_0691_%287727464290%29_%28cropped%29.jpg">Mig-29</option>
+          </select>
+        </div>
+      
+        <div>
+          <img id="selected-image" class="selected-image" src="default-image.jpg" alt="Selected Jet">
+        </div>
+        
+
 
     <script src="{{ url_for('static', filename='scripts/script.js') }}"></script>
     <script src="{{ url_for('static', filename='scripts/flagLogic.js') }}"></script>

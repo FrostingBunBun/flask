@@ -18,8 +18,8 @@ logOutButton.addEventListener('click', function() {
     xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                console.log(response.message);
+                // var response = JSON.parse(xhr.responseText);
+                // console.log(response.message);
                 window.location.href = "/main"
                 // Handle the response as needed
             } else {
@@ -30,11 +30,34 @@ logOutButton.addEventListener('click', function() {
     };
     xhr.send(JSON.stringify({ 'key': key }));
 });
-var stats = document.getElementById("stats");
-stats.addEventListener("click", function() {
-    // Redirect to the registration page or perform necessary actions
-    window.location.href = "stats";
+
+
+{/* <a href="/stats/{{ name }}">{{ name }}</a> */}
+window.addEventListener('DOMContentLoaded', function() {
+    
+
+    var container = document.getElementById('fixed-container');
+    var paragraph = container.getElementsByTagName('p')[0];
+    var loggedOnAs = paragraph.textContent;
+    var name = loggedOnAs.split(': ')[1];
+
+    var statsButton = document.getElementById("stats");
+    statsButton.addEventListener("click", function () {
+        window.location.href = "/stats/" + name;
+    });
+    
 });
+
+window.addEventListener('DOMContentLoaded', function() {
+    var statsButton = document.getElementById("matches");
+    statsButton.addEventListener("click", function() {
+        window.location.href = "/matches";
+    });
+});
+
+
+
+
 var leaderBoardsBtn = document.getElementById("leaderboards");
 leaderBoardsBtn.addEventListener("click", function() {
   // Redirect to the login page or perform necessary actions

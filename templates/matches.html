@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/matches.css') }}">
+</head>
+<body>
+    <button id="back">Back</button>
+      <table>
+          <thead>
+            <tr>
+              <th>Match ID</th>
+              <th>Player Left</th>
+              <th>Player Right</th>
+              <th>Winner</th>
+              <th>Loser</th>
+              <th>Date</th>
+              <th>Duration</th>
+              <th>Shift</th>
+              <th>Plane</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for match in historyAll|reverse %}
+            <tr>
+                <td>{{ match[0] }}</td>
+                <td class="{% if match[1].split('_')[0] == match[3].split('_')[0] %}winner{% elif match[1].split('_')[0] == match[4].split('_')[0] %}loser{% endif %}">{{ match[1] }}</td>
+                <td class="{% if match[2].split('_')[0] == match[3].split('_')[0] %}winner{% elif match[2].split('_')[0] == match[4].split('_')[0] %}loser{% endif %}">{{ match[2] }}</td>
+                <td>{{ match[3] }}</td>
+                <td>{{ match[4] }}</td>
+                <td>{{ match[5].split('T')[0] | datetime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td class="duration">{{ match[6] // 60 }}:{{ "%02d" % (match[6] % 60) }}</td>
+                <td class="shift" style="color: rgb({{ (50-match[7]) * 255 / 59 }}, {{ match[7] * 255 / 59 }}, 0);">{{ match[7] }}</td>
+
+                <td>{{ match[8] }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+  </body>
+<script src="{{ url_for('static', filename='scripts/matches.js') }}"></script>
+</html>

@@ -4,22 +4,155 @@
   <title>Private Account Stats</title>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/stats.css') }}">
 </head>
-<body>   
+<body>
+  <!-- <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> -->
+  
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/highcharts-more.js"></script>
+  
+  <button id="home">Home</button>
+  <button onclick="goBack()" id="back">Back</button>
     <div class="top-block">
+
+
+
         <div class="mainInfo">
-            <div class="profile-picture"><img src="https://cdn.discordapp.com/avatars/1009282728040071189/c2acbef366c5fcc7bdc3d85bc041fa0a.png?size=1024" alt="Avatar"></div>
-            <h2 class="nickname">Nickname</h2>
+          
+            <div class="profile-picture"><img src={{ avatar_url }} alt="Avatar"></div>
+            <h2 class="nickname">{{ name }}</h2>
         </div>
+
+
+        
+        {% if is_own_profile %}
+  <div class="check-flag">
+    <span class="profile-info">Private Account:</span>
+    <input type="checkbox" id="check-flag-checkbox" {% if not is_public %}checked{% endif %} onchange="handleCheckboxChange()">
+    <label for="check-flag-checkbox"></label>
+  </div>
+  <div>
+    <button class="apply">APPLY</button>
+  </div>
+{% endif %}
+
+
+
         <div class="profile-info">
-            <p>Last Match: <span class="last-match-value">2023-05-20</span></p>
-            <p>Wins: <span class="wins-value">75</span></p>
-            <p>Losses: <span class="losses-value">22</span></p>
+          <p>Last Match: <span class="last-match-value">{{ lastMatch[5].split(' ')[0] }}</span></p>
+            <p>Wins: <span class="wins-value">{{wins}}</span></p>
+            <p>Losses: <span class="losses-value">{{losses}}</span></p>
+            <p>Mmr: <span class="mmr-value">{{mmr}}</span></p>
             <p>Win Rate: <span class="win-rate-value">77%</span></p>
-          </div>
-      </div>
+        </div>
+    </div>
       
     <main>
-        
-</main>
+      <div id="calendarData">{{ games_per_day }}</div>
+        <div class="container">
+
+          
+            <div class="left-container">
+              <div></div>
+
+
+
+
+
+
+              {% if is_public or is_own_profile %}
+  <div class="match-history-container">
+    <h2>Match History</h2>
+    <div class="start">(starts from 2023-05-23)</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Plane</th>
+          <th>Result</th>
+          <th>Duration</th>
+          <th>MMR Shift</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for match in history|reverse %}
+          <tr>
+            <td class="plane-type">f-14</td>
+            <td class="result {% if match[3].split()[0] == name %}win{% else %}loss{% endif %}">
+              {% if match[3].split()[0] == name %}Won Match{% else %}Lost Match{% endif %}
+            </td>
+            <td class="duration">{{ match[6] // 60 }}:{{ "%02d" % (match[6] % 60) }}</td>
+            <td class="mmr-shift {% if match[3].split()[0] == name %}positive{% else %}negative{% endif %}">
+              {% if match[3].split()[0] == name %}+{{ match[7] }}{% else %}-{{ match[7] }}{% endif %}
+            </td>
+            <td class="date">{{ match[5] }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="private-profile">Private Profile</div>
+{% endif %}
+              
+              
+              
+
+
+
+              
+                <!-- Left container content here -->
+            </div>
+
+            {% if is_public or is_own_profile %}
+
+            <div class="holder">
+  <div class="right-container">
+    <div></div>
+    <div class="calendar">
+      <div class="weekdays"></div>
+      <div class="days">
+        <h1></h1>
+        <div id="calendar"></div>
+        <!-- Calendar days dynamically generated here -->
+      </div>
+    </div>
+  </div>
+
+  <div class="below-container">
+    <div id="chart-container"></div>
+    <!-- Content of the below container goes here -->
+  </div>
+
+
+  <div class="below-container2">
+    <div id="chart-container2"></div>
+    <!-- Content of the below container goes here -->
+  </div>
+
+  <div class="below_container3">
+    <canvas id="radarChart"></canvas>
+  </div>
+  
+
+
+</div>
+
+
+
+            {% else %}
+  <div class="private-profile">Private Profile</div>
+{% endif %}
+
+
+
+            
+      
+            
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='scripts/stats.js') }}"></script>
+    
 </body>
 </html>
