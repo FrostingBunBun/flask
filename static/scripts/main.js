@@ -1,15 +1,24 @@
+var loginMessageTimeout = null;
 
-
-function showLoginMessage() {
-    var loginMessage = document.getElementById('login-message');
-    loginMessage.classList.add('visible');
-    setTimeout(function() {
-      loginMessage.classList.remove('visible');
-    }, 2000);
-  }
+function showLoginMessage(messageId) {
+  clearTimeout(loginMessageTimeout);
   
+  var loginMessage = document.getElementById('login-message');
+  var loginMessage2 = document.getElementById('login-message2');
 
+  if (messageId === 'login-message') {
+    loginMessage2.classList.remove('visible');
+  } else {
+    loginMessage.classList.remove('visible');
+  }
 
+  var messageToShow = document.getElementById(messageId);
+  messageToShow.classList.add('visible');
+
+  loginMessageTimeout = setTimeout(function() {
+    messageToShow.classList.remove('visible');
+  }, 2000);
+}
 
 
 

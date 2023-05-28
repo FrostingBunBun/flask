@@ -166,7 +166,8 @@ footer {
   }
   
 
-  #login-message {
+  #login-message,
+  #login-message2 {
     position: fixed;
     top: 22%;
     left: 50%;
@@ -181,7 +182,8 @@ footer {
     z-index: 1;
   }
   
-  #login-message.visible {
+  #login-message.visible,
+  #login-message2.visible {
     opacity: 1;
   }
   

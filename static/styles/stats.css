@@ -311,7 +311,15 @@ body{
 .duration{
   color: #b986a0;
 }
-
+.enemy{
+  color: #bbbbbb;
+  font-weight: bold;
+  text-decoration: none; /* Remove underline */
+}
+.enemy:hover {
+  color: #f2f2f2; /* Add a background color on hover */
+  /* Add more styles for hover state */
+}
 #calendarData {
   position: absolute;
   top: 50%;

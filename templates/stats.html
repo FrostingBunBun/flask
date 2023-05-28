@@ -68,11 +68,13 @@
         <tr>
           <th>Plane</th>
           <th>Result</th>
+          <th>Enemy</th>
           <th>Duration</th>
           <th>MMR Shift</th>
           <th>Date</th>
         </tr>
       </thead>
+
 
       <tbody>
         {% for match in history|reverse %}
@@ -80,6 +82,9 @@
             <td class="plane-type">f-14</td>
             <td class="result {% if match[3].split()[0] == name %}win{% else %}loss{% endif %}">
               {% if match[3].split()[0] == name %}Won Match{% else %}Lost Match{% endif %}
+            </td>
+            <td>
+              <a class="enemy" href="/stats/{{ match[2] if match[1] == name else match[1] }}">{{ match[2] if match[1] == name else match[1] }}</a>
             </td>
             <td class="duration">{{ match[6] // 60 }}:{{ "%02d" % (match[6] % 60) }}</td>
             <td class="mmr-shift {% if match[3].split()[0] == name %}positive{% else %}negative{% endif %}">
@@ -89,6 +94,8 @@
           </tr>
         {% endfor %}
       </tbody>
+
+
     </table>
   </div>
   {% else %}
