@@ -32,6 +32,11 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  opacity: 0; /* Set initial opacity to 0 */
+  position: relative; /* Set position to relative for animation */
+  bottom: -40px; /* Set initial position below its actual position */
+  animation: fadeAndMove 0.5s ease forwards; /* Apply animation */
 }
 
 .sidebar-container {
@@ -113,7 +118,6 @@ body {
   display: flex;
   flex-direction: column;
   grid-gap: 30px;
-
   padding: 40px;
 }
 
@@ -121,6 +125,12 @@ body {
   display: flex;
   align-items: center;
   grid-gap: 10px;
+}
+
+.page-cards-column {
+  display: flex;
+  flex-direction: column;
+  grid-gap: 20px;
 }
 
 .page-card-info-button {
@@ -153,8 +163,8 @@ body {
 }
 
 .page-card-content {
-  width: 300px;
-  height: 80%;
+  width: 100%;
+  height: 350px;
 
   display: flex;
   justify-content: center;
@@ -172,14 +182,17 @@ body {
 }
 
 .page-cards {
+  max-width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   grid-gap: 20px;
 }
 
 .page-card {
   width: fit-content;
-  height: 460px;
+  min-width: 400px;
+  height: fit-content;
+  flex-wrap: wrap;
 
   background: radial-gradient(
         80.01% 60.18% at 89.51% 83.9%,
