@@ -126,6 +126,10 @@ body{
     background-color: #69575d;
     margin-left: 10px;
   }
+
+
+
+
   .calendar {
     display: flex;
     flex-direction: column;
@@ -297,11 +301,20 @@ body{
 .negative {
   color: red;
 }
+.win_streak {
+  color: rgb(0, 201, 0);
+}
+
+.lose_streak {
+  color: rgb(206, 0, 0);
+}
 
 /* Date styles */
 .date {
   font-style: italic;
   color: #bbbbbb;
+  width: 30%;
+  
 }
 
 /* Other styles */
@@ -311,7 +324,15 @@ body{
 .duration{
   color: #b986a0;
 }
-
+.enemy{
+  color: #bbbbbb;
+  font-weight: bold;
+  text-decoration: none; /* Remove underline */
+}
+.enemy:hover {
+  color: #f2f2f2; /* Add a background color on hover */
+  /* Add more styles for hover state */
+}
 #calendarData {
   position: absolute;
   top: 50%;
@@ -455,4 +476,23 @@ body{
   background-color: rgb(73, 73, 73); /* Custom background color */
   color: #b8b8b8;
 
+}
+
+.highcharts-button-box {
+  fill: #595f7e; /* Background color */
+  stroke: #FF6B8A; /* Border color */
+  stroke-width: 1px; /* Border width */
+}
+
+.highcharts-button-text {
+  fill: #FF6B8A; /* Text color */
+}
+
+.highcharts-button-box:hover {
+  fill: #FF6B8A; /* Background color on hover */
+  stroke: #595f7e; /* Border color on hover */
+}
+
+.highcharts-button-text:hover {
+  fill: #595f7e; /* Text color on hover */
 }

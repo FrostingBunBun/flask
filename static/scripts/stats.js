@@ -273,12 +273,16 @@ fetch('/planes_data/' + userProfileName)  // Include the name as a URL parameter
           currentMMR += entry.change;
           return [new Date(entry.date).getTime(), currentMMR];
         });
+        console.log("mmrProgrtession: ", mmrProgression)
   
+
+
         // Create the chart
         Highcharts.chart('chart-container2', {
           chart: {
             type: 'line',
             backgroundColor: '#595f7e',
+            zoomType: 'x', // Enable zooming on the x-axis
           },
           title: {
             text: 'MMR Progression Chart',
@@ -312,17 +316,28 @@ fetch('/planes_data/' + userProfileName)  // Include the name as a URL parameter
                 color: '#FFFFFF',
               },
             },
+            min: 0, // Set the minimum value of the y-axis
+            max: 1000, // Set the maximum value of the y-axis
           },
+          
           series: [{
             name: 'MMR Progression',
             data: mmrProgression,
             color: '#FF6B8A',
+            lineWidth: 2,
+            connectNulls: true, // Connect the points even if there are gaps in the data
           }],
           credits: {
             enabled: false // Disable credits
           }
+          
         });
+
+
+
+        
       })
+
       .catch(error => {
         console.error('Error:', error);
       });
@@ -335,20 +350,7 @@ fetch('/planes_data/' + userProfileName)  // Include the name as a URL parameter
 // ------------------------------------------------------------------------
 
 
-// Retrieve the data from your database
-const matches = [
-  ['Player A', 'Player B', 112],
-  ['Player A', 'Player C', 186],
-  ['Player A', 'Player D', 82],
-  ['Player A', 'Player E', 112],
-  ['Player A', 'Player F', 134],
-  ['Player A', 'Player G', 104],
-  ['Player A', 'Player H', 118],
-  ['Player A', 'Player I', 99],
-  ['Player A', 'Player J', 163],
-  ['Player A', 'Player K', 120],
-  // Add more matches involving Player A here...
-];
+
 
 
 
