@@ -1,33 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/register.css') }}">
-</head>
-<body>
-    <div class="buttonContainer">
-        <button id="homeBtn" class="home">Home</button>
-</div>
-    <div class="topper">
-        <button class="btn btn-secondary" onclick="goBack()">Back</button>
-    </div>
-    <div class="container">
-        <h1>Registration Page</h1>
-        <form id="registrationForm" method="post">
-            <label for="nickname">Nickname:</label>
-            <input type="text" id="username" name="username" placeholder="Enter your username" required>
-            <button type="submit" class="btn btn-primary">Register</button>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/register.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/login.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/main_logged.css') }}"
+    />
+  </head>
+  <body>
+    <div class="auth-page">
+      <div class="topper"></div>
+      <div class="auth-container">
+        <h1 class="auth-heading">Create an account</h1>
+        <form id="registrationForm" class="auth-form" method="post">
+          <label for="nickname" class="auth-label">Nickname:</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Enter your username"
+            required
+            class="auth-input"
+          />
+          <button type="submit" class="auth-button">Register</button>
+          <div class="auth-bottom">
+            <span class="auth-bottom-text">or</span>
+            <button class="auth-bottom-btn" onclick="goLogin()" id="login">
+              Log in
+            </button>
+          </div>
         </form>
+      </div>
     </div>
-    
     <script>
-        function goBack() {
-            window.location.href = "/";
-        }
+      function goLogin() {
+        window.location.href = "/login";
+      }
     </script>
     <script src="{{ url_for('static', filename='scripts/register.js') }}"></script>
-</body>
+  </body>
 </html>

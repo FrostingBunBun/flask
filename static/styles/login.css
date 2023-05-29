@@ -1,110 +1,242 @@
-body {
-    background-color: #a3a3a3;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    font-family: Arial, sans-serif;
-    overflow: hidden;
+.auth-container {
+  background: radial-gradient(
+        82.67% 73.55% at 0% 0%,
+        rgba(249, 1, 98, 0.106) 0%,
+        rgba(0, 0, 0, 0) 100%
+      )
+      /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+    rgba(15, 12, 13, 0.8);
+  border-radius: 50px;
+  display: flex;
+  flex-direction: column;
+  padding: 70px 50px;
+  align-items: center;
+  justify-content: center;
+  width: 450px;
+  grid-gap: 30px;
+}
+
+.auth-page {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-button {
+  background: linear-gradient(90deg, #73002d 0%, #f90162 99.26%);
+  border-radius: 10px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px 20px;
+
+  color: #ffffff;
+  border: none;
+  margin-top: 50px;
+  transition: all 0.05s;
+}
+
+.auth-button:hover {
+  cursor: pointer;
+  filter: brightness(0.9);
+}
+
+.auth-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+.auth-bottom-text {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+
+.auth-bottom-btn {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+
+  align-items: center;
+  text-align: center;
+
+  color: #f90162;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.auth-label {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  color: #ffffff;
+}
+
+.auth-form {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  grid-gap: 20px;
+}
+
+.auth-input {
+  width: 100%;
+  height: 50px;
+
+  border: 1px solid #ffffff;
+  border-radius: 10px;
+  background: none;
+  padding: 10px 20px;
+
+  outline: none;
+  color: #ffffff;
+  font-size: 16px;
+}
+
+.auth-input::placeholder {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+
+  display: flex;
+  align-items: center;
+
+  color: #929292;
+}
+
+.auth-heading {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 34px;
+  text-align: center;
+
+  color: #ffffff;
 }
 
 .container {
-    background-color: #cacaca;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    text-align: center;
+  background-color: #cacaca;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
 .container h1 {
-    margin: 0;
-    margin-bottom: 20px;
-    color: #333;
+  margin: 0;
+  margin-bottom: 20px;
+  color: #333;
 }
 
 .btn {
-    display: inline-block;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: #fff;
-    font-size: 16px;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  display: inline-block;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .btn:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 .btn i {
-    margin-right: 5px;
+  margin-right: 5px;
 }
 
 .btn-primary {
-    background-color: #007bff;
+  background-color: #007bff;
 }
 
 .btn-primary:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 .btn-secondary {
-    background-color: #6c757d;
+  background-color: #6c757d;
 }
 
 .btn-secondary:hover {
-    background-color: #545b62;
+  background-color: #545b62;
 }
 
 .btn-success {
-    background-color: #28a745;
+  background-color: #28a745;
 }
 
 .btn-success:hover {
-    background-color: #1e7e34;
+  background-color: #1e7e34;
 }
 
 .btn-danger {
-    background-color: #dc3545;
+  background-color: #dc3545;
 }
 
 .btn-danger:hover {
-    background-color: #bd2130;
+  background-color: #bd2130;
 }
 .topper {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    z-index: 1;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
 }
 .error {
-    color: red;
-    font-size: 14px;
-    margin-top: 5px;
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
 }
 .buttonContainer {
-    position: relative;
-    /* Other styles for the container */
-  }
-  
-  .home {
-    position: absolute;
-    top: 80px; /* Adjust the top position as needed */
-    left: 148px; /* Adjust the left position as needed */
-    padding: 10px 15px;
-    background-color: #333;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .home:hover {
-    background-color: #555;
-  }
-  
+  position: relative;
+  /* Other styles for the container */
+}
+
+.home {
+  position: absolute;
+  top: 80px; /* Adjust the top position as needed */
+  left: 148px; /* Adjust the left position as needed */
+  padding: 10px 15px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.home:hover {
+  background-color: #555;
+}

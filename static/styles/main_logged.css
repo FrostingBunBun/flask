@@ -35,8 +35,8 @@ body {
 
   opacity: 0; /* Set initial opacity to 0 */
   position: relative; /* Set position to relative for animation */
-  bottom: -40px; /* Set initial position below its actual position */
   animation: fadeAndMove 0.5s ease forwards; /* Apply animation */
+  background-color: #000000;
 }
 
 .sidebar-container {
@@ -231,7 +231,7 @@ body {
   color: #d1c5cb;
   max-width: 700px;
   margin-top: 15px;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 main {

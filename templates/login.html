@@ -1,44 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/login.css') }}">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/main_logged.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/login.css') }}"
+    />
     <style>
-        .error-message {
-            color: red;
-            margin-top: 5px;
-        }
+      .error-message {
+        color: red;
+        margin-top: 5px;
+      }
     </style>
-</head>
-<body>
-    <div class="buttonContainer">
-        <button id="homeBtn" class="home">Home</button>
-</div>
-    <div class="topper">
-        <button class="btn btn-secondary" onclick="goBack()">Back</button>
-    </div>
-    <div class="container">
-        <h1>Login Page</h1>
-        <form id="registrationForm" method="post">
-            <label for="nickname">Password:</label>
-            <input type="password" id="password" name="password" placeholder="Enter your password" required>
-            <button type="submit" class="btn btn-primary">Login</button>
-            {% if incorrect_password %}
-                <p class="error-message">Incorrect password. Please try again.</p>
-            {% elif not_confirmed %}
-                <p class="error-message">Your account is not confirmed.</p>
-            {% endif %}
+  </head>
+  <body>
+    <div class="auth-page">
+      <div class="auth-container">
+        <h1 class="auth-heading">Welcome back</h1>
+        <form id="registrationForm" class="auth-form" method="post">
+          <label for="nickname" class="auth-label">Password:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="auth-input"
+            placeholder="Enter your password"
+            required
+          />
+          <button type="submit" class="auth-button">Login</button>
+          {% if incorrect_password %}
+          <p class="error-message">Incorrect password. Please try again.</p>
+          {% elif not_confirmed %}
+          <p class="error-message">Your account is not confirmed.</p>
+          {% endif %}
         </form>
+        <div class="auth-bottom">
+          <span class="auth-bottom-text">or</span>
+          <button class="auth-bottom-btn" onclick="goRegister()" id="register">
+            Register
+          </button>
+        </div>
+      </div>
     </div>
-    
     <script>
-        function goBack() {
-            window.location.href = "/";
-        }
+      function goRegister() {
+        window.location.href = "/register";
+      }
     </script>
+
     <script src="{{ url_for('static', filename='scripts/login.js') }}"></script>
-</body>
+  </body>
 </html>
