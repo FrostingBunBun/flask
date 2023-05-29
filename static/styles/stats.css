@@ -126,6 +126,10 @@ body{
     background-color: #69575d;
     margin-left: 10px;
   }
+
+
+
+
   .calendar {
     display: flex;
     flex-direction: column;
@@ -309,6 +313,8 @@ body{
 .date {
   font-style: italic;
   color: #bbbbbb;
+  width: 30%;
+  
 }
 
 /* Other styles */
@@ -470,4 +476,23 @@ body{
   background-color: rgb(73, 73, 73); /* Custom background color */
   color: #b8b8b8;
 
+}
+
+.highcharts-button-box {
+  fill: #595f7e; /* Background color */
+  stroke: #FF6B8A; /* Border color */
+  stroke-width: 1px; /* Border width */
+}
+
+.highcharts-button-text {
+  fill: #FF6B8A; /* Text color */
+}
+
+.highcharts-button-box:hover {
+  fill: #FF6B8A; /* Background color on hover */
+  stroke: #595f7e; /* Border color on hover */
+}
+
+.highcharts-button-text:hover {
+  fill: #595f7e; /* Text color on hover */
 }

@@ -127,7 +127,30 @@ def add_header(response):
 @views.route("/leaderboards", methods=['GET', 'POST'])
 def leaderboards():
 
+    #DB STUFF +====================
+    # Connect to the SQLite database
+    conn = sqlite3.connect('./db/matches_data.db')
+    cursor = conn.cursor()
 
+    # Retrieve all rows from the table
+    cursor.execute("SELECT rowid FROM Matches")
+    rows = cursor.fetchall()
+    
+    # Update the new column with sequential IDs
+    # for index, row in enumerate(rows, start=1):
+        # cursor.execute("UPDATE Matches SET match_id = ? WHERE rowid = ?", (index, row[0]))
+    # Update the existing rows to shift their order
+
+
+    # Commit the changes
+    conn.commit()
+    
+    # Close the cursor and the database connection
+    cursor.close()
+    conn.close()
+
+
+    #DB STUFF +====================
 
 
     # Connect to the databases
@@ -909,6 +932,7 @@ def profile_details_leaderboard(name):
 
 
     history = get_matches_by_player(name)
+    print("LENGTH OF THE HISTORY: ", len(history))
 
     if check_player_exists(name):
         lastMatch = history[-1]
@@ -957,11 +981,15 @@ def profile_details_leaderboard(name):
     cursor.execute(query, (name, name))
     game_timestamps = cursor.fetchall()
 
-    # Iterate over the game timestamps and update the games_per_day list
     for timestamp in game_timestamps:
         game_date = datetime.strptime(timestamp[0].split('T')[0], "%Y-%m-%d").date()
         day_index = (game_date - first_day.date()).days
-        games_per_day[day_index] += 1
+        if 0 <= day_index < len(games_per_day):
+            games_per_day[day_index] += 1
+        else:
+            # Handle the case when day_index is out of range
+            print(f"Invalid day_index: {day_index}")
+            # print(f"Invalid Day: {}") 
 
     # Close the database connection
     cursor.close()
@@ -1092,6 +1120,8 @@ def planes_data(name):
     return jsonify(plane_data)
 
 
+
+
 def get_progression_history(name):
     # Connect to the SQLite database
     conn = sqlite3.connect('./db/matches_data.db')
@@ -1108,7 +1138,7 @@ def get_progression_history(name):
 
     cursor2.execute("SELECT startingMmr FROM Players WHERE player_name = ?", (name,))
     result = cursor2.fetchone()
-    startingMmr = 666 #TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+    startingMmr = 600 #TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
     if result:
         startingMmr = result[0]
         print("Starting MMR:", startingMmr)
@@ -1116,9 +1146,6 @@ def get_progression_history(name):
         print("Player not found")
 
     conn2.close()
-
-
-
 
     # Iterate over the matches to calculate MMR progression
     for match in matches:
@@ -1151,6 +1178,9 @@ def get_progression_history(name):
     return mmr_data
 
 
+
+
+
 @views.route('/progression/<name>', methods=['GET'])
 def progression_data(name):
     mmr_data = get_progression_history(name)
@@ -1158,6 +1188,9 @@ def progression_data(name):
 
 
     return jsonify(mmr_data)
+
+
+
 
 
 
@@ -1302,7 +1335,7 @@ def get_wins_loses_mmr(player_name):
     else:
         return None
 
-def get_matches_by_player(player_name, page=1, games_per_page=10):
+def get_matches_by_player(player_name, page=1, games_per_page=9999):
     conn = sqlite3.connect("./db/matches_data.db")
     cursor = conn.cursor()
 
