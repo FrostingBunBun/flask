@@ -674,6 +674,12 @@ li:hover {
   position: absolute;
   left: 700px;
 }
+.customPool{
+  width: 100px;
+  height: 50px;
+  position: absolute;
+  left: 820px;
+}
 /* CSS to style the button */
 .button2 {
   padding: 10px 20px;
@@ -813,4 +819,46 @@ li:hover {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+
+
+
+
+/* NEW MODAL STUFF HERE */
+
+.modal-content-pool{
+  position: absolute;
+  left: 30%;
+  top: 15%;
+  width: 600px;
+}
+.added{
+  background-color: #3faa96;
+  position: absolute;
+  left: 80%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  width: 400px;
+}
+
+
+
+
+.belowMatch {
+  display: flex;
+  align-items: flex-start;
+}
+
+.select-wrapper {
+  margin-right: 20px;
+}
+
+.image-container {
+  margin-right: 20px;
+}
+
+.auto-match-area {
+  flex-grow: 1;
 }

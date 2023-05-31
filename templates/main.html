@@ -8,7 +8,10 @@
 </head>
 <body>
   <div id="login-message" class="hidden">
-    <p>Please log in or Register to see your private stats</p>
+    <p>Please Log In or Register to see your private stats</p>
+  </div>
+  <div id="login-message2" class="hidden">
+    <p>Please Log In or Register to see matches history</p>
   </div>
     <div class="gradient-overlay"></div>
   <header>
@@ -22,8 +25,8 @@
     <nav>
       <ul>
         <li><a href="/" id="login">Entry</a></li>
-        <li><a href="#" onclick="showLoginMessage()">Stats</a></li>
-        <li><a href="#">Matches</a></li>
+        <li><a href="#" onclick="showLoginMessage('login-message')">Stats</a></li>
+        <li><a href="#" onclick="showLoginMessage('login-message2')">Matches</a></li>
         <li><a href="#" id="leaderboards">Leaderboards</a></li>
       </ul>
     </nav>

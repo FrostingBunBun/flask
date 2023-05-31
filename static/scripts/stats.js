@@ -261,12 +261,12 @@ fetch('/planes_data/' + userProfileName)  // Include the name as a URL parameter
       .then(response => response.json())
       .then(data => {
         // Process the MMR data
-        const startingMMR = data[0].initial_mmr;
+        const startingMMR = 600; // Set the starting MMR to 600
         const mmrChanges = data.map(entry => ({
           date: entry.date,
-          change: entry.mmr_change
+          change: entry.mmr_change,
+
         }));
-        // console.log("STARTING: ", startingMMR)
   
         let currentMMR = startingMMR;
         const mmrProgression = mmrChanges.map(entry => {
@@ -274,14 +274,50 @@ fetch('/planes_data/' + userProfileName)  // Include the name as a URL parameter
           return [new Date(entry.date).getTime(), currentMMR];
         });
   
-        // Create the chart
+        // Calculate the true end MMR value
+        const lastEntry = data[data.length - 1];
+        // const trueEndMMR = 827; // Your true end value
+        trueEndMMR = lastEntry['Current MMR']
+
+  
+        // Perform linear interpolation to adjust the MMR progression
+        const adjustedMMRProgression = [];
+        for (let i = 0; i < mmrProgression.length - 1; i++) {
+          const [date1, mmr1] = mmrProgression[i];
+          const [date2, mmr2] = mmrProgression[i + 1];
+  
+          const timeDiff = date2 - date1;
+          const mmrDiff = mmr2 - mmr1;
+          const mmrChangePerTime = mmrDiff / timeDiff;
+  
+          let currentDate = date1;
+          let currentMMR = mmr1;
+  
+          while (currentDate < date2) {
+            currentDate += 86400000; // Increment by 1 day (in milliseconds)
+            currentMMR += mmrChangePerTime * 86400000; // Increment the MMR based on the daily rate of change
+  
+            // Check if the adjusted MMR exceeds the trueEndMMR
+            if (currentMMR > trueEndMMR) {
+              currentMMR = trueEndMMR; // Set the MMR to trueEndMMR if it exceeds
+            }
+  
+            adjustedMMRProgression.push([currentDate, currentMMR]);
+          }
+        }
+  
+        // Add the last known MMR value
+        adjustedMMRProgression.push([mmrProgression[mmrProgression.length - 1][0], trueEndMMR]);
+  
+        // Create the chart with the adjusted MMR progression
         Highcharts.chart('chart-container2', {
           chart: {
             type: 'line',
             backgroundColor: '#595f7e',
+            zoomType: 'x', // Enable zooming on the x-axis
           },
           title: {
-            text: 'MMR Progression Chart',
+            text: 'MMR Progression Chart (interpolated beta)',
             style: {
               color: '#FF6B8A',
             },
@@ -312,11 +348,15 @@ fetch('/planes_data/' + userProfileName)  // Include the name as a URL parameter
                 color: '#FFFFFF',
               },
             },
+            min: 0, // Set the minimum value of the y-axis
+            max: 1000, // Set the maximum value of the y-axis
           },
           series: [{
             name: 'MMR Progression',
-            data: mmrProgression,
+            data: adjustedMMRProgression,
             color: '#FF6B8A',
+            lineWidth: 2,
+            connectNulls: true, // Connect the points even if there are gaps in the data
           }],
           credits: {
             enabled: false // Disable credits
@@ -335,20 +375,7 @@ fetch('/planes_data/' + userProfileName)  // Include the name as a URL parameter
 // ------------------------------------------------------------------------
 
 
-// Retrieve the data from your database
-const matches = [
-  ['Player A', 'Player B', 112],
-  ['Player A', 'Player C', 186],
-  ['Player A', 'Player D', 82],
-  ['Player A', 'Player E', 112],
-  ['Player A', 'Player F', 134],
-  ['Player A', 'Player G', 104],
-  ['Player A', 'Player H', 118],
-  ['Player A', 'Player I', 99],
-  ['Player A', 'Player J', 163],
-  ['Player A', 'Player K', 120],
-  // Add more matches involving Player A here...
-];
+
 
 
 
@@ -411,3 +438,5 @@ new Chart(radarChart, {
 .catch(error => {
   console.error('Error:', error);
 });
+
+

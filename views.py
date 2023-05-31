@@ -14,6 +14,8 @@ import difflib
 from collections import defaultdict
 
 
+import numpy as np
+from scipy.interpolate import interp1d
 
 views = Blueprint(__name__, "views")
 
@@ -24,10 +26,12 @@ wks_mmr = sh_mmr.worksheet("Leaderboards")
 
 playersNames = wks_mmr.get("D4:D")
 flat_names = [item for sublist in playersNames for item in sublist]
+# print(flat_names)
+# print("======================")
 
 playersMmr = wks_mmr.get("C4:C")
 flat_mmrs = [item for sublist in playersMmr for item in sublist]
-
+# print(flat_mmrs)
 nameMmr_dict = {}
 
 for i in range(len(flat_names)):
@@ -36,11 +40,6 @@ for i in range(len(flat_names)):
 # print(nameMmr_dict)
 
 
-# =========================================================================
-# flags = wks_mmr.get("E4:E")
-# Get the cell value
-
-# =========================================================================
 
 
 
@@ -130,7 +129,30 @@ def add_header(response):
 @views.route("/leaderboards", methods=['GET', 'POST'])
 def leaderboards():
 
+    #DB STUFF +====================
+    # Connect to the SQLite database
+    conn = sqlite3.connect('./db/matches_data.db')
+    cursor = conn.cursor()
 
+    # Retrieve all rows from the table
+    cursor.execute("SELECT rowid FROM Matches")
+    rows = cursor.fetchall()
+    
+    # Update the new column with sequential IDs
+    # for index, row in enumerate(rows, start=1):
+        # cursor.execute("UPDATE Matches SET match_id = ? WHERE rowid = ?", (index, row[0]))
+    # Update the existing rows to shift their order
+
+
+    # Commit the changes
+    conn.commit()
+    
+    # Close the cursor and the database connection
+    cursor.close()
+    conn.close()
+
+
+    #DB STUFF +====================
 
 
     # Connect to the databases
@@ -140,23 +162,27 @@ def leaderboards():
     cursor1 = conn1.cursor()
     cursor2 = conn2.cursor()
 
-    # Fetch the names from players_data.db in the desired order
-    cursor2.execute("SELECT player_name FROM Players ORDER BY mmr DESC")
-    names2 = cursor2.fetchall()
-
-    # print("NAMES")
-    # print(names)
-    # print("NAMES")
-
-    playersNames = wks_mmr.get("D4:D")
-    names = [(item[0],) for item in playersNames]
 
 
-    # print("NAMES2")
-    # print(formatted_string)
-    print("OLD: ", type(names2))
-    print("NEW: ", type(names))
-    # print("NAMES2")
+    cursor2.execute("SELECT player_name, mmr, wins, losses FROM Players ORDER BY mmr DESC")
+    player_data = cursor2.fetchall()
+ 
+    flat_names = []
+    mmr_fixed = []
+    playersWinLose = []
+
+    for name in player_data:
+        flat_names.append(name[0])
+        mmr_fixed.append(name[1])
+        playersWinLose.append([str(name[2]), str(name[3])])
+        
+    
+    
+
+
+
+    print("==============================")
+    
 
 
 
@@ -164,7 +190,7 @@ def leaderboards():
     avatar_urls = []
 
     # Iterate over the names and fetch the corresponding avatar URLs from dsLinks
-    for name in names:
+    for name in player_data:
         cursor1.execute("SELECT avatar_url, name FROM dsLinks")
         results = cursor1.fetchall()
         matched_names = get_close_matches(name[0], [result[1] for result in results], n=1, cutoff=0.5)
@@ -186,33 +212,25 @@ def leaderboards():
     conn2.close()
 
 
-    # print("+++++++++++++++++++++++++++++++++++")
-    # print(avatar_urls)
 
 
 
-    # print(avatar_urls)
 
-    flat_names = [item for sublist in playersNames for item in sublist]
-
-    playersMmr = wks_mmr.get("C4:C")
-    flat_mmrs = [item for sublist in playersMmr for item in sublist]
     
-    playersWinLose = wks_mmr.get("F4:G")
-    # print(playersWinLose)
 
     winrate_list = []
     for player in playersWinLose:
         winrate = "{:.2f}".format((int(player[0]) / (int(player[0]) + int(player[1]))) * 100, 2) if int(player[0]) + int(player[1]) > 0 else 0
 
         winrate_list.append(winrate)
-    # print(winrate_list)
+
+
 
     nameMmr_dict = {}
 
     for i in range(len(flat_names)):
 
-        nameMmr_dict[flat_names[i]] = flat_mmrs[i], winrate_list[i], avatar_urls[i]
+        nameMmr_dict[flat_names[i]] = mmr_fixed[i], winrate_list[i], avatar_urls[i]
     username = ''
     if 'username' in session:
         username = session['username']
@@ -240,13 +258,31 @@ def matchmaking():
     conn = sqlite3.connect('./db/players_data.db')
     cursor = conn.cursor()
 
-    # Get column values
-    player_names = wks_mmr.col_values(4)[3:]
-    mmr_values = wks_mmr.col_values(3)[3:]
-    total_matches_values = wks_mmr.col_values(10)[3:]
-    wins_values = wks_mmr.col_values(6)[3:]
-    losses_values = wks_mmr.col_values(7)[3:]
 
+
+    values = wks_mmr.get_values()
+
+    player_names = [row[3] for row in values[3:] if row[3]]
+    mmr_values = [row[2] for row in values[3:] if row[2]]
+    total_matches_values = [row[9] for row in values[3:] if row[9]]
+    wins_values = [row[5] for row in values[3:] if row[5]]
+    losses_values = [row[6] for row in values[3:] if row[6]]
+
+    print("++++++++++++++++++++++++++++")
+    # print("Player Names: ", player_names)
+
+
+    # print("MMR Values: ", mmr_values)
+
+    # print("Total Matches: ", total_matches_values)
+
+    # print("Wins: ", wins_values)
+
+
+    # print("Losses: ", losses_values)
+
+
+    # print("++++++++++++++++++++++++++++")
     # Loop through the data
     for i in range(len(player_names)):
         player_name = player_names[i]
@@ -285,21 +321,25 @@ def matchmaking():
     conn.close()
     # ===================================================
     
-    playersNames = wks_mmr.get("D4:D")
+    data_range = wks_mmr.batch_get(["D4:D", "C4:C", "F4:G"])
+
+    playersNames = data_range[0]
     flat_names = [item for sublist in playersNames for item in sublist]
 
-    playersMmr = wks_mmr.get("C4:C")
+    playersMmr = data_range[1]
     flat_mmrs = [item for sublist in playersMmr for item in sublist]
-    
-    playersWinLose = wks_mmr.get("F4:G")
-    # print(playersWinLose)
+
+    playersWinLose = data_range[2]
 
     winrate_list = []
     for player in playersWinLose:
-        winrate = "{:.2f}".format((int(player[0]) / (int(player[0]) + int(player[1]))) * 100, 2) if int(player[0]) + int(player[1]) > 0 else 0
-
+        wins = int(player[0])
+        losses = int(player[1])
+        winrate = "{:.2f}".format((wins / (wins + losses)) * 100, 2) if wins + losses > 0 else 0
         winrate_list.append(winrate)
-    print(winrate_list)
+
+
+    # print(winrate_list)
 
     nameMmr_dict = {}
 
@@ -511,57 +551,6 @@ def sendJet():
 @mod_required
 def match():
 
-
-    # ===================================================
-
-    # Connect to the database
-    conn = sqlite3.connect('./db/players_data.db')
-    cursor = conn.cursor()
-
-    # Get column values
-    player_names = wks_mmr.col_values(4)[3:]
-    mmr_values = wks_mmr.col_values(3)[3:]
-    total_matches_values = wks_mmr.col_values(10)[3:]
-    wins_values = wks_mmr.col_values(6)[3:]
-    losses_values = wks_mmr.col_values(7)[3:]
-
-    # Loop through the data
-    for i in range(len(player_names)):
-        player_name = player_names[i]
-        mmr_str = mmr_values[i]
-        total_matches_str = total_matches_values[i]
-        wins_str = wins_values[i]
-        losses_str = losses_values[i]
-
-        # Check for empty cells
-        if player_name and mmr_str and total_matches_str and wins_str and losses_str:
-            mmr = int(mmr_str)
-            total_matches = int(total_matches_str)
-            wins = int(wins_str)
-            losses = int(losses_str)
-
-            # Check if the player already exists in the database
-            cursor.execute('SELECT * FROM Players WHERE player_name = ?', (player_name,))
-            existing_player = cursor.fetchone()
-
-            if existing_player:
-                # Player exists, update their information
-                cursor.execute('''
-                    UPDATE Players
-                    SET mmr = ?, total_matches = ?, wins = ?, losses = ?
-                    WHERE player_name = ?
-                ''', (mmr, total_matches, wins, losses, player_name))
-            else:
-                # Player doesn't exist, insert a new row
-                cursor.execute('''
-                    INSERT INTO Players (player_name, mmr, total_matches, wins, losses)
-                    VALUES (?, ?, ?, ?, ?)
-                ''', (player_name, mmr, total_matches, wins, losses))
-
-    # Commit the changes and close the connection
-    conn.commit()
-    conn.close()
-    # ===================================================
     
 
     # Clear the session variables to prevent reusing old values
@@ -851,6 +840,15 @@ def process_username():
     wks_mmr.update_cell(new_last_row, 3, 600)
     wks_mmr.update_cell(new_last_row, 6, 0)
     wks_mmr.update_cell(new_last_row, 7, 0)
+
+    conn = sqlite3.connect('./db/players_data.db')
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO Players (player_name, mmr, total_matches, wins, losses, startingMmr) VALUES (?, ?, ?, ?, ?, ?)", (username, 600, 0, 0, 0, 600))
+    conn.commit()
+    conn.close()
+
+
+
     
     # Return a response if needed
     return 'Username received'
@@ -893,7 +891,6 @@ def get_data():
     # print("DDDDDDAAAAAATTTTTTTTAAAAAA; ", formatted_data)
 
     return jsonify({'opponents': [item[1] for item in formatted_data], 'averageDurations': [item[2] for item in formatted_data]})
-
 
 
 
@@ -946,6 +943,7 @@ def profile_details_leaderboard(name):
 
 
     history = get_matches_by_player(name)
+    print("LENGTH OF THE HISTORY: ", len(history))
 
     if check_player_exists(name):
         lastMatch = history[-1]
@@ -994,23 +992,27 @@ def profile_details_leaderboard(name):
     cursor.execute(query, (name, name))
     game_timestamps = cursor.fetchall()
 
-    # Iterate over the game timestamps and update the games_per_day list
     for timestamp in game_timestamps:
         game_date = datetime.strptime(timestamp[0].split('T')[0], "%Y-%m-%d").date()
         day_index = (game_date - first_day.date()).days
-        games_per_day[day_index] += 1
+        if 0 <= day_index < len(games_per_day):
+            games_per_day[day_index] += 1
+        else:
+            # Handle the case when day_index is out of range
+            print(f"Invalid day_index: {day_index}")
+            # print(f"Invalid Day: {}") 
 
     # Close the database connection
     cursor.close()
     conn.close()
-    print("////////////////////////////////////////////////")
-    print(games_per_day)
-    print("////////////////////////////////////////////////")
+    # print("////////////////////////////////////////////////")
+    # print(games_per_day)
+    # print("////////////////////////////////////////////////")
 
 
     sessionName = session.get('username')
-    print("PAGE NAME: ", name)
-    print("MY NAME: ", sessionName)
+    # print("PAGE NAME: ", name)
+    # print("MY NAME: ", sessionName)
     if sessionName == name:
         is_own_profile = True
     else:
@@ -1034,16 +1036,102 @@ def profile_details_leaderboard(name):
     else:
         is_public = 0  # Assign a default value of 0 when the username is not found
         print(f"No record found for {name}.")
-    
+
+
+    # ------------------------------------------------------------------
+
+    player_name = name
+
+    streak_count, result = get_streak(player_name)
+    if streak_count > 0:
+        print(f"{player_name} has a {result} streak of {streak_count}")
+    else:
+        print(f"No streak found for {player_name}")
 
     return render_template('stats.html', name=name, avatar_url=avatar_url, history=history, lastMatch=lastMatch, wins=wins, losses=losses, mmr=mmr, 
-                           games_per_day=games_per_day, is_own_profile=is_own_profile, is_public=is_public)
+                           games_per_day=games_per_day, is_own_profile=is_own_profile, is_public=is_public, streak_count=streak_count, result=result)
+
+
+
+def get_streak(player_name):
+    conn = sqlite3.connect('./db/matches_data.db')
+    cursor = conn.cursor()
+
+    # Retrieve the latest match ID
+    cursor.execute("SELECT MAX(match_id) FROM Matches")
+    latest_match_id = cursor.fetchone()[0]
+
+    current_match_id = latest_match_id
+    initial_result = None
+    streak_count = 0
+
+    # Find the first match involving the player
+    while current_match_id is not None:
+        cursor.execute("SELECT * FROM Matches WHERE match_id = ?", (current_match_id,))
+        match_data = cursor.fetchone()
+
+        # Check if match_data is None
+        if match_data is None:
+            break
+
+        # Check if the player is involved in the match
+        if player_name in [match_data[1], match_data[2]]:
+            # Determine the initial result based on the player's name
+            if match_data[3] == player_name:
+                initial_result = 'win'
+            elif match_data[4] == player_name:
+                initial_result = 'lose'
+            else:
+                initial_result = None
+
+            if initial_result is not None:
+                break
+
+        current_match_id -= 1
+
+    if initial_result is None:
+        conn.close()
+        return 0, None
+
+    # Count the streak
+    while current_match_id is not None:
+        cursor.execute("SELECT * FROM Matches WHERE match_id = ?", (current_match_id,))
+        match_data = cursor.fetchone()
+
+        # Check if match_data is None
+        if match_data is None:
+            break
+
+        # Check if the player is involved in the match
+        if player_name in [match_data[1], match_data[2]]:
+            # Determine the current result based on the player's name
+            if match_data[3] == player_name:
+                current_result = 'win'
+            elif match_data[4] == player_name:
+                current_result = 'lose'
+            else:
+                current_result = None
+
+            if current_result == initial_result:
+                streak_count += 1
+                current_match_id -= 1
+            else:
+                break
+
+        else:
+            current_match_id -= 1
+
+    conn.close()
+    return streak_count, initial_result
 
 
 @views.route('/planes_data/<name>', methods=['GET'])
 def planes_data(name):
     plane_data = get_planes_value(name)
     return jsonify(plane_data)
+
+
+
 
 
 def get_progression_history(name):
@@ -1062,7 +1150,9 @@ def get_progression_history(name):
 
     cursor2.execute("SELECT startingMmr FROM Players WHERE player_name = ?", (name,))
     result = cursor2.fetchone()
-    startingMmr = 666 #TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+    startingMmr = 600
+    cursor2.execute("SELECT mmr FROM Players WHERE player_name = ?", (name,))
+    currentMmr = cursor2.fetchone()[0]
     if result:
         startingMmr = result[0]
         print("Starting MMR:", startingMmr)
@@ -1070,9 +1160,6 @@ def get_progression_history(name):
         print("Player not found")
 
     conn2.close()
-
-
-
 
     # Iterate over the matches to calculate MMR progression
     for match in matches:
@@ -1098,11 +1185,16 @@ def get_progression_history(name):
                 startingMmr -= shift
 
     conn.close()
-    # print("000000000000000000000000000000000000000")
-    # print(mmr_data)  # Print the mmr_data list for debugging
-    # print("000000000000000000000000000000000000000")
+    mmr_data.append({'Current MMR': currentMmr})
+    print("000000000000000000000000000000000000000")
+    print(mmr_data)
+    print(type(mmr_data))  # Print the mmr_data list for debugging
+    print("000000000000000000000000000000000000000")
 
     return mmr_data
+
+
+
 
 
 @views.route('/progression/<name>', methods=['GET'])
@@ -1112,6 +1204,9 @@ def progression_data(name):
 
 
     return jsonify(mmr_data)
+
+
+
 
 
 
@@ -1256,7 +1351,7 @@ def get_wins_loses_mmr(player_name):
     else:
         return None
 
-def get_matches_by_player(player_name, page=1, games_per_page=10):
+def get_matches_by_player(player_name, page=1, games_per_page=9999):
     conn = sqlite3.connect("./db/matches_data.db")
     cursor = conn.cursor()
 
