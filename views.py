@@ -840,6 +840,15 @@ def process_username():
     wks_mmr.update_cell(new_last_row, 3, 600)
     wks_mmr.update_cell(new_last_row, 6, 0)
     wks_mmr.update_cell(new_last_row, 7, 0)
+
+    conn = sqlite3.connect('./db/players_data.db')
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO Players (player_name, mmr, total_matches, wins, losses, startingMmr) VALUES (?, ?, ?, ?, ?, ?)", (username, 600, 0, 0, 0, 600))
+    conn.commit()
+    conn.close()
+
+
+
     
     # Return a response if needed
     return 'Username received'
