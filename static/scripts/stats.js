@@ -261,23 +261,55 @@ fetch('/planes_data/' + userProfileName)  // Include the name as a URL parameter
       .then(response => response.json())
       .then(data => {
         // Process the MMR data
-        const startingMMR = data[0].initial_mmr;
+        const startingMMR = 600; // Set the starting MMR to 600
         const mmrChanges = data.map(entry => ({
           date: entry.date,
-          change: entry.mmr_change
+          change: entry.mmr_change,
+
         }));
-        // console.log("STARTING: ", startingMMR)
   
         let currentMMR = startingMMR;
         const mmrProgression = mmrChanges.map(entry => {
           currentMMR += entry.change;
           return [new Date(entry.date).getTime(), currentMMR];
         });
-        console.log("mmrProgrtession: ", mmrProgression)
   
+        // Calculate the true end MMR value
+        const lastEntry = data[data.length - 1];
+        // const trueEndMMR = 827; // Your true end value
+        trueEndMMR = lastEntry['Current MMR']
 
-
-        // Create the chart
+  
+        // Perform linear interpolation to adjust the MMR progression
+        const adjustedMMRProgression = [];
+        for (let i = 0; i < mmrProgression.length - 1; i++) {
+          const [date1, mmr1] = mmrProgression[i];
+          const [date2, mmr2] = mmrProgression[i + 1];
+  
+          const timeDiff = date2 - date1;
+          const mmrDiff = mmr2 - mmr1;
+          const mmrChangePerTime = mmrDiff / timeDiff;
+  
+          let currentDate = date1;
+          let currentMMR = mmr1;
+  
+          while (currentDate < date2) {
+            currentDate += 86400000; // Increment by 1 day (in milliseconds)
+            currentMMR += mmrChangePerTime * 86400000; // Increment the MMR based on the daily rate of change
+  
+            // Check if the adjusted MMR exceeds the trueEndMMR
+            if (currentMMR > trueEndMMR) {
+              currentMMR = trueEndMMR; // Set the MMR to trueEndMMR if it exceeds
+            }
+  
+            adjustedMMRProgression.push([currentDate, currentMMR]);
+          }
+        }
+  
+        // Add the last known MMR value
+        adjustedMMRProgression.push([mmrProgression[mmrProgression.length - 1][0], trueEndMMR]);
+  
+        // Create the chart with the adjusted MMR progression
         Highcharts.chart('chart-container2', {
           chart: {
             type: 'line',
@@ -319,10 +351,9 @@ fetch('/planes_data/' + userProfileName)  // Include the name as a URL parameter
             min: 0, // Set the minimum value of the y-axis
             max: 1000, // Set the maximum value of the y-axis
           },
-          
           series: [{
             name: 'MMR Progression',
-            data: mmrProgression,
+            data: adjustedMMRProgression,
             color: '#FF6B8A',
             lineWidth: 2,
             connectNulls: true, // Connect the points even if there are gaps in the data
@@ -330,14 +361,8 @@ fetch('/planes_data/' + userProfileName)  // Include the name as a URL parameter
           credits: {
             enabled: false // Disable credits
           }
-          
         });
-
-
-
-        
       })
-
       .catch(error => {
         console.error('Error:', error);
       });

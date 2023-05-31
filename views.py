@@ -1138,7 +1138,9 @@ def get_progression_history(name):
 
     cursor2.execute("SELECT startingMmr FROM Players WHERE player_name = ?", (name,))
     result = cursor2.fetchone()
-    startingMmr = 600 #TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+    startingMmr = 600
+    cursor2.execute("SELECT mmr FROM Players WHERE player_name = ?", (name,))
+    currentMmr = cursor2.fetchone()[0]
     if result:
         startingMmr = result[0]
         print("Starting MMR:", startingMmr)
@@ -1171,9 +1173,11 @@ def get_progression_history(name):
                 startingMmr -= shift
 
     conn.close()
-    # print("000000000000000000000000000000000000000")
-    # print(mmr_data)  # Print the mmr_data list for debugging
-    # print("000000000000000000000000000000000000000")
+    mmr_data.append({'Current MMR': currentMmr})
+    print("000000000000000000000000000000000000000")
+    print(mmr_data)
+    print(type(mmr_data))  # Print the mmr_data list for debugging
+    print("000000000000000000000000000000000000000")
 
     return mmr_data
 
