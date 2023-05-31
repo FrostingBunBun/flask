@@ -317,7 +317,7 @@ fetch('/planes_data/' + userProfileName)  // Include the name as a URL parameter
             zoomType: 'x', // Enable zooming on the x-axis
           },
           title: {
-            text: 'MMR Progression Chart',
+            text: 'MMR Progression Chart (interpolated beta)',
             style: {
               color: '#FF6B8A',
             },

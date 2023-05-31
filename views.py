@@ -14,6 +14,8 @@ import difflib
 from collections import defaultdict
 
 
+import numpy as np
+from scipy.interpolate import interp1d
 
 views = Blueprint(__name__, "views")
 
@@ -1118,6 +1120,7 @@ def get_streak(player_name):
 def planes_data(name):
     plane_data = get_planes_value(name)
     return jsonify(plane_data)
+
 
 
 
