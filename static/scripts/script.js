@@ -761,3 +761,178 @@ function confirmUsername() {
     xhr.send(data);
   }
 }
+
+
+
+
+
+
+
+
+const customPoolBtn = document.getElementById('customPoolBtn');
+const modal = document.getElementById('myModal');
+const closeBtn = document.getElementsByClassName('close')[0];
+
+// Open the modal when the button is clicked
+customPoolBtn.addEventListener('click', function() {
+  modal.style.display = 'block';
+
+});
+
+// Close the modal when the close button is clicked
+closeBtn.addEventListener('click', function() {
+  modal.style.display = 'none';
+
+});
+
+// Close the modal when the user clicks outside the modal content
+window.addEventListener('click', function(event) {
+  if (event.target === modal) {
+    modal.style.display = 'none';
+
+    
+  }
+});
+
+
+
+
+
+
+
+
+// Get the checkboxes
+const checkboxes = document.querySelectorAll('.checkmark');
+
+// Get the selected names list
+const selectedNamesList = document.getElementById('selectedNamesList');
+
+// Retrieve stored selections from local storage
+const storedSelections = localStorage.getItem('selectedNames');
+
+// Convert stored selections to an array or initialize an empty array
+const selections = storedSelections ? JSON.parse(storedSelections) : [];
+
+// Iterate through checkboxes and set their checked state
+checkboxes.forEach(function (checkbox) {
+  const listItem = checkbox.parentNode; // Get the parent list item
+  const listItemHTML = listItem.innerHTML; // Get the HTML content of the list item
+
+  checkbox.checked = selections.includes(listItemHTML);
+
+  checkbox.addEventListener('change', function () {
+    if (this.checked) {
+      selections.push(listItemHTML);
+    } else {
+      const index = selections.indexOf(listItemHTML);
+      if (index > -1) {
+        selections.splice(index, 1);
+      }
+    }
+
+    // Store updated selections in local storage
+    localStorage.setItem('selectedNames', JSON.stringify(selections));
+
+    updateSelectedNamesList();
+  });
+});
+
+// Update the selected names list
+function updateSelectedNamesList() {
+  selectedNamesList.innerHTML = '';
+  selections.forEach(function (listItemHTML) {
+    const listItem = document.createElement('li');
+    listItem.innerHTML = listItemHTML;
+    listItem.classList.add('added-item'); // Add a class for styling
+    listItem.querySelector('.checkmark').remove(); // Remove the checkbox
+    selectedNamesList.appendChild(listItem);
+  });
+}
+
+// Update the selected names list on page load
+updateSelectedNamesList();
+
+// Random Match button event listener
+const randomMatchButton = document.querySelector('.random');
+randomMatchButton.addEventListener('click', generateRandomMatch);
+
+// Generate a random match
+function generateRandomMatch() {
+  const shuffledSelections = shuffleArray(selections); // Shuffle the selections array
+  const randomPair = shuffledSelections.slice(0, 2); // Get the first two elements as the random pair
+
+  if (randomPair.length === 2) {
+    const leftPlayer = randomPair[0];
+    const rightPlayer = randomPair[1];
+
+    // Add the left and right players to the fields
+    addPlayerToLeftField(leftPlayer);
+    addPlayerToRightField(rightPlayer);
+  } else {
+    console.log('Insufficient selected names to generate a random pair.');
+  }
+}
+
+// Add a player to the left field
+function addPlayerToLeftField(playerHTML) {
+  const leftField = document.getElementById('field1');
+
+  // Remove the existing content from the left field
+  const existingContent = leftField.querySelector('.dragged-item');
+  if (existingContent) {
+    existingContent.remove();
+  }
+
+  const container = createPlayerContainer(playerHTML);
+  leftField.appendChild(container);
+}
+
+// Add a player to the right field
+function addPlayerToRightField(playerHTML) {
+  const rightField = document.getElementById('field2');
+
+  // Remove the existing content from the right field
+  const existingContent = rightField.querySelector('.dragged-item');
+  if (existingContent) {
+    existingContent.remove();
+  }
+
+  const container = createPlayerContainer(playerHTML);
+  rightField.appendChild(container);
+}
+
+
+
+
+
+// Create a container for a player
+function createPlayerContainer(playerHTML) {
+  const container = document.createElement('div');
+  container.classList.add('dragged-item');
+  container.innerHTML = playerHTML;
+
+  // Remove the checkmark element from the container
+  const checkmarkElement = container.querySelector('.checkmark');
+  if (checkmarkElement) {
+    checkmarkElement.remove();
+  }
+
+  return container;
+}
+
+
+
+
+
+
+
+
+// Shuffle an array using Fisher-Yates algorithm
+function shuffleArray(array) {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+}
