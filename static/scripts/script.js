@@ -1,3 +1,5 @@
+// const { type } = require("os");
+
 function calculateWinProbabilities(
   leftRating,
   rightRating,
@@ -766,7 +768,6 @@ const selectedNamesList = document.getElementById('selectedNamesList');
 
 // Retrieve stored selections from local storage
 const storedSelections = localStorage.getItem('selectedNames');
-
 // Convert stored selections to an array or initialize an empty array
 const selections = storedSelections ? JSON.parse(storedSelections) : [];
 
@@ -813,6 +814,24 @@ updateSelectedNamesList();
 const randomMatchButton = document.querySelector('.random');
 randomMatchButton.addEventListener('click', generateRandomMatch);
 
+const autoMatchButton = document.querySelector('.auto');
+autoMatchButton.addEventListener('click', generateAutoMatch);
+
+
+
+function convertObjectToString(object) {
+  const { name, mmr, win_rate } = object;
+
+  const string = `<input type="checkbox" class="checkmark" data-name="${name}">
+          ${name}
+          <span id="flag_${name}">(${mmr})</span>
+          <span id="flag_${name}">(${win_rate}%)</span>`;
+
+  return string;
+}
+
+
+
 // Generate a random match
 function generateRandomMatch() {
   const shuffledSelections = shuffleArray(selections); // Shuffle the selections array
@@ -822,6 +841,10 @@ function generateRandomMatch() {
     const leftPlayer = randomPair[0];
     const rightPlayer = randomPair[1];
 
+  console.log("leftPlayerRANDOM: ", leftPlayer)
+  // console.log("leftPlayerRANDOM TYPE: ", typeof(leftPlayer))
+  // console.log("rightPlayerRANDOM: ", rightPlayer)
+
     // Add the left and right players to the fields
     addPlayerToLeftField(leftPlayer);
     addPlayerToRightField(rightPlayer);
@@ -829,6 +852,143 @@ function generateRandomMatch() {
     console.log('Insufficient selected names to generate a random pair.');
   }
 }
+//=======================================================================================
+//=======================================================================================
+const pastList = [];
+
+
+function generateAutoMatch(){
+  
+  console.log("AUTO CLICKED")
+  const playersListHTML = selections
+  const nameRegex = /data-name="([^"]+)"/;
+  
+
+  const namesList = []
+  for (let i = 0; i < playersListHTML.length; i++) {
+    const match = playersListHTML[i].match(nameRegex);
+  const playerName = match ? match[1] : null;
+    namesList.push(playerName)
+  }
+
+  // console.log(namesList)
+
+  
+  fetch('/autoMatch', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(namesList)
+  })
+  .then(response => response.json())
+  .then(responseData => {
+
+
+
+  
+
+
+
+
+
+  // Handle the response from Flask
+  // console.log(responseData);
+
+  
+
+  const mostBalancedPair = findMostBalancedPair(responseData);
+
+  // console.log('Most Balanced Pair: ', mostBalancedPair.map(item => item.name));
+  console.log("================================================")
+
+
+
+  function findMostBalancedPair(data) {
+
+    
+
+    // console.log("pastList: ", pastList.map(item => item.name));
+    const pairsRaw = Object.values(data);
+    // console.log("pairsRaw: ", pairsRaw.map(item => item.name));
+    const pairs = pairsRaw.filter(obj => !pastList.some(item => item.name === obj.name));
+    // console.log("pairs: ", pairs.map(item => item.name));
+
+    
+
+    
+  
+    let mostBalancedPair = null;
+    let minBalanceScore = Infinity;
+  
+    for (let i = 0; i < pairs.length - 1; i++) {
+      const playerA = pairs[i];
+      const playerB = pairs[i + 1];
+  
+      const mmrDifference = Math.abs(playerA.mmr - playerB.mmr);
+      const winsDifference = Math.abs(playerA.wins - playerB.wins);
+      const lossesDifference = Math.abs(playerA.losses - playerB.losses);
+      const winRateDifference = Math.abs(playerA.win_rate - playerB.win_rate);
+  
+      // Define a scoring mechanism that combines the differences in different factors
+      const balanceScore =
+        mmrDifference + winsDifference + lossesDifference + winRateDifference;
+  
+      if (balanceScore < minBalanceScore) {
+        minBalanceScore = balanceScore;
+        mostBalancedPair = [playerA, playerB];
+      }
+      
+    }
+
+    for (let x = 0; x < mostBalancedPair.length; x++) {
+      pastList.push(mostBalancedPair[x])
+    }
+
+    if (pairs.length <= 3) {
+      pastList.splice(0, pastList.length); // Reset the pastList to an empty array
+      console.log("reset")
+    }
+    return mostBalancedPair;
+  }
+  
+
+  let leftPlayerObj = mostBalancedPair[0]
+  let rightPlayerObj = mostBalancedPair[1]
+  
+  let leftPlayer = convertObjectToString(leftPlayerObj)
+  let rightPlayer = convertObjectToString(rightPlayerObj)
+  console.log("leftPlayerObjAUTO: ", leftPlayerObj)
+  console.log("leftPlayerAUTO: ", leftPlayer)
+  // console.log("leftPlayerAUTO TYPE: ", typeof(leftPlayer))
+  // console.log("rightPlayerAUTO: ", rightPlayer)
+
+
+  // Add the left and right players to the fields
+  addPlayerToLeftField(leftPlayer);
+  addPlayerToRightField(rightPlayer);
+
+
+})
+
+.catch(error => {
+  console.error('Error:', error);
+});
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
 
 
 //=======================================================================================
@@ -873,7 +1033,7 @@ function addPlayerToLeftField(playerHTML) {
 
   updateGauge(leftProbability, rightProbability);
 
-  console.log("playerHTMLleft: ", playerHTML);
+  // console.log("playerHTMLleft: ", playerHTML);
 }
 
 //=======================================================================================
@@ -919,7 +1079,7 @@ function addPlayerToRightField(playerHTML) {
 
   updateGauge(leftProbability, rightProbability);
 
-  console.log("playerHTMLright: ", playerHTML);
+  // console.log("playerHTMLright: ", playerHTML);
 }
 
 

@@ -357,6 +357,46 @@ def matchmaking():
 
 
 
+@views.route('/autoMatch', methods=['POST'])
+def autoMatch():
+    playersList = request.get_json()  # Get the data sent from the client
+
+    # DB STUFF==========================================================
+    # Connect to the SQLite database
+    conn = sqlite3.connect('./db/players_data.db')
+    cursor = conn.cursor()
+
+    response_data = []  # Create an empty list to store the player data
+
+    for name in playersList:
+        # Fetch data from the database based on the name
+        cursor.execute("SELECT mmr, wins, losses FROM Players WHERE player_name = ?", (name,))
+        result = cursor.fetchone()
+
+        if result:
+            mmr, wins, losses = result
+
+            # Calculate win rate
+            total_matches = wins + losses
+            win_rate = "{:.2f}".format((wins / total_matches) * 100 if total_matches > 0 else 0)
+
+            # Create a response data object for each player
+            response_data.append({
+                'name': name,
+                'mmr': mmr,
+                'wins': wins,
+                'losses': losses,
+                'win_rate': win_rate
+            })
+        else:
+            response_data.append({'name': name, 'message': 'Player not found'})
+
+    # Close the database connection
+    cursor.close()
+    conn.close()
+    # DB STUFF==========================================================
+
+    return jsonify(response_data)  # Send a response back to the client
 
 
 
