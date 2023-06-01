@@ -90,6 +90,10 @@ function updateGauge(value1, value2) {
   fill2.style.left = proportion1 * 100 + "%";
 }
 
+
+
+
+
 function allowDrop(event) {
   event.preventDefault();
 }
@@ -143,6 +147,9 @@ function drag(event) {
 
 
 
+
+
+
 function drop(event) {
   event.preventDefault();
   console.log("===============================")
@@ -159,11 +166,8 @@ function drop(event) {
   var droppedElementMmr = document.createElement("span");
   droppedElementMmr.textContent = "(mmr: " + mmr + ")";
 
-  
   var droppedElementWinRate = document.createElement("div");
   droppedElementWinRate.textContent = "Winrate: " + winrate;
-
-
 
   // Create a container element for name and mmr
   var container = document.createElement("div");
@@ -181,7 +185,7 @@ function drop(event) {
   var leftField = document.getElementById("field1");
   var rightField = document.getElementById("field2");
 
- // Remove the name and mmr from the other field if they match the dropped name and mmr
+  // Remove the name and mmr from the other field if they match the dropped name and mmr
   var otherField = targetField === leftField ? rightField : leftField;
   var otherNameElement = otherField.querySelector(".dragged-item p");
   var otherMmrElement = otherField.querySelector(".dragged-item span");
@@ -205,88 +209,7 @@ function drop(event) {
   container.id = targetField.id + "Small"; // Set the ID of the container
   droppedElementWinRate.className = targetField.id + "Winrate"
 
-
-
-
-
-  var field1SmallLeft = document.getElementById("field1Small");
-  if (field1SmallLeft !== null){
-  // console.log("TEST1 left: ", field2SmallRight);
-  var htmlContentLeft = field1SmallLeft.innerHTML;
-  // console.log("TEST2 left: ", htmlContent);
-  var mmrRegex = /\(mmr: (\d+)\)/;
-  var mmrMatchLeft = htmlContentLeft.match(mmrRegex);
-
-  var playerNameElementLeft = field1Small.querySelector('p');
-  var playerNameLeft = playerNameElementLeft.textContent;
-  var playerNameElementRight = field1Small.querySelector('p');
-  var playerNameRight = playerNameElementRight.textContent;
-  }
-  if (mmrMatchLeft) {
-    var mmrNumberLeft = mmrMatchLeft[1]; 
-    // console.log("MMR leftttttttttttttt:", mmrNumberLeft);
-  } else {
-    console.log("MMR left not found");
-  }
-
-  var field2SmallRight = document.getElementById("field2Small");
-  if (field2SmallRight !== null){
-  // console.log("TEST1 right: ", field2SmallRight)
-  var htmlContent = field2SmallRight.innerHTML;
-  // console.log("TEST2 right: ", htmlContent)
-  var mmrRegex = /\(mmr: (\d+)\)/;
-  var mmrMatchRight = htmlContent.match(mmrRegex);
-  }
-  if (mmrMatchRight) {
-    var mmrNumberRight = mmrMatchRight[1];
-    // console.log("MMR righttttttttttttttttt:", mmrNumberRight);
-  } else {
-    console.log("MMR right not found");
-  }
-
-  droppedPlayerName = name
-
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-let leftElement = document.getElementById("field1Small");
-let leftWinrateElement = leftElement?.querySelector("div");
-let leftWinrateText = leftWinrateElement?.textContent || "";
-let leftWinrate = parseFloat(leftWinrateText.match(/\d+\.\d+/)?.[0] || "0")
-
-
-let rightElement = document.getElementById("field2Small");
-let rightWinrateElement = rightElement?.querySelector("div");
-let rightWinrateText = rightWinrateElement?.textContent || "";
-let rightWinrate = parseFloat(rightWinrateText.match(/\d+\.\d+/)?.[0] || "0")
-
-
-leftWinrate = leftWinrate.toString() + "%";
-rightWinrate = rightWinrate.toString() + "%";
-
-
-// leftWinrate = (leftWinrate - 50) / 50 * 0.9 + 0.1;
-// rightWinrate = (rightWinrate - 50) / 50 * 0.9 + 0.1;
-
-// var leftWinrate = 0.1
-// var rightWinrate = 0.1
-
- // leftWinrate SCRIPT:  0.8714799999999999
-  // rightWinrate SCRIPT:  0.9053199999999999
-
-//   leftWinrate MATCH:  92,86%
-//   rightWinrate MATCH:  94,74%
-
-
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  // console.log("left Winrate value:", leftWinrateValue);
-
-  // console.log("leftWinrate SCRIPT: ", leftWinrate)
-  // console.log("leftWinrate SCRIPT TYPE: ", typeof(leftWinrate))
-  // console.log("rightWinrate SCRIPT: ", rightWinrate)
-  // console.log("rightWinrate SCRIPT TYPE: ", typeof(rightWinrate))
-
-  
-  // console.log("right Winrate value:", rightWinrateValue);
+  var [mmrMatchLeft, mmrMatchRight, leftWinrate, rightWinrate] = getMMRAndWinrate();
 
   var [rightProbability, leftProbability] = calculateWinProbabilities(
     mmrMatchLeft,
@@ -295,14 +218,8 @@ rightWinrate = rightWinrate.toString() + "%";
     rightWinrate
   );
 
-  // console.log("Left player's probability of winning:", leftProbability);
-  // console.log("Right player's probability of winning:", rightProbability);
-
   var percentageLeft = (leftProbability * 100).toFixed(2) + "%";
   var percentageRight = (rightProbability * 100).toFixed(2) + "%";
-
-  // console.log("percentageLeft: ", percentageLeft)
-  // console.log("percentageRight: ", percentageRight)
 
   var leftPercentElement = document.getElementById("leftGauge");
   leftPercentElement.textContent = percentageLeft;
@@ -310,24 +227,64 @@ rightWinrate = rightWinrate.toString() + "%";
   var rightPercentElement = document.getElementById("rightGauge");
   rightPercentElement.textContent = percentageRight;
 
-  // console.log("leftProbability: ", leftProbability)
-  // console.log("rightProbability: ", rightProbability)
-
-  // Example usage: update the gauge with values 60 and 40
   updateGauge(leftProbability, rightProbability);
-
-
-
-
-
-
-
-
-
-
-
-
 }
+
+
+
+
+
+function getMMRAndWinrate() {
+  var mmrMatchLeft = null;
+  var mmrMatchRight = null;
+  var leftWinrate = 0;
+  var rightWinrate = 0;
+
+  var field1SmallLeft = document.getElementById("field1Small");
+  if (field1SmallLeft !== null) {
+    var htmlContentLeft = field1SmallLeft.innerHTML;
+    var mmrRegex = /\(mmr: (\d+)\)/;
+    mmrMatchLeft = htmlContentLeft.match(mmrRegex);
+
+    var playerNameElementLeft = field1Small.querySelector('p');
+    var playerNameLeft = playerNameElementLeft.textContent;
+    var playerNameElementRight = field1Small.querySelector('p');
+    var playerNameRight = playerNameElementRight.textContent;
+  }
+  if (mmrMatchLeft) {
+    var mmrNumberLeft = mmrMatchLeft[1];
+  } else {
+    console.log("MMR left not found");
+  }
+
+  var field2SmallRight = document.getElementById("field2Small");
+  if (field2SmallRight !== null) {
+    var htmlContent = field2SmallRight.innerHTML;
+    var mmrRegex = /\(mmr: (\d+)\)/;
+    mmrMatchRight = htmlContent.match(mmrRegex);
+  }
+  if (mmrMatchRight) {
+    var mmrNumberRight = mmrMatchRight[1];
+  } else {
+    console.log("MMR right not found");
+  }
+
+  let leftElement = document.getElementById("field1Small");
+  let leftWinrateElement = leftElement?.querySelector("div");
+  let leftWinrateText = leftWinrateElement?.textContent || "";
+  leftWinrate = parseFloat(leftWinrateText.match(/\d+\.\d+/)?.[0] || "0")
+
+  let rightElement = document.getElementById("field2Small");
+  let rightWinrateElement = rightElement?.querySelector("div");
+  let rightWinrateText = rightWinrateElement?.textContent || "";
+  rightWinrate = parseFloat(rightWinrateText.match(/\d+\.\d+/)?.[0] || "0")
+
+  leftWinrate = leftWinrate.toString() + "%";
+  rightWinrate = rightWinrate.toString() + "%";
+
+  return [mmrMatchLeft, mmrMatchRight, leftWinrate, rightWinrate];
+}
+
 
 
 
@@ -874,8 +831,8 @@ function generateRandomMatch() {
 }
 
 
-
-
+//=======================================================================================
+//=======================================================================================
 // Add a player to the left field
 function addPlayerToLeftField(playerHTML) {
   const leftField = document.getElementById('field1');
@@ -896,9 +853,30 @@ function addPlayerToLeftField(playerHTML) {
     winrateDiv.classList.add('field2Winrate');
   }
 
+  var [mmrMatchLeft, mmrMatchRight, leftWinrate, rightWinrate] = getMMRAndWinrate();
+
+  var [rightProbability, leftProbability] = calculateWinProbabilities(
+    mmrMatchLeft,
+    mmrMatchRight,
+    leftWinrate,
+    rightWinrate
+  );
+
+  var percentageLeft = (leftProbability * 100).toFixed(2) + "%";
+  var percentageRight = (rightProbability * 100).toFixed(2) + "%";
+
+  var leftPercentElement = document.getElementById("leftGauge");
+  leftPercentElement.textContent = percentageLeft;
+
+  var rightPercentElement = document.getElementById("rightGauge");
+  rightPercentElement.textContent = percentageRight;
+
+  updateGauge(leftProbability, rightProbability);
+
   console.log("playerHTMLleft: ", playerHTML);
 }
 
+//=======================================================================================
 
 
 // Add a player to the right field
@@ -921,12 +899,33 @@ function addPlayerToRightField(playerHTML) {
     winrateDiv.classList.add('field2Winrate');
   }
 
+  var [mmrMatchLeft, mmrMatchRight, leftWinrate, rightWinrate] = getMMRAndWinrate();
+
+  var [rightProbability, leftProbability] = calculateWinProbabilities(
+    mmrMatchLeft,
+    mmrMatchRight,
+    leftWinrate,
+    rightWinrate
+  );
+
+  var percentageLeft = (leftProbability * 100).toFixed(2) + "%";
+  var percentageRight = (rightProbability * 100).toFixed(2) + "%";
+
+  var leftPercentElement = document.getElementById("leftGauge");
+  leftPercentElement.textContent = percentageLeft;
+
+  var rightPercentElement = document.getElementById("rightGauge");
+  rightPercentElement.textContent = percentageRight;
+
+  updateGauge(leftProbability, rightProbability);
+
   console.log("playerHTMLright: ", playerHTML);
 }
 
 
+//=======================================================================================
 
-
+// =====================================================================================
 
 
 function createPlayerContainer(playerHTML) {
