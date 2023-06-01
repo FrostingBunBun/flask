@@ -11,7 +11,6 @@ registerBtn.addEventListener("click", function () {
 });
 
 window.addEventListener("DOMContentLoaded", function () {
-  console.log("ok");
   var statsButton = document.getElementById("register");
   statsButton.addEventListener("click", function () {
     window.location.href = "/register";

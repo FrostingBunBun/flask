@@ -20,21 +20,53 @@
       type="text/css"
       href="{{ url_for('static', filename='styles/main.css') }}"
     />
+          <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/main_logged.css') }}"
+    />
   </head>
   <body>
-    
-    <div class="background-image"></div>
-    <div class="gradient-overlay"></div>
-    <div class="container">
-      <div id="fixed-container">
-        <!-- Content of your container goes here -->
-        <p>Logged on as: {{ username }} </p>
-        <button id="logout">Log out</button>
-        <button id="home">Home</button>
-        <button class="registerUser" onclick="openModal2()">Add User</button>
+        <div class="sidebar-container">
+      <div class="profile-data">
+        <img class="profile-pic" src="/static/pics/profile-pic.svg" />
+        <p class="profile-username">{{ username }}</p>
+         <span class="profile-mmr" style="color:#F90162; font-weight: 600;">{{mod}}</span>
+        <span class="profile-mmr">(0)</span>
       </div>
 
+      <nav class="navigaton-container">
+        <button class="navigation-item" id="main">
+          <img src="/static/icons/home.svg" /> Home
+        </button>
+        <button class="navigation-item" id="matchmaking">
+          <img src="/static/icons/matchmaking.svg" /> Matchmaking
+        </button>
+        <button class="navigation-item" id="stats">
+          <img src="/static/icons/stats.svg" /> Statistics
+        </button>
+        <button class="navigation-item" id="matchmaking">
+          <img src="/static/icons/matches.svg" /> Matches
+        </button>
+        <button class="navigation-item" id="leaderboards">
+          <img src="/static/icons/leaderboard.svg" /> Leaderboard
+        </button>
+      </nav>
 
+      <button class="navigation-item" id="logout">
+        <img src="/static/icons/signout.svg" /> Sign Out
+      </button>
+    </div>
+
+          <div class="page-heading">
+        <img src="/static/icons/plane-heading.png" />
+        <h2>Welcome to Dogfight Club</h2>
+      </div>
+
+    <div class="container">
+      <div id="fixed-container">
+        <button class="registerUser" onclick="openModal2()">Add User</button>
+      </div>
             <!-- Modal -->
             <div id="modal2" class="modal2">
               <div class="modal-content2">
@@ -133,7 +165,7 @@
         </div>
 
         
-    <div class="prob">Win Probability</div>
+   <div class="prob">Win Probability</div>
     <div class="gauge-container">
       <div class="gauge">
         <div class="fill" id="fill1">
@@ -143,7 +175,7 @@
           <div id="rightGauge" class="gauge-label gauge-label2"></div>
         </div>
       </div>
-    </div>
+    </div> 
 
         <div id="error-message" class="error-message"></div>
 

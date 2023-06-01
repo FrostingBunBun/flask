@@ -15,39 +15,17 @@ body {
   /* Remove default margin */
 }
 
-.background-image {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  background-image: url("https://my.catgirls.forsale/xGXMv720.jpg");
-  background-repeat: no-repeat;
-  /* background-size: cover; */
-  /* background-position: center; */
-  /* background-position: center bottom -300px; */
-  filter: blur(5px);
-  transition: background-position 0.5s ease-out;
-  transform: scale(1.2);
-}
-
-/* @keyframes aslide {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 100% 0;
-  }
-} */
-
 .gradient-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 70%;
-  background-image: linear-gradient(to bottom, rgba(255, 0, 85, 0.1), rgba(255, 0, 0, 0));
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 0, 85, 0.1),
+    rgba(255, 0, 0, 0)
+  );
   z-index: -1;
 }
 
@@ -124,7 +102,6 @@ body {
   font-weight: bold;
   font-size: 20px;
   color: rgb(230, 230, 230);
-
 }
 
 .additionalNumber1,
@@ -132,7 +109,6 @@ body {
   font-size: 18px;
   color: #9c9c9c;
 }
-
 
 .toMaking {
   padding: 10px 20px;
@@ -154,7 +130,7 @@ body {
   padding: 10px 20px;
   font-size: 16px;
   font-weight: bold;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -201,7 +177,6 @@ body {
   }
 }
 
-
 .gauge-container {
   display: flex;
   justify-content: center;
@@ -223,7 +198,6 @@ body {
   position: relative;
   animation: fillGauge 1.5s ease-out forwards;
   /* Add animation */
-
 }
 
 @keyframes fillGauge {
@@ -237,8 +211,6 @@ body {
     /* Animate to 100% width */
   }
 }
-
-
 
 .fill {
   height: 100%;
@@ -267,7 +239,8 @@ body {
   left: 50%;
   transform: translateX(-50%);
   font-weight: bold;
-  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+    1px 1px 0 black;
   /* Apply multiple shadows to create the outline */
   font-size: 20px;
 }
@@ -284,7 +257,8 @@ body {
   text-align: center;
   letter-spacing: 2px;
   line-height: 1.5;
-  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+    1px 1px 0 black;
   /* Apply multiple shadows to create the outline */
   opacity: 0;
   /* Make the element initially invisible */
@@ -328,7 +302,8 @@ body {
   border-radius: 4px;
   cursor: pointer;
   margin: 0 250px;
-  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+    1px 1px 0 black;
   /* Apply multiple shadows to create the outline */
   width: 150px;
   height: 50px;
@@ -340,7 +315,6 @@ body {
 .rightButton:hover,
 .leftButton:hover {
   background-color: #408145;
-
 }
 
 .bottomPart {
@@ -363,7 +337,6 @@ body {
   color: rgb(192, 129, 160);
 }
 
-
 #fixed-container,
 #fixed-scale {
   position: absolute;
@@ -374,7 +347,6 @@ body {
   align-items: center;
   /* additional styles */
   /* background-color: #000000; */
-
 }
 
 #fixed-container p,
@@ -427,7 +399,6 @@ body {
   align-items: center;
   /* additional styles */
   /* background-color: #000000; */
-
 }
 
 #fixed-scale p {
@@ -461,7 +432,6 @@ body {
   animation-duration: 2s;
   animation-fill-mode: forwards;
 }
-
 
 #fixed-scale button:hover {
   background-color: #181818;
