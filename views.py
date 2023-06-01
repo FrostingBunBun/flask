@@ -260,29 +260,33 @@ def matchmaking():
 
 
 
-    values = wks_mmr.get_values()
-
-    player_names = [row[3] for row in values[3:] if row[3]]
-    mmr_values = [row[2] for row in values[3:] if row[2]]
-    total_matches_values = [row[9] for row in values[3:] if row[9]]
-    wins_values = [row[5] for row in values[3:] if row[5]]
-    losses_values = [row[6] for row in values[3:] if row[6]]
-
-    print("++++++++++++++++++++++++++++")
-    # print("Player Names: ", player_names)
 
 
-    # print("MMR Values: ", mmr_values)
+    cursor.execute('SELECT player_name FROM Players ORDER BY mmr DESC')
+    player_names = [row[0] for row in cursor.fetchall()]
+    cursor.execute('SELECT mmr FROM Players ORDER BY mmr DESC')
+    mmr_values = [row[0] for row in cursor.fetchall()]
+    cursor.execute('SELECT total_matches FROM Players ORDER BY mmr DESC')
+    total_matches_values = [row[0] for row in cursor.fetchall()]
+    cursor.execute('SELECT wins FROM Players ORDER BY mmr DESC')
+    wins_values = [row[0] for row in cursor.fetchall()]
+    cursor.execute('SELECT losses FROM Players ORDER BY mmr DESC')
+    losses_values = [row[0] for row in cursor.fetchall()]
 
-    # print("Total Matches: ", total_matches_values)
-
-    # print("Wins: ", wins_values)
 
 
-    # print("Losses: ", losses_values)
-
-
+    # player_names = [row[3] for row in values[3:] if row[3]]
+    # mmr_values = [row[2] for row in values[3:] if row[2]]
+    # total_matches_values = [row[9] for row in values[3:] if row[9]]
+    # wins_values = [row[5] for row in values[3:] if row[5]]
+    # losses_values = [row[6] for row in values[3:] if row[6]]
     # print("++++++++++++++++++++++++++++")
+    # print("Player Names: ", player_names)
+    # print("MMR Values: ", mmr_values)
+    # print("Total Matches: ", total_matches_values)
+    # print("Wins: ", wins_values)
+    # print("Losses: ", losses_values)
+    print("++++++++++++++++++++++++++++")
     # Loop through the data
     for i in range(len(player_names)):
         player_name = player_names[i]
@@ -316,20 +320,18 @@ def matchmaking():
                     VALUES (?, ?, ?, ?, ?)
                 ''', (player_name, mmr, total_matches, wins, losses))
 
-    # Commit the changes and close the connection
-    conn.commit()
-    conn.close()
-    # ===================================================
     
-    data_range = wks_mmr.batch_get(["D4:D", "C4:C", "F4:G"])
 
-    playersNames = data_range[0]
-    flat_names = [item for sublist in playersNames for item in sublist]
+    flat_names = player_names
+    flat_mmrs = mmr_values
+    
+    playersWinLose = []
+    for x in range(len(wins_values)):
+        playersWinLose.append([str(wins_values[x]), str(losses_values[x])])
+    print("playersWinLoseTest: ", playersWinLose)
+    print("")
+    print("playersWinLose: ", playersWinLose)
 
-    playersMmr = data_range[1]
-    flat_mmrs = [item for sublist in playersMmr for item in sublist]
-
-    playersWinLose = data_range[2]
 
     winrate_list = []
     for player in playersWinLose:
@@ -348,6 +350,10 @@ def matchmaking():
     username = ''
     if 'username' in session:
         username = session['username']
+
+    # Commit the changes and close the connection
+    conn.commit()
+    conn.close()
     
     print("==========================")
     print(session.items())
