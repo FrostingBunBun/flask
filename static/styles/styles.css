@@ -653,6 +653,12 @@ li:hover {
   position: absolute;
   left: 700px;
 }
+.customPool {
+  width: 100px;
+  height: 50px;
+  position: absolute;
+  left: 820px;
+}
 /* CSS to style the button */
 .button2 {
   padding: 10px 20px;

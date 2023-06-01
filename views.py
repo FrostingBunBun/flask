@@ -14,6 +14,8 @@ import difflib
 from collections import defaultdict
 
 
+import numpy as np
+from scipy.interpolate import interp1d
 
 views = Blueprint(__name__, "views")
 
@@ -355,6 +357,46 @@ def matchmaking():
 
 
 
+@views.route('/autoMatch', methods=['POST'])
+def autoMatch():
+    playersList = request.get_json()  # Get the data sent from the client
+
+    # DB STUFF==========================================================
+    # Connect to the SQLite database
+    conn = sqlite3.connect('./db/players_data.db')
+    cursor = conn.cursor()
+
+    response_data = []  # Create an empty list to store the player data
+
+    for name in playersList:
+        # Fetch data from the database based on the name
+        cursor.execute("SELECT mmr, wins, losses FROM Players WHERE player_name = ?", (name,))
+        result = cursor.fetchone()
+
+        if result:
+            mmr, wins, losses = result
+
+            # Calculate win rate
+            total_matches = wins + losses
+            win_rate = "{:.2f}".format((wins / total_matches) * 100 if total_matches > 0 else 0)
+
+            # Create a response data object for each player
+            response_data.append({
+                'name': name,
+                'mmr': mmr,
+                'wins': wins,
+                'losses': losses,
+                'win_rate': win_rate
+            })
+        else:
+            response_data.append({'name': name, 'message': 'Player not found'})
+
+    # Close the database connection
+    cursor.close()
+    conn.close()
+    # DB STUFF==========================================================
+
+    return jsonify(response_data)  # Send a response back to the client
 
 
 
@@ -838,6 +880,15 @@ def process_username():
     wks_mmr.update_cell(new_last_row, 3, 600)
     wks_mmr.update_cell(new_last_row, 6, 0)
     wks_mmr.update_cell(new_last_row, 7, 0)
+
+    conn = sqlite3.connect('./db/players_data.db')
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO Players (player_name, mmr, total_matches, wins, losses, startingMmr) VALUES (?, ?, ?, ?, ?, ?)", (username, 600, 0, 0, 0, 600))
+    conn.commit()
+    conn.close()
+
+
+
     
     # Return a response if needed
     return 'Username received'
@@ -1122,6 +1173,7 @@ def planes_data(name):
 
 
 
+
 def get_progression_history(name):
     # Connect to the SQLite database
     conn = sqlite3.connect('./db/matches_data.db')
@@ -1138,7 +1190,9 @@ def get_progression_history(name):
 
     cursor2.execute("SELECT startingMmr FROM Players WHERE player_name = ?", (name,))
     result = cursor2.fetchone()
-    startingMmr = 600 #TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+    startingMmr = 600
+    cursor2.execute("SELECT mmr FROM Players WHERE player_name = ?", (name,))
+    currentMmr = cursor2.fetchone()[0]
     if result:
         startingMmr = result[0]
         print("Starting MMR:", startingMmr)
@@ -1171,9 +1225,11 @@ def get_progression_history(name):
                 startingMmr -= shift
 
     conn.close()
-    # print("000000000000000000000000000000000000000")
-    # print(mmr_data)  # Print the mmr_data list for debugging
-    # print("000000000000000000000000000000000000000")
+    mmr_data.append({'Current MMR': currentMmr})
+    print("000000000000000000000000000000000000000")
+    print(mmr_data)
+    print(type(mmr_data))  # Print the mmr_data list for debugging
+    print("000000000000000000000000000000000000000")
 
     return mmr_data
 

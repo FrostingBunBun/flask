@@ -1,3 +1,5 @@
+// const { type } = require("os");
+
 function calculateWinProbabilities(
   leftRating,
   rightRating,
@@ -90,6 +92,10 @@ function updateGauge(value1, value2) {
   fill2.style.left = proportion1 * 100 + "%";
 }
 
+
+
+
+
 function allowDrop(event) {
   event.preventDefault();
 }
@@ -143,6 +149,9 @@ function drag(event) {
 
 
 
+
+
+
 function drop(event) {
   event.preventDefault();
   console.log("===============================")
@@ -159,11 +168,8 @@ function drop(event) {
   var droppedElementMmr = document.createElement("span");
   droppedElementMmr.textContent = "(mmr: " + mmr + ")";
 
-  
   var droppedElementWinRate = document.createElement("div");
   droppedElementWinRate.textContent = "Winrate: " + winrate;
-
-
 
   // Create a container element for name and mmr
   var container = document.createElement("div");
@@ -181,7 +187,7 @@ function drop(event) {
   var leftField = document.getElementById("field1");
   var rightField = document.getElementById("field2");
 
- // Remove the name and mmr from the other field if they match the dropped name and mmr
+  // Remove the name and mmr from the other field if they match the dropped name and mmr
   var otherField = targetField === leftField ? rightField : leftField;
   var otherNameElement = otherField.querySelector(".dragged-item p");
   var otherMmrElement = otherField.querySelector(".dragged-item span");
@@ -205,88 +211,7 @@ function drop(event) {
   container.id = targetField.id + "Small"; // Set the ID of the container
   droppedElementWinRate.className = targetField.id + "Winrate"
 
-
-
-
-
-  var field1SmallLeft = document.getElementById("field1Small");
-  if (field1SmallLeft !== null){
-  // console.log("TEST1 left: ", field2SmallRight);
-  var htmlContentLeft = field1SmallLeft.innerHTML;
-  // console.log("TEST2 left: ", htmlContent);
-  var mmrRegex = /\(mmr: (\d+)\)/;
-  var mmrMatchLeft = htmlContentLeft.match(mmrRegex);
-
-  var playerNameElementLeft = field1Small.querySelector('p');
-  var playerNameLeft = playerNameElementLeft.textContent;
-  var playerNameElementRight = field1Small.querySelector('p');
-  var playerNameRight = playerNameElementRight.textContent;
-  }
-  if (mmrMatchLeft) {
-    var mmrNumberLeft = mmrMatchLeft[1]; 
-    // console.log("MMR leftttttttttttttt:", mmrNumberLeft);
-  } else {
-    console.log("MMR left not found");
-  }
-
-  var field2SmallRight = document.getElementById("field2Small");
-  if (field2SmallRight !== null){
-  // console.log("TEST1 right: ", field2SmallRight)
-  var htmlContent = field2SmallRight.innerHTML;
-  // console.log("TEST2 right: ", htmlContent)
-  var mmrRegex = /\(mmr: (\d+)\)/;
-  var mmrMatchRight = htmlContent.match(mmrRegex);
-  }
-  if (mmrMatchRight) {
-    var mmrNumberRight = mmrMatchRight[1];
-    // console.log("MMR righttttttttttttttttt:", mmrNumberRight);
-  } else {
-    console.log("MMR right not found");
-  }
-
-  droppedPlayerName = name
-
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-let leftElement = document.getElementById("field1Small");
-let leftWinrateElement = leftElement?.querySelector("div");
-let leftWinrateText = leftWinrateElement?.textContent || "";
-let leftWinrate = parseFloat(leftWinrateText.match(/\d+\.\d+/)?.[0] || "0")
-
-
-let rightElement = document.getElementById("field2Small");
-let rightWinrateElement = rightElement?.querySelector("div");
-let rightWinrateText = rightWinrateElement?.textContent || "";
-let rightWinrate = parseFloat(rightWinrateText.match(/\d+\.\d+/)?.[0] || "0")
-
-
-leftWinrate = leftWinrate.toString() + "%";
-rightWinrate = rightWinrate.toString() + "%";
-
-
-// leftWinrate = (leftWinrate - 50) / 50 * 0.9 + 0.1;
-// rightWinrate = (rightWinrate - 50) / 50 * 0.9 + 0.1;
-
-// var leftWinrate = 0.1
-// var rightWinrate = 0.1
-
- // leftWinrate SCRIPT:  0.8714799999999999
-  // rightWinrate SCRIPT:  0.9053199999999999
-
-//   leftWinrate MATCH:  92,86%
-//   rightWinrate MATCH:  94,74%
-
-
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  // console.log("left Winrate value:", leftWinrateValue);
-
-  // console.log("leftWinrate SCRIPT: ", leftWinrate)
-  // console.log("leftWinrate SCRIPT TYPE: ", typeof(leftWinrate))
-  // console.log("rightWinrate SCRIPT: ", rightWinrate)
-  // console.log("rightWinrate SCRIPT TYPE: ", typeof(rightWinrate))
-
-  
-  // console.log("right Winrate value:", rightWinrateValue);
+  var [mmrMatchLeft, mmrMatchRight, leftWinrate, rightWinrate] = getMMRAndWinrate();
 
   var [rightProbability, leftProbability] = calculateWinProbabilities(
     mmrMatchLeft,
@@ -295,14 +220,8 @@ rightWinrate = rightWinrate.toString() + "%";
     rightWinrate
   );
 
-  // console.log("Left player's probability of winning:", leftProbability);
-  // console.log("Right player's probability of winning:", rightProbability);
-
   var percentageLeft = (leftProbability * 100).toFixed(2) + "%";
   var percentageRight = (rightProbability * 100).toFixed(2) + "%";
-
-  // console.log("percentageLeft: ", percentageLeft)
-  // console.log("percentageRight: ", percentageRight)
 
   var leftPercentElement = document.getElementById("leftGauge");
   leftPercentElement.textContent = percentageLeft;
@@ -310,24 +229,64 @@ rightWinrate = rightWinrate.toString() + "%";
   var rightPercentElement = document.getElementById("rightGauge");
   rightPercentElement.textContent = percentageRight;
 
-  // console.log("leftProbability: ", leftProbability)
-  // console.log("rightProbability: ", rightProbability)
-
-  // Example usage: update the gauge with values 60 and 40
   updateGauge(leftProbability, rightProbability);
-
-
-
-
-
-
-
-
-
-
-
-
 }
+
+
+
+
+
+function getMMRAndWinrate() {
+  var mmrMatchLeft = null;
+  var mmrMatchRight = null;
+  var leftWinrate = 0;
+  var rightWinrate = 0;
+
+  var field1SmallLeft = document.getElementById("field1Small");
+  if (field1SmallLeft !== null) {
+    var htmlContentLeft = field1SmallLeft.innerHTML;
+    var mmrRegex = /\(mmr: (\d+)\)/;
+    mmrMatchLeft = htmlContentLeft.match(mmrRegex);
+
+    var playerNameElementLeft = field1Small.querySelector('p');
+    var playerNameLeft = playerNameElementLeft.textContent;
+    var playerNameElementRight = field1Small.querySelector('p');
+    var playerNameRight = playerNameElementRight.textContent;
+  }
+  if (mmrMatchLeft) {
+    var mmrNumberLeft = mmrMatchLeft[1];
+  } else {
+    console.log("MMR left not found");
+  }
+
+  var field2SmallRight = document.getElementById("field2Small");
+  if (field2SmallRight !== null) {
+    var htmlContent = field2SmallRight.innerHTML;
+    var mmrRegex = /\(mmr: (\d+)\)/;
+    mmrMatchRight = htmlContent.match(mmrRegex);
+  }
+  if (mmrMatchRight) {
+    var mmrNumberRight = mmrMatchRight[1];
+  } else {
+    console.log("MMR right not found");
+  }
+
+  let leftElement = document.getElementById("field1Small");
+  let leftWinrateElement = leftElement?.querySelector("div");
+  let leftWinrateText = leftWinrateElement?.textContent || "";
+  leftWinrate = parseFloat(leftWinrateText.match(/\d+\.\d+/)?.[0] || "0")
+
+  let rightElement = document.getElementById("field2Small");
+  let rightWinrateElement = rightElement?.querySelector("div");
+  let rightWinrateText = rightWinrateElement?.textContent || "";
+  rightWinrate = parseFloat(rightWinrateText.match(/\d+\.\d+/)?.[0] || "0")
+
+  leftWinrate = leftWinrate.toString() + "%";
+  rightWinrate = rightWinrate.toString() + "%";
+
+  return [mmrMatchLeft, mmrMatchRight, leftWinrate, rightWinrate];
+}
+
 
 
 
@@ -760,4 +719,435 @@ function confirmUsername() {
     // Send the request
     xhr.send(data);
   }
+}
+
+
+
+
+
+
+
+
+const customPoolBtn = document.getElementById('customPoolBtn');
+const modal = document.getElementById('myModal');
+const closeBtn = document.getElementsByClassName('close')[0];
+
+// Open the modal when the button is clicked
+customPoolBtn.addEventListener('click', function() {
+  modal.style.display = 'block';
+
+});
+
+// Close the modal when the close button is clicked
+closeBtn.addEventListener('click', function() {
+  modal.style.display = 'none';
+
+});
+
+// Close the modal when the user clicks outside the modal content
+window.addEventListener('click', function(event) {
+  if (event.target === modal) {
+    modal.style.display = 'none';
+
+    
+  }
+});
+
+
+
+
+
+
+
+
+// Get the checkboxes
+const checkboxes = document.querySelectorAll('.checkmark');
+
+// Get the selected names list
+const selectedNamesList = document.getElementById('selectedNamesList');
+
+// Retrieve stored selections from local storage
+const storedSelections = localStorage.getItem('selectedNames');
+// Convert stored selections to an array or initialize an empty array
+const selections = storedSelections ? JSON.parse(storedSelections) : [];
+
+// Iterate through checkboxes and set their checked state
+checkboxes.forEach(function (checkbox) {
+  const listItem = checkbox.parentNode; // Get the parent list item
+  const listItemHTML = listItem.innerHTML; // Get the HTML content of the list item
+
+  checkbox.checked = selections.includes(listItemHTML);
+
+  checkbox.addEventListener('change', function () {
+    if (this.checked) {
+      selections.push(listItemHTML);
+    } else {
+      const index = selections.indexOf(listItemHTML);
+      if (index > -1) {
+        selections.splice(index, 1);
+      }
+    }
+
+    // Store updated selections in local storage
+    localStorage.setItem('selectedNames', JSON.stringify(selections));
+
+    updateSelectedNamesList();
+  });
+});
+
+// Update the selected names list
+function updateSelectedNamesList() {
+  selectedNamesList.innerHTML = '';
+  selections.forEach(function (listItemHTML) {
+    const listItem = document.createElement('li');
+    listItem.innerHTML = listItemHTML;
+    listItem.classList.add('added-item'); // Add a class for styling
+    listItem.querySelector('.checkmark').remove(); // Remove the checkbox
+    selectedNamesList.appendChild(listItem);
+  });
+}
+
+// Update the selected names list on page load
+updateSelectedNamesList();
+
+// Random Match button event listener
+const randomMatchButton = document.querySelector('.random');
+randomMatchButton.addEventListener('click', generateRandomMatch);
+
+const autoMatchButton = document.querySelector('.auto');
+autoMatchButton.addEventListener('click', generateAutoMatch);
+
+
+
+function convertObjectToString(object) {
+  const { name, mmr, win_rate } = object;
+
+  const string = `<input type="checkbox" class="checkmark" data-name="${name}">
+          ${name}
+          <span id="flag_${name}">(${mmr})</span>
+          <span id="flag_${name}">(${win_rate}%)</span>`;
+
+  return string;
+}
+
+
+
+// Generate a random match
+function generateRandomMatch() {
+  const shuffledSelections = shuffleArray(selections); // Shuffle the selections array
+  const randomPair = shuffledSelections.slice(0, 2); // Get the first two elements as the random pair
+
+  if (randomPair.length === 2) {
+    const leftPlayer = randomPair[0];
+    const rightPlayer = randomPair[1];
+
+  console.log("leftPlayerRANDOM: ", leftPlayer)
+  // console.log("leftPlayerRANDOM TYPE: ", typeof(leftPlayer))
+  // console.log("rightPlayerRANDOM: ", rightPlayer)
+
+    // Add the left and right players to the fields
+    addPlayerToLeftField(leftPlayer);
+    addPlayerToRightField(rightPlayer);
+  } else {
+    console.log('Insufficient selected names to generate a random pair.');
+  }
+}
+//=======================================================================================
+//=======================================================================================
+const pastList = [];
+
+
+function generateAutoMatch(){
+  
+  console.log("AUTO CLICKED")
+  const playersListHTML = selections
+  const nameRegex = /data-name="([^"]+)"/;
+  
+
+  const namesList = []
+  for (let i = 0; i < playersListHTML.length; i++) {
+    const match = playersListHTML[i].match(nameRegex);
+  const playerName = match ? match[1] : null;
+    namesList.push(playerName)
+  }
+
+  // console.log(namesList)
+
+  
+  fetch('/autoMatch', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(namesList)
+  })
+  .then(response => response.json())
+  .then(responseData => {
+
+
+
+  
+
+
+
+
+
+  // Handle the response from Flask
+  // console.log(responseData);
+
+  
+
+  const mostBalancedPair = findMostBalancedPair(responseData);
+
+  // console.log('Most Balanced Pair: ', mostBalancedPair.map(item => item.name));
+  console.log("================================================")
+
+
+
+  function findMostBalancedPair(data) {
+
+    
+
+    // console.log("pastList: ", pastList.map(item => item.name));
+    const pairsRaw = Object.values(data);
+    // console.log("pairsRaw: ", pairsRaw.map(item => item.name));
+    const pairs = pairsRaw.filter(obj => !pastList.some(item => item.name === obj.name));
+    // console.log("pairs: ", pairs.map(item => item.name));
+
+    
+
+    
+  
+    let mostBalancedPair = null;
+    let minBalanceScore = Infinity;
+  
+    for (let i = 0; i < pairs.length - 1; i++) {
+      const playerA = pairs[i];
+      const playerB = pairs[i + 1];
+  
+      const mmrDifference = Math.abs(playerA.mmr - playerB.mmr);
+      const winsDifference = Math.abs(playerA.wins - playerB.wins);
+      const lossesDifference = Math.abs(playerA.losses - playerB.losses);
+      const winRateDifference = Math.abs(playerA.win_rate - playerB.win_rate);
+  
+      // Define a scoring mechanism that combines the differences in different factors
+      const balanceScore =
+        mmrDifference + winsDifference + lossesDifference + winRateDifference;
+  
+      if (balanceScore < minBalanceScore) {
+        minBalanceScore = balanceScore;
+        mostBalancedPair = [playerA, playerB];
+      }
+      
+    }
+
+    for (let x = 0; x < mostBalancedPair.length; x++) {
+      pastList.push(mostBalancedPair[x])
+    }
+
+    if (pairs.length <= 3) {
+      pastList.splice(0, pastList.length); // Reset the pastList to an empty array
+      console.log("reset")
+    }
+    return mostBalancedPair;
+  }
+  
+
+  let leftPlayerObj = mostBalancedPair[0]
+  let rightPlayerObj = mostBalancedPair[1]
+  
+  let leftPlayer = convertObjectToString(leftPlayerObj)
+  let rightPlayer = convertObjectToString(rightPlayerObj)
+  console.log("leftPlayerObjAUTO: ", leftPlayerObj)
+  console.log("leftPlayerAUTO: ", leftPlayer)
+  // console.log("leftPlayerAUTO TYPE: ", typeof(leftPlayer))
+  // console.log("rightPlayerAUTO: ", rightPlayer)
+
+
+  // Add the left and right players to the fields
+  addPlayerToLeftField(leftPlayer);
+  addPlayerToRightField(rightPlayer);
+
+
+})
+
+.catch(error => {
+  console.error('Error:', error);
+});
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+//=======================================================================================
+//=======================================================================================
+// Add a player to the left field
+function addPlayerToLeftField(playerHTML) {
+  const leftField = document.getElementById('field1');
+
+  // Remove the existing content from the left field
+  const existingContent = leftField.querySelector('.dragged-item');
+  if (existingContent) {
+    existingContent.remove();
+  }
+
+  const container = createPlayerContainer(playerHTML);
+  container.setAttribute('id', 'field1Small');
+  leftField.appendChild(container);
+
+  // Add class to the winrate div
+  const winrateDiv = container.querySelector('div');
+  if (winrateDiv && winrateDiv.textContent.startsWith('Winrate:')) {
+    winrateDiv.classList.add('field2Winrate');
+  }
+
+  var [mmrMatchLeft, mmrMatchRight, leftWinrate, rightWinrate] = getMMRAndWinrate();
+
+  var [rightProbability, leftProbability] = calculateWinProbabilities(
+    mmrMatchLeft,
+    mmrMatchRight,
+    leftWinrate,
+    rightWinrate
+  );
+
+  var percentageLeft = (leftProbability * 100).toFixed(2) + "%";
+  var percentageRight = (rightProbability * 100).toFixed(2) + "%";
+
+  var leftPercentElement = document.getElementById("leftGauge");
+  leftPercentElement.textContent = percentageLeft;
+
+  var rightPercentElement = document.getElementById("rightGauge");
+  rightPercentElement.textContent = percentageRight;
+
+  updateGauge(leftProbability, rightProbability);
+
+  // console.log("playerHTMLleft: ", playerHTML);
+}
+
+//=======================================================================================
+
+
+// Add a player to the right field
+function addPlayerToRightField(playerHTML) {
+  const rightField = document.getElementById('field2');
+
+  // Remove the existing content from the right field
+  const existingContent = rightField.querySelector('.dragged-item');
+  if (existingContent) {
+    existingContent.remove();
+  }
+
+  const container = createPlayerContainer(playerHTML);
+  container.setAttribute('id', 'field2Small');
+  rightField.appendChild(container);
+
+  // Add class to the winrate div
+  const winrateDiv = container.querySelector('div');
+  if (winrateDiv && winrateDiv.textContent.startsWith('Winrate:')) {
+    winrateDiv.classList.add('field2Winrate');
+  }
+
+  var [mmrMatchLeft, mmrMatchRight, leftWinrate, rightWinrate] = getMMRAndWinrate();
+
+  var [rightProbability, leftProbability] = calculateWinProbabilities(
+    mmrMatchLeft,
+    mmrMatchRight,
+    leftWinrate,
+    rightWinrate
+  );
+
+  var percentageLeft = (leftProbability * 100).toFixed(2) + "%";
+  var percentageRight = (rightProbability * 100).toFixed(2) + "%";
+
+  var leftPercentElement = document.getElementById("leftGauge");
+  leftPercentElement.textContent = percentageLeft;
+
+  var rightPercentElement = document.getElementById("rightGauge");
+  rightPercentElement.textContent = percentageRight;
+
+  updateGauge(leftProbability, rightProbability);
+
+  // console.log("playerHTMLright: ", playerHTML);
+}
+
+
+//=======================================================================================
+
+// =====================================================================================
+
+
+function createPlayerContainer(playerHTML) {
+  const container = document.createElement('div');
+  container.classList.add('dragged-item');
+
+  const playerName = document.createElement('p');
+  playerName.textContent = getPlayerName(playerHTML);
+  container.appendChild(playerName);
+
+  const mmrSpan = document.createElement('span');
+  mmrSpan.textContent = getPlayerMMR(playerHTML);
+  container.appendChild(mmrSpan);
+
+  const winrateSpan = document.createElement('div');
+  winrateSpan.textContent = getPlayerWinrate(playerHTML);
+  container.appendChild(winrateSpan);
+
+  return container;
+}
+
+function getPlayerName(playerHTML) {
+  // Extract the player name from the playerHTML string
+  const playerName = playerHTML.match(/>([^<]+)</);
+  if (playerName && playerName.length > 1) {
+    return playerName[1].trim();
+  }
+  return '';
+}
+
+function getPlayerMMR(playerHTML) {
+  // Extract the MMR value from the playerHTML string
+  const mmr = playerHTML.match(/\((\d+)\)/);
+  if (mmr && mmr.length > 1) {
+    return `(mmr: ${mmr[1]})`;
+  }
+  return '';
+}
+
+function getPlayerWinrate(playerHTML) {
+  // Extract the winrate value from the playerHTML string
+  const winrate = playerHTML.match(/\(([\d.]+%)\)/);
+  if (winrate && winrate.length > 1) {
+    return `Winrate: ${winrate[1]}`;
+  }
+  return '';
+}
+
+
+
+
+
+
+
+
+
+// Shuffle an array using Fisher-Yates algorithm
+function shuffleArray(array) {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
 }
