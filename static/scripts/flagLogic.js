@@ -1,6 +1,7 @@
 
 function getFlag(nameCell) {
 
+    var test = ["test", "test2"]
     var osea_from_ace_combat = []
     var india = [];
     var saudiarabia = [];
@@ -77,6 +78,7 @@ function getFlag(nameCell) {
     var air_canada_png = "https://cdn.discordapp.com/attachments/1082025405986385920/1082025448545976420/IthX8bu3PuOaPr7HfZx8IgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgvzf8T9iuI5dXblLjgAAAABJRU5ErkJggg.png"
     var poland_png = "https://en.wikipedia.org/wiki/Flag_of_Poland#/media/File:Flag_of_Poland.svg"
     var someZealand_png = "https://upload.wikimedia.org/wikipedia/en/thumb/f/f5/Fire_the_Lazer.svg/1200px-Fire_the_Lazer.svg.png"
+    var black_png = "https://upload.wikimedia.org/wikipedia/commons/2/21/Solid_black.svg"
   
     // var nameCell = ss.getRange(row, 4).getValue();
 
@@ -124,6 +126,9 @@ function getFlag(nameCell) {
     }
     else if(japEmpire.includes(nameCell)){
       return japEmpire_png
+    }
+    else if(test.includes(nameCell)){
+      return black_png
     }
     else if(someZealand.includes(nameCell)){
       return someZealand_png

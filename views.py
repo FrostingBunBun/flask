@@ -272,53 +272,12 @@ def matchmaking():
     wins_values = [row[0] for row in cursor.fetchall()]
     cursor.execute('SELECT losses FROM Players ORDER BY mmr DESC')
     losses_values = [row[0] for row in cursor.fetchall()]
+    
 
+    # Commit the changes and close the connection
+    conn.commit()
+    conn.close()
 
-
-    # player_names = [row[3] for row in values[3:] if row[3]]
-    # mmr_values = [row[2] for row in values[3:] if row[2]]
-    # total_matches_values = [row[9] for row in values[3:] if row[9]]
-    # wins_values = [row[5] for row in values[3:] if row[5]]
-    # losses_values = [row[6] for row in values[3:] if row[6]]
-    # print("++++++++++++++++++++++++++++")
-    # print("Player Names: ", player_names)
-    # print("MMR Values: ", mmr_values)
-    # print("Total Matches: ", total_matches_values)
-    # print("Wins: ", wins_values)
-    # print("Losses: ", losses_values)
-    print("++++++++++++++++++++++++++++")
-    # Loop through the data
-    for i in range(len(player_names)):
-        player_name = player_names[i]
-        mmr_str = mmr_values[i]
-        total_matches_str = total_matches_values[i]
-        wins_str = wins_values[i]
-        losses_str = losses_values[i]
-
-        # Check for empty cells
-        if player_name and mmr_str and total_matches_str and wins_str and losses_str:
-            mmr = int(mmr_str)
-            total_matches = int(total_matches_str)
-            wins = int(wins_str)
-            losses = int(losses_str)
-
-            # Check if the player already exists in the database
-            cursor.execute('SELECT * FROM Players WHERE player_name = ?', (player_name,))
-            existing_player = cursor.fetchone()
-
-            if existing_player:
-                # Player exists, update their information
-                cursor.execute('''
-                    UPDATE Players
-                    SET mmr = ?, total_matches = ?, wins = ?, losses = ?
-                    WHERE player_name = ?
-                ''', (mmr, total_matches, wins, losses, player_name))
-            else:
-                # Player doesn't exist, insert a new row
-                cursor.execute('''
-                    INSERT INTO Players (player_name, mmr, total_matches, wins, losses)
-                    VALUES (?, ?, ?, ?, ?)
-                ''', (player_name, mmr, total_matches, wins, losses))
 
     
 
@@ -328,9 +287,7 @@ def matchmaking():
     playersWinLose = []
     for x in range(len(wins_values)):
         playersWinLose.append([str(wins_values[x]), str(losses_values[x])])
-    print("playersWinLoseTest: ", playersWinLose)
-    print("")
-    print("playersWinLose: ", playersWinLose)
+
 
 
     winrate_list = []
@@ -351,9 +308,7 @@ def matchmaking():
     if 'username' in session:
         username = session['username']
 
-    # Commit the changes and close the connection
-    conn.commit()
-    conn.close()
+    
     
     print("==========================")
     print(session.items())
@@ -1455,13 +1410,91 @@ def setDefaultMmr():
 @login_required
 @mod_required
 def processing():
+
     return render_template("processing.html")
 
 @views.route("/matchmaking/match/processing/calculate")
 @login_required
 @mod_required
 def calculate():
+
+
     return render_template("calculate.html")
+
+@views.route("/dbSync", methods=['POST'])
+@login_required
+@mod_required
+def dbSync():
+
+
+    print("calculate start")
+    print("calculate start")
+    print("calculate start")
+    print("calculate start")
+
+    # Connect to the database
+    conn = sqlite3.connect('./db/players_data.db')
+    cursor = conn.cursor()
+    # clone db stuff--------------------------------------------------------
+    values = wks_mmr.get_all_values()
+
+    player_names = [row[3] for row in values[3:] if row[3]]
+    mmr_values = [row[2] for row in values[3:] if row[2]]
+    total_matches_values = [row[9] for row in values[3:] if row[9]]
+    wins_values = [row[5] for row in values[3:] if row[5]]
+    losses_values = [row[6] for row in values[3:] if row[6]]
+    print("++++++++++++++++++++++++++++")
+    print("Player Names: ", player_names)
+    print("MMR Values: ", mmr_values)
+    print("Total Matches: ", total_matches_values)
+    print("Wins: ", wins_values)
+    print("Losses: ", losses_values)
+    print("++++++++++++++++++++++++++++")
+    # Loop through the data
+    
+    for i in range(len(player_names)):
+        player_name = player_names[i]
+        mmr_str = mmr_values[i]
+        total_matches_str = total_matches_values[i]
+        wins_str = wins_values[i]
+        losses_str = losses_values[i]
+
+        # Check for empty cells
+        if player_name and mmr_str and total_matches_str and wins_str and losses_str:
+            mmr = int(mmr_str)
+            total_matches = int(total_matches_str)
+            wins = int(wins_str)
+            losses = int(losses_str)
+
+            # Check if the player already exists in the database
+            cursor.execute('SELECT * FROM Players WHERE player_name = ?', (player_name,))
+            existing_player = cursor.fetchone()
+
+            if existing_player:
+                # Player exists, update their information
+                cursor.execute('''
+                    UPDATE Players
+                    SET mmr = ?, total_matches = ?, wins = ?, losses = ?
+                    WHERE player_name = ?
+                ''', (mmr, total_matches, wins, losses, player_name))
+            else:
+                # Player doesn't exist, insert a new row
+                cursor.execute('''
+                    INSERT INTO Players (player_name, mmr, total_matches, wins, losses)
+                    VALUES (?, ?, ?, ?, ?)
+                ''', (player_name, mmr, total_matches, wins, losses))
+
+    # Commit the changes and close the connection
+    conn.commit()
+    conn.close()
+    # clone db stuff--------------------------------------------------------
+
+    print("calculate end")
+    print("calculate end")
+    print("calculate end")
+    print("calculate end")
+
+    return "Sync complete"
 
 
 @views.route("/")
