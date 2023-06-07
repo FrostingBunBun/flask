@@ -313,7 +313,8 @@ def matchmaking():
     print("==========================")
     print(session.items())
     print("==========================")
-    return render_template("matchmaking.html", my_dict=nameMmr_dict, username=username)
+    my_dict2 = nameMmr_dict
+    return render_template("matchmaking.html", my_dict=nameMmr_dict, my_dict2=my_dict2, username=username)
 
 
 

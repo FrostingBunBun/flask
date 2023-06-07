@@ -302,24 +302,38 @@ function getMMRAndWinrate() {
 
 
 function filterNames() {
-  var input = document.getElementById("searchInput");
-  var filter = input.value.toLowerCase();
-  var ul = document.querySelector(".list ul");
-  var li = ul.getElementsByTagName("li");
+  var inputs = document.getElementsByClassName("searchBar"); // Updated to select all search input elements with the class "searchBar"
 
-  for (var i = 0; i < li.length; i++) {
-    var name = li[i].textContent || li[i].innerText;
-    var transformedName = transformString(name);
-    var transformedFilter = transformString(filter);
-    
-    // Check if the original name or transformed name contains the filter
-    if (name.includes(filter) || transformedName.includes(transformedFilter)) {
-      li[i].style.display = "";
-    } else {
-      li[i].style.display = "none";
+  for (var j = 0; j < inputs.length; j++) {
+    var input = inputs[j];
+    var filter = input.value.toLowerCase();
+    var ul = input.closest(".list").querySelector("ul"); // Updated to select the closest "ul" element within the parent "list" container
+    var li = ul.getElementsByTagName("li");
+
+    for (var i = 0; i < li.length; i++) {
+      var name = li[i].textContent || li[i].innerText;
+      var transformedName = transformString(name);
+      var transformedFilter = transformString(filter);
+
+      // Check if the original name or transformed name contains the filter
+      if (name.includes(filter) || transformedName.includes(transformedFilter)) {
+        li[i].style.display = "";
+      } else {
+        li[i].style.display = "none";
+      }
     }
   }
 }
+
+
+var searchInputs = document.getElementsByClassName("searchBar");
+for (var i = 0; i < searchInputs.length; i++) {
+  searchInputs[i].addEventListener("input", filterNames);
+}
+
+
+
+
 
 function transformString(str) {
   // Replace '3' with 'e' and convert to lowercase
@@ -341,6 +355,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   var searchInput = document.getElementById("searchInput");
   searchInput.addEventListener("input", filterNames);
+
 
   var submitButton = document.getElementById("submitButton");
   var cancelButton = document.getElementById("cancelButton");
