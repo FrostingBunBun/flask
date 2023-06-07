@@ -25,10 +25,10 @@
         <!-- Content of your container goes here -->
         <p>Logged on as: {{ username }} </p>
         <button id="logout">Log out</button>
-        <button id="refreshButton">Sync The List</button>
+        <button id="refreshButton" onclick="refreshButtonClick()">Manual Sync The List</button>
         <button id="home">Home</button>
         <button class="registerUser" onclick="openModal2()">Add User</button>
-        <button id="customPoolBtn" class="customPool">Custom Pool</button>
+        <!--<button id="customPoolBtn" class="customPool">Custom Pool</button>-->
 
 
       </div>
@@ -52,31 +52,31 @@
 
 
 <!-- Modal HTML -->
-<div id="myModal" class="modal">
-  <div class="modal-content-pool">
-    <span class="close">&times;</span>
-    <div class="list" id="list">
-      <div class="search-container">
-        <input class="searchBar" type="text" autocomplete="off" id="searchInput" placeholder="Search names...">
-      </div>
-      <h2>The Deadpool</h2>
-      <ul id="nameList">
-        {% for name, value in my_dict.items() %}
-        <li>
-          <input type="checkbox" class="checkmark" data-name="{{ name }}">
-          {{ name }}
-          <span id="flag_{{ name }}">({{ value[0] }})</span>
-          <span id="flag_{{ name }}">({{ value[1] }}%)</span>
-        </li>
-        {% endfor %}
-      </ul>
-    </div>
-  </div>
-  <div class="added">
-    <p>Custom Pool Container</p>
-    <ul id="selectedNamesList"></ul>
-  </div>
-</div>
+<!--<div id="myModal" class="modal">-->
+<!--  <div class="modal-content-pool">-->
+<!--    <span class="close">&times;</span>-->
+<!--    <div class="list" id="list">-->
+<!--      <div class="search-container">-->
+<!--        <input class="searchBar" type="text" autocomplete="off" id="searchInput" placeholder="Search names...">-->
+<!--      </div>-->
+<!--      <h2>The Deadpool</h2>-->
+<!--      <ul id="nameList">-->
+<!--        {% for name, value in my_dict.items() %}-->
+<!--        <li>-->
+<!--          <input type="checkbox" class="checkmark" data-name="{{ name }}">-->
+<!--          {{ name }}-->
+<!--          <span id="flag_{{ name }}">({{ value[0] }})</span>-->
+<!--          <span id="flag_{{ name }}">({{ value[1] }}%)</span>-->
+<!--        </li>-->
+<!--        {% endfor %}-->
+<!--      </ul>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="added">-->
+<!--    <p>Custom Pool Container</p>-->
+<!--    <ul id="selectedNamesList"></ul>-->
+<!--  </div>-->
+<!--</div>-->
 
 
 
