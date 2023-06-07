@@ -1151,3 +1151,30 @@ function shuffleArray(array) {
   }
   return newArray;
 }
+
+
+
+
+
+document.getElementById("refreshButton").addEventListener("click", function() {
+
+
+  // =================================================
+setTimeout(() => {
+  fetch('/dbSync', {
+    method: 'POST',
+  })
+    .then(response => response.text())
+    .then(result => {
+      console.log(result);
+      // Reload
+      location.reload();
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}, 500);
+// =================================================
+
+
+});
