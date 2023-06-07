@@ -1041,7 +1041,6 @@ def profile_details_leaderboard(name):
 
 
     # ------------------------------------------------------------------
-
     player_name = name
 
     streak_count, result = get_streak(player_name)
@@ -1050,8 +1049,12 @@ def profile_details_leaderboard(name):
     else:
         print(f"No streak found for {player_name}")
 
+    winrate = round(wins / (wins + losses) * 100, 2)
+    # print("winrate: ", winrate)
+    # print("winrate TYPE: ", type(winrate)) 
+
     return render_template('stats.html', name=name, avatar_url=avatar_url, history=history, lastMatch=lastMatch, wins=wins, losses=losses, mmr=mmr, 
-                           games_per_day=games_per_day, is_own_profile=is_own_profile, is_public=is_public, streak_count=streak_count, result=result)
+                           games_per_day=games_per_day, is_own_profile=is_own_profile, is_public=is_public, streak_count=streak_count, result=result, winrate=winrate)
 
 
 
