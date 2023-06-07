@@ -626,13 +626,36 @@ function handleSelectionChange() {
 
   xhr.send(JSON.stringify({ selectedName: selectedName }));
   console.log(selectedName); // Log the selected name
+
+  // Save the selected option value to localStorage
+  localStorage.setItem("selectedOption", selectElement.value);
 }
 
 // Add event listener for selection change
 selectElement.addEventListener("change", handleSelectionChange);
 
-// Trigger selection change on page load
-handleSelectionChange();
+// Set the selected option as the default on page load
+window.addEventListener("load", function () {
+  // Retrieve the selected option value from localStorage
+  var selectedOptionValue = localStorage.getItem("selectedOption");
+
+  if (selectedOptionValue) {
+    // Find the option with the retrieved value and set it as selected
+    for (var i = 0; i < selectElement.options.length; i++) {
+      if (selectElement.options[i].value === selectedOptionValue) {
+        selectElement.selectedIndex = i;
+        break;
+      }
+    }
+  }
+
+  handleSelectionChange(); // Trigger selection change
+});
+
+
+
+
+
 
 
 

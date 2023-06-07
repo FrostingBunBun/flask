@@ -1643,14 +1643,3 @@ def key():
     return render_template("key.html", password=password)
 
 
-@views.route('/sendJet', methods=['POST'])
-def receive_data():
-    data = request.get_json()
-    selected_name = data.get('selectedName')
-    
-    print("Selected Name:", selected_name)  # Print the selected name in Python
-    
-    session['jet'] = selected_name
-    print("Session Items:", session.items())  # Print the session items
-    
-    return jsonify(session=session)
