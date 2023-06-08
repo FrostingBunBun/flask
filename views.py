@@ -12,6 +12,7 @@ from datetime import date, datetime, timedelta
 from flask import jsonify, request
 import difflib
 from collections import defaultdict
+import math
 
 
 import numpy as np
@@ -1057,8 +1058,20 @@ def profile_details_leaderboard(name):
     print("HISTORY: ", history)
     print("111111111111111111111111")
 
-    return render_template('stats.html', name=name, avatar_url=avatar_url, history=history, lastMatch=lastMatch, wins=wins, losses=losses, mmr=mmr, 
-                           games_per_day=games_per_day, is_own_profile=is_own_profile, is_public=is_public, streak_count=streak_count, result=result, winrate=winrate)
+
+    page = request.args.get('page', default=1, type=int)
+    items_per_page = 10  # Number of items to display per page
+
+    total_items = len(history)  # Total number of items in your dataset
+    total_pages = math.ceil(total_items / items_per_page)
+
+    print("PAGE: ", page)
+    print("total_items: ", total_items)
+    print("total_pages: ", total_pages)
+
+    return render_template('stats.html', name=name, avatar_url=avatar_url, history=history, lastMatch=lastMatch, wins=wins, losses=losses, mmr=mmr, page=page, total_pages=total_pages, 
+                           items_per_page=items_per_page, games_per_day=games_per_day, is_own_profile=is_own_profile, is_public=is_public, streak_count=streak_count, result=result, 
+                           winrate=winrate)
 
 
 
@@ -1240,7 +1253,7 @@ def get_planes_value(name):
     game_counts = []
 
     # Iterate over the results and append the game counts to the list in the same order as the planes
-    planes = ["F-14", "F-18", "Viggen", "Mig-29", "Eurofighter"]  # Specify the order of planes
+    planes = ["F-14", "F-18", "Viggen", "Mig-29", "Eurofighter", "JAS_Gripen"]  # Specify the order of planes
     for plane in planes:
         count = next((result[1] for result in results if result[0] == plane), 0)
         game_counts.append(count)

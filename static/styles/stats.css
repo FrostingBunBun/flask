@@ -262,10 +262,12 @@ body{
   
   tr:nth-child(even) {
     background-color: #444;
+    
   }
   
   tr:hover {
     background-color: #666;
+    
   }
   
   td:nth-child(1) {
@@ -575,4 +577,30 @@ body{
 
 .modal-contentPwd input[type="submit"]:hover {
   background-color: #ff3570;
+}
+
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination-button {
+  display: inline-block;
+  padding: 5px 10px;
+  margin-right: 5px;
+  border: 1px solid #a54974;
+  background-color: #c5598b;
+  color: #333;
+  text-decoration: none;
+}
+
+.pagination-button:hover {
+  background-color: #e0e0e0;
+}
+
+.pagination-button.active {
+  background-color: #333;
+  color: #fff;
 }

@@ -118,7 +118,9 @@
 
 
             <tbody>
-              {% for match in history|reverse %}
+              {% set start_index = (page - 1) * items_per_page %}
+              {% set end_index = start_index + items_per_page %}
+              {% for match in history[::-1][start_index:end_index] %}
               <tr>
                 <td class="plane-type">{{ match[8] }}</td>
                 <td class="result {% if match[3].split()[0] == name %}win{% else %}loss{% endif %}">
@@ -135,10 +137,20 @@
                 <td class="date">{{ match[5] }}</td>
               </tr>
               {% endfor %}
-            </tbody>
+          </tbody>
+
+
+            
 
 
           </table>
+          <!-- Generate pagination links -->
+          <div class="pagination">
+            {% for p in range(1, total_pages+1) %}
+              <a href="{{ url_for('views.profile_details_leaderboard', name=name, page=p) }}" class="pagination-button{% if p == page %} active{% endif %}">{{ p }}</a>
+            {% endfor %}
+          </div>
+          
         </div>
 
         {% else %}

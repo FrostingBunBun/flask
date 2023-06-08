@@ -179,7 +179,7 @@ fetch('/planes_data/' + userProfileName)  // Include the name as a URL parameter
   .then(data => {
     var jsonData = data;
     // console.log(userProfileName)
-    // console.log(jsonData)
+
 
 
 
@@ -202,7 +202,7 @@ fetch('/planes_data/' + userProfileName)  // Include the name as a URL parameter
         }
       },
       xAxis: {
-        categories: ["F-14", "F-18", "Viggen", "Mig-29", "Eurofighter"],
+        categories: ["F-14", "F-18", "Viggen", "Mig-29", "Eurofighter", "JAS_Gripen"],
         lineColor: '#000000', // Axis line color (black)
         labels: {
           style: {
@@ -211,11 +211,12 @@ fetch('/planes_data/' + userProfileName)  // Include the name as a URL parameter
         }
       },
       yAxis: {
-        min: 0, // Set the minimum value for the radial axis
-        max: 1, // Set the maximum value for the radial axis
+        // min: 0, // Set the minimum value for the radial axis
+        max: 2, // Set the maximum value for the radial axis
         gridLineColor: '#000000', // Grid line color (black)
         labels: {
-          format: '{value:.0%}', // Display values as percentage
+          enabled:false,
+          // format: '{value:.0%}', // Display values as percentage
           style: {
             color: '#000000' // Axis label color (black)
           }
@@ -227,6 +228,10 @@ fetch('/planes_data/' + userProfileName)  // Include the name as a URL parameter
           fillOpacity: 0.5 // Series fill opacity (semi-transparent)
         }
       },
+      tooltip: {
+        enabled: false // Disable tooltip
+      },
+      
       series: [{
         type: 'area',
         name: 'Game Count',
@@ -517,3 +522,24 @@ var changePwdButton = document.getElementById('changePwd');
       // Close the modal
       modalPwd.style.display = 'none';
     });
+
+
+
+// Get all pagination links
+var paginationLinks = document.querySelectorAll('.pagination a');
+
+// Attach click event listener to each pagination link
+paginationLinks.forEach(function(link) {
+  link.addEventListener('click', function(e) {
+    e.preventDefault(); // Prevent the default behavior of the anchor tag click event
+    var page = this.getAttribute('href').split('=')[1];
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        document.querySelector('tbody').innerHTML = xhr.responseText;
+      }
+    };
+    xhr.open('GET', '/stats/{{ name }}?page=' + page, true);
+    xhr.send();
+  });
+});
