@@ -804,6 +804,11 @@ const checkboxes = document.querySelectorAll('.checkmark');
 // Get the selected names list
 const selectedNamesList = document.getElementById('selectedNamesList');
 
+
+
+
+
+
 // Retrieve stored selections from local storage
 const storedSelections = localStorage.getItem('selectedNames');
 // Convert stored selections to an array or initialize an empty array
@@ -840,10 +845,30 @@ function updateSelectedNamesList() {
     const listItem = document.createElement('li');
     listItem.innerHTML = listItemHTML;
     listItem.classList.add('added-item'); // Add a class for styling
-    listItem.querySelector('.checkmark').remove(); // Remove the checkbox
+
+    // Create the remove button
+    const removeButton = document.createElement('button');
+    removeButton.innerText = 'Remove';
+    removeButton.classList.add('remove-button'); // Add a class for styling
+
+    // Add click event listener to the remove button
+    removeButton.addEventListener('click', function () {
+      listItem.remove();
+
+      const index = selections.indexOf(listItemHTML);
+      if (index > -1) {
+        selections.splice(index, 1);
+        localStorage.setItem('selectedNames', JSON.stringify(selections));
+      }
+    });
+
+    // Append the remove button to the list item
+    listItem.appendChild(removeButton);
+
     selectedNamesList.appendChild(listItem);
   });
 }
+
 
 // Update the selected names list on page load
 updateSelectedNamesList();
@@ -1214,3 +1239,6 @@ function refreshButtonClick() {
 }
 
 document.getElementById("refreshButton").addEventListener("click", refreshButtonClick);
+
+
+

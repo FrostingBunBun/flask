@@ -451,7 +451,7 @@ def leftWonProcess():
 ''')
 
     cursor.execute("INSERT INTO Matches (playerLeft, playerRight, winner, loser, timestamp, duration, shift, plane) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-               (left_name, right_name, right_name, left_name, timestamp, duration, abs(shift), jet))
+               (left_name, right_name, left_name, right_name, timestamp, duration, abs(shift), jet))
 
 
 
