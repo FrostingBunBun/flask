@@ -440,3 +440,80 @@ new Chart(radarChart, {
 });
 
 
+
+
+
+var changePwdButton = document.getElementById('changePwd');
+    var modalPwd = document.getElementById('myModalPwd');
+
+    changePwdButton.addEventListener('click', function() {
+      modalPwd.style.display = 'block';
+    });
+
+    // Close the modal when the user clicks outside the modal content
+    window.addEventListener('click', function(event) {
+      if (event.target === modalPwd) {
+        modalPwd.style.display = 'none';
+      }
+    });
+
+    // Handle form submission
+    var form = document.querySelector('.modal-contentPwd form');
+    form.addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent the form from submitting
+
+      // Get the values from the input fields
+      var currentPwd = document.getElementById('currentPwd').value;
+      var newPwd = document.getElementById('newPwd').value;
+      var confirmPwd = document.getElementById('confirmPwd').value;
+
+      // Get the current URL
+      var url = window.location.href;
+
+      // Extract the nickname from the URL using string manipulation
+      var nickname = url.substring(url.lastIndexOf('/') + 1);
+
+
+      // Send the password values to Python backend
+      fetch('/process-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          nickname: nickname,
+          currentPwd: currentPwd,
+          newPwd: newPwd,
+          confirmPwd: confirmPwd
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Process the response from the Python backend
+        console.log(data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
+
+
+
+      // if (currentPwd == newPwd){
+      //   console.log("SAME")
+      // }
+      // else{
+      //   console.log("NOT SAME")
+      // }
+
+      // Add your change password logic here
+      // Example: You can perform validation, make an API call, or update the password in your database
+
+      // Clear the input fields
+      document.getElementById('currentPwd').value = '';
+      document.getElementById('newPwd').value = '';
+      document.getElementById('confirmPwd').value = '';
+
+      // Close the modal
+      modalPwd.style.display = 'none';
+    });

@@ -1646,3 +1646,57 @@ def key():
     return render_template("key.html", password=password)
 
 
+
+
+
+@views.route('/process-password', methods=['POST'])
+def process_password():
+    data = request.get_json()
+    current_pwd = data['currentPwd']
+    new_pwd = data['newPwd']
+    confirm_pwd = data['confirmPwd']
+    nickname = data['nickname']
+
+    try:
+        # Connect to the SQLite database
+        conn = sqlite3.connect('./db/users.db')
+
+        # Create a cursor object to execute SQL queries
+        cursor = conn.cursor()
+
+        # Execute a SELECT query to check if the password exists in the database
+        cursor.execute("SELECT COUNT(*) FROM users WHERE password=?", (current_pwd,))
+        result = cursor.fetchone()
+
+        if result[0] > 0:
+            print("Password exists in the database!")
+            if current_pwd == confirm_pwd:
+                print("Password Match")
+                cursor.execute("UPDATE users SET password=? WHERE username=?", (new_pwd, nickname))
+                resultEnd = "success"
+            else:
+                print("Password NOT Match")
+                resultEnd = "password_not_match"
+        else:
+            print("Password does not exist in the database.")
+            resultEnd = "user_not_found"
+
+        # Commit the changes to the database
+        conn.commit()
+
+    except Exception as e:
+        print("An error occurred:", str(e))
+        resultEnd = "error"
+
+    finally:
+        # Close the cursor and the database connection
+        cursor.close()
+        conn.close()
+
+    print("nickname: ", nickname)
+    print("current_pwd: ", current_pwd)
+    print("new_pwd: ", new_pwd)
+    print("confirm_pwd: ", confirm_pwd)
+
+    # Return the result as a JSON response
+    return jsonify(resultEnd=resultEnd)

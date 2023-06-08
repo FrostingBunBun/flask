@@ -5,7 +5,6 @@
   <title>Private Account Stats</title>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/stats.css') }}">
 </head>
-
 <body>
   <!-- <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> -->
 
@@ -14,6 +13,29 @@
 
   <button id="home">Home</button>
   <button onclick="goBack()" id="back">Back</button>
+  {% if is_own_profile %}
+
+  <button id="changePwd">Change Password</button>
+
+
+  <!-- Modal -->
+  <div id="myModalPwd" class="modalPwd">
+    <div class="modal-contentPwd">
+      <!-- Your change password form can be placed here -->
+      <h2>Change Password</h2>
+      <form>
+        <label for="currentPwd">Current Password:</label>
+        <input type="password" id="currentPwd" name="currentPwd" required><br><br>
+        <label for="confirmPwd">Confirm Password:</label>
+        <input type="password" id="confirmPwd" name="confirmPwd" required><br><br>
+        <label for="newPwd">New Password:</label>
+        <input type="password" id="newPwd" name="newPwd" required><br><br>
+        <input type="submit" value="Change Password">
+      </form>
+    </div>
+  </div>
+
+  {% endif %}
   <div class="top-block">
 
 
