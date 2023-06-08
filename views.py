@@ -1053,6 +1053,10 @@ def profile_details_leaderboard(name):
     # print("winrate: ", winrate)
     # print("winrate TYPE: ", type(winrate)) 
 
+    print("111111111111111111111111")
+    print("HISTORY: ", history)
+    print("111111111111111111111111")
+
     return render_template('stats.html', name=name, avatar_url=avatar_url, history=history, lastMatch=lastMatch, wins=wins, losses=losses, mmr=mmr, 
                            games_per_day=games_per_day, is_own_profile=is_own_profile, is_public=is_public, streak_count=streak_count, result=result, winrate=winrate)
 
@@ -1192,8 +1196,8 @@ def get_progression_history(name):
     conn.close()
     mmr_data.append({'Current MMR': currentMmr})
     print("000000000000000000000000000000000000000")
-    print(mmr_data)
-    print(type(mmr_data))  # Print the mmr_data list for debugging
+    # print(mmr_data)
+    # print(type(mmr_data))  # Print the mmr_data list for debugging
     print("000000000000000000000000000000000000000")
 
     return mmr_data
@@ -1366,7 +1370,7 @@ def get_matches_by_player(player_name, page=1, games_per_page=9999):
     matches = cursor.fetchall()
 
     # Convert date format for each match
-    matches = [(match[0], match[1], match[2], match[3], match[4], convert_date(match[5]), match[6], match[7]) for match in matches]
+    matches = [(match[0], match[1], match[2], match[3], match[4], convert_date(match[5]), match[6], match[7], match[8]) for match in matches]
 
     cursor.close()
     conn.close()

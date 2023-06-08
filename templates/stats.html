@@ -100,6 +100,7 @@
 
 
         {% if is_public or is_own_profile %}
+
         <div class="match-history-container">
           <h2>Match History</h2>
           <div class="start">(starts from 2023-03-02)</div>
@@ -119,7 +120,7 @@
             <tbody>
               {% for match in history|reverse %}
               <tr>
-                <td class="plane-type">f-14</td>
+                <td class="plane-type">{{ match[8] }}</td>
                 <td class="result {% if match[3].split()[0] == name %}win{% else %}loss{% endif %}">
                   {% if match[3].split()[0] == name %}Won Match{% else %}Lost Match{% endif %}
                 </td>
@@ -139,6 +140,7 @@
 
           </table>
         </div>
+
         {% else %}
         <div class="private-profile">Private Profile</div>
         {% endif %}
