@@ -100,9 +100,9 @@ const facts = [
 function changeFact() {
   const jetElement = document.getElementById('jet');
   const randomIndex = Math.floor(Math.random() * facts.length);
-  jetElement.textContent = facts[randomIndex] + "(TODO)";
+  jetElement.textContent = facts[randomIndex];
 
 }
 // maybe put it somewhere on the main pages, not sure if its a good idea
-// changeFact();
-// setInterval(changeFact, 10000);
+changeFact();
+setInterval(changeFact, 10000);

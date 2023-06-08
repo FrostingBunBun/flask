@@ -520,6 +520,10 @@ var changePwdButton = document.getElementById('changePwd');
 
 
 
+
+
+
+
 // Get all pagination links
 var paginationLinks = document.querySelectorAll('.pagination a');
 
@@ -540,3 +544,26 @@ paginationLinks.forEach(function(link) {
 });
 
 
+
+
+
+
+
+function filterTable(inputId, columnClass) {
+  var input, filter, table, tr, td, i;
+  input = document.getElementById(inputId);
+  filter = input.value.toUpperCase();
+  table = document.getElementById("match-history-body");
+  tr = table.getElementsByTagName("tr");
+
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByClassName(columnClass)[0];
+    if (td) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";  // Show the row
+      } else {
+        tr[i].style.display = "none";  // Hide the row
+      }
+    }
+  }
+}

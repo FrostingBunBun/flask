@@ -604,5 +604,16 @@ body{
   background-color: #333;
   color: #fff;
 }
-
-
+.tempInfo{
+  font-size: 12px;
+  width: 120px;
+  padding: 4px;
+  text-align: center;
+  color: #727272;
+}
+input[type="text"] {
+  width: 80px; /* Adjust the width as per your preference */
+  background-color: #222;
+  color: #fff;
+  border: none;
+}

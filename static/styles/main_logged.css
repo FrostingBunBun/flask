@@ -264,3 +264,26 @@ footer {
 .footer-text {
   font-size: 14px;
 }
+
+#jet {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  background-color: rgb(34, 30, 30);
+  color: rgb(197, 197, 197);
+  font-size: 14px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fade 2s ease-in-out infinite alternate;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
