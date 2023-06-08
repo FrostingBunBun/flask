@@ -1,6 +1,7 @@
 
 function getFlag(nameCell) {
 
+    var california_republic = ["Fenix"]
     var test = ["test", "test2"]
     var osea_from_ace_combat = []
     var india = [];
@@ -54,7 +55,7 @@ function getFlag(nameCell) {
   
   
   
-  
+    var california_republic_png = 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Flag_of_California.svg/1920px-Flag_of_California.svg.png'
     var flagScikidsPartial = "https://www.sciencekids.co.nz/images/pictures/flags96/";
     var osea_link_png = "https://upload.wikimedia.org/wikipedia/commons/8/80/High_resolution_Osean_national_flag.png"
     var flagPartialEnding = ".jpg";
@@ -132,6 +133,9 @@ function getFlag(nameCell) {
     }
     else if(someZealand.includes(nameCell)){
       return someZealand_png
+    }
+    else if(california_republic.includes(nameCell)){
+      return california_republic_png
     }
     else if(air_canada.includes(nameCell)){
       return air_canada_png

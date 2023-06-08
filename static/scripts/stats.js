@@ -7,7 +7,7 @@ homeBtn.addEventListener("click", function() {
 var backBtn = document.getElementById("back");
 backBtn.addEventListener("click", function() {
     // Redirect to the login page or perform necessary actions
-    window.history.back();
+    window.location.href = "/leaderboards";
 });
 
 
@@ -267,52 +267,40 @@ fetch('/planes_data/' + userProfileName)  // Include the name as a URL parameter
       .then(data => {
         // Process the MMR data
         const startingMMR = 600; // Set the starting MMR to 600
-        const mmrChanges = data.map(entry => ({
-          date: entry.date,
-          change: entry.mmr_change,
-
-        }));
-  
+        const mmrChanges = [];
         let currentMMR = startingMMR;
-        const mmrProgression = mmrChanges.map(entry => {
-          currentMMR += entry.change;
-          return [new Date(entry.date).getTime(), currentMMR];
+  
+        data.forEach(entry => {
+          const mmrChange = entry.mmr_change;
+          if (mmrChange !== undefined) {
+            currentMMR += mmrChange;
+            mmrChanges.push({
+              date: entry.date,
+              change: currentMMR,
+            });
+          }
         });
+  
+        const mmrProgression = mmrChanges.map(entry => [
+          new Date(entry.date).getTime(),
+          entry.change,
+        ]);
   
         // Calculate the true end MMR value
         const lastEntry = data[data.length - 1];
-        // const trueEndMMR = 827; // Your true end value
-        trueEndMMR = lastEntry['Current MMR']
-
+        const trueEndMMR = lastEntry['Current MMR'];
   
-        // Perform linear interpolation to adjust the MMR progression
-        const adjustedMMRProgression = [];
-        for (let i = 0; i < mmrProgression.length - 1; i++) {
-          const [date1, mmr1] = mmrProgression[i];
-          const [date2, mmr2] = mmrProgression[i + 1];
+        // console.log('Last Entry:', lastEntry);
+        // console.log('MMR Changes:', mmrChanges);
+        // console.log('MMR Progression:', mmrProgression);
   
-          const timeDiff = date2 - date1;
-          const mmrDiff = mmr2 - mmr1;
-          const mmrChangePerTime = mmrDiff / timeDiff;
-  
-          let currentDate = date1;
-          let currentMMR = mmr1;
-  
-          while (currentDate < date2) {
-            currentDate += 86400000; // Increment by 1 day (in milliseconds)
-            currentMMR += mmrChangePerTime * 86400000; // Increment the MMR based on the daily rate of change
-  
-            // Check if the adjusted MMR exceeds the trueEndMMR
-            if (currentMMR > trueEndMMR) {
-              currentMMR = trueEndMMR; // Set the MMR to trueEndMMR if it exceeds
-            }
-  
-            adjustedMMRProgression.push([currentDate, currentMMR]);
-          }
-        }
-  
-        // Add the last known MMR value
-        adjustedMMRProgression.push([mmrProgression[mmrProgression.length - 1][0], trueEndMMR]);
+        // Adjust the last entry in mmrProgression to ensure it reaches the desired end MMR
+        const lastProgressionEntry = mmrProgression[mmrProgression.length - 1];
+        const lastDate = lastProgressionEntry[0];
+        const newEndDate = lastDate + 24 * 60 * 60 * 1000; // Adding one day (in milliseconds)
+        const endDateMMR = trueEndMMR;
+        mmrProgression.push([newEndDate, lastProgressionEntry[1]]);
+        mmrProgression.push([newEndDate, endDateMMR]);
   
         // Create the chart with the adjusted MMR progression
         Highcharts.chart('chart-container2', {
@@ -353,12 +341,12 @@ fetch('/planes_data/' + userProfileName)  // Include the name as a URL parameter
                 color: '#FFFFFF',
               },
             },
-            min: 0, // Set the minimum value of the y-axis
-            max: 1000, // Set the maximum value of the y-axis
+            min: 200, // Set the minimum value of the y-axis
+            max: 1200, // Set the maximum value of the y-axis
           },
           series: [{
             name: 'MMR Progression',
-            data: adjustedMMRProgression,
+            data: mmrProgression,
             color: '#FF6B8A',
             lineWidth: 2,
             connectNulls: true, // Connect the points even if there are gaps in the data
@@ -377,7 +365,7 @@ fetch('/planes_data/' + userProfileName)  // Include the name as a URL parameter
 
 
 
-// ------------------------------------------------------------------------
+
 
 
 
@@ -451,19 +439,25 @@ new Chart(radarChart, {
 var changePwdButton = document.getElementById('changePwd');
     var modalPwd = document.getElementById('myModalPwd');
 
-    changePwdButton.addEventListener('click', function() {
-      modalPwd.style.display = 'block';
+    document.addEventListener('click', function(event) {
+      if (event.target.matches('.change-pwd-button')) {
+        modalPwd.style.display = 'block';
+      }
     });
-
+    
+    
     // Close the modal when the user clicks outside the modal content
     window.addEventListener('click', function(event) {
       if (event.target === modalPwd) {
         modalPwd.style.display = 'none';
       }
     });
+   
 
+  
     // Handle form submission
     var form = document.querySelector('.modal-contentPwd form');
+    // if (form) {
     form.addEventListener('submit', function(event) {
       event.preventDefault(); // Prevent the form from submitting
 
@@ -522,6 +516,7 @@ var changePwdButton = document.getElementById('changePwd');
       // Close the modal
       modalPwd.style.display = 'none';
     });
+  // }
 
 
 
@@ -543,3 +538,5 @@ paginationLinks.forEach(function(link) {
     xhr.send();
   });
 });
+
+

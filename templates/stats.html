@@ -12,7 +12,7 @@
   <script src="https://code.highcharts.com/highcharts-more.js"></script>
 
   <button id="home">Home</button>
-  <button onclick="goBack()" id="back">Back</button>
+  <button onclick="goBack()" id="back">Board</button>
   {% if is_own_profile %}
 
   <button id="changePwd">Change Password</button>
@@ -115,9 +115,8 @@
                 <th>Date</th>
               </tr>
             </thead>
-
-
-            <tbody>
+        
+            <tbody id="match-history-body">
               {% set start_index = (page - 1) * items_per_page %}
               {% set end_index = start_index + items_per_page %}
               {% for match in history[::-1][start_index:end_index] %}
@@ -127,8 +126,7 @@
                   {% if match[3].split()[0] == name %}Won Match{% else %}Lost Match{% endif %}
                 </td>
                 <td>
-                  <a class="enemy" href="/stats/{{ match[2] if match[1] == name else match[1] }}">{{ match[2] if
-                    match[1] == name else match[1] }}</a>
+                  <a class="enemy" href="/stats/{{ match[2] if match[1] == name else match[1] }}">{{ match[2] if match[1] == name else match[1] }}</a>
                 </td>
                 <td class="duration">{{ match[6] // 60 }}:{{ "%02d" % (match[6] % 60) }}</td>
                 <td class="mmr-shift {% if match[3].split()[0] == name %}positive{% else %}negative{% endif %}">
@@ -137,21 +135,20 @@
                 <td class="date">{{ match[5] }}</td>
               </tr>
               {% endfor %}
-          </tbody>
-
-
-            
-
-
+            </tbody>
           </table>
+        
           <!-- Generate pagination links -->
           <div class="pagination">
             {% for p in range(1, total_pages+1) %}
-              <a href="{{ url_for('views.profile_details_leaderboard', name=name, page=p) }}" class="pagination-button{% if p == page %} active{% endif %}">{{ p }}</a>
+            <a href="{{ url_for('views.profile_details_leaderboard', name=name, page=p) }}"
+              class="pagination-button{% if p == page %} active{% endif %}">{{ p }}</a>
             {% endfor %}
           </div>
-          
+        
         </div>
+        
+        
 
         {% else %}
         <div class="private-profile">Private Profile</div>
