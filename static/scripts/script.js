@@ -272,23 +272,35 @@ function getMMRAndWinrate() {
 }
 
 function filterNames() {
-  var input = document.getElementById("searchInput");
-  var filter = input.value.toLowerCase();
-  var ul = document.querySelector("#nameList");
-  var li = ul.getElementsByTagName("li");
+  var inputs = document.getElementsByClassName("searchBar"); // Updated to select all search input elements with the class "searchBar"
 
-  for (var i = 0; i < li.length; i++) {
-    var name = li[i].textContent || li[i].innerText;
-    var transformedName = transformString(name);
-    var transformedFilter = transformString(filter);
+  for (var j = 0; j < inputs.length; j++) {
+    var input = inputs[j];
+    var filter = input.value.toLowerCase();
+    var ul = input.closest(".list").querySelector("ul"); // Updated to select the closest "ul" element within the parent "list" container
+    var li = ul.getElementsByTagName("li");
 
-    // Check if the original name or transformed name contains the filter
-    if (name.includes(filter) || transformedName.includes(transformedFilter)) {
-      li[i].style.display = "";
-    } else {
-      li[i].style.display = "none";
+    for (var i = 0; i < li.length; i++) {
+      var name = li[i].textContent || li[i].innerText;
+      var transformedName = transformString(name);
+      var transformedFilter = transformString(filter);
+
+      // Check if the original name or transformed name contains the filter
+      if (
+        name.includes(filter) ||
+        transformedName.includes(transformedFilter)
+      ) {
+        li[i].style.display = "";
+      } else {
+        li[i].style.display = "none";
+      }
     }
   }
+}
+
+var searchInputs = document.getElementsByClassName("searchBar");
+for (var i = 0; i < searchInputs.length; i++) {
+  searchInputs[i].addEventListener("input", filterNames);
 }
 
 function transformString(str) {
@@ -517,13 +529,31 @@ function handleSelectionChange() {
 
   xhr.send(JSON.stringify({ selectedName: selectedName }));
   console.log(selectedName); // Log the selected name
+
+  // Save the selected option value to localStorage
+  localStorage.setItem("selectedOption", selectElement.value);
 }
 
 // Add event listener for selection change
 selectElement.addEventListener("change", handleSelectionChange);
 
-// Trigger selection change on page load
-handleSelectionChange();
+// Set the selected option as the default on page load
+window.addEventListener("load", function () {
+  // Retrieve the selected option value from localStorage
+  var selectedOptionValue = localStorage.getItem("selectedOption");
+
+  if (selectedOptionValue) {
+    // Find the option with the retrieved value and set it as selected
+    for (var i = 0; i < selectElement.options.length; i++) {
+      if (selectElement.options[i].value === selectedOptionValue) {
+        selectElement.selectedIndex = i;
+        break;
+      }
+    }
+  }
+
+  handleSelectionChange(); // Trigger selection change
+});
 
 function openWindow() {
   // JavaScript function to open a new window or pop-up
@@ -657,6 +687,8 @@ checkboxes.forEach(function (checkbox) {
 
   checkbox.addEventListener("change", function () {
     if (this.checked) {
+      // console.log(listItemHTML)
+
       selections.push(listItemHTML);
     } else {
       const index = selections.indexOf(listItemHTML);
@@ -669,6 +701,15 @@ checkboxes.forEach(function (checkbox) {
     localStorage.setItem("selectedNames", JSON.stringify(selections));
 
     updateSelectedNamesList();
+
+    var selectedNamesList = document.querySelector("#selectedNamesList");
+    console.log("selectedNamesList: ", selectedNamesList);
+    var checkmark = selectedNamesList.getElementsByClassName("checkmark")[0];
+    console.log("checkmark: ", checkmark);
+
+    if (checkmark) {
+      checkmark.remove();
+    }
   });
 });
 
@@ -679,7 +720,26 @@ function updateSelectedNamesList() {
     const listItem = document.createElement("li");
     listItem.innerHTML = listItemHTML;
     listItem.classList.add("added-item", "matchmaking-list-item"); // Add a class for styling
-    listItem.querySelector(".checkmark").remove(); // Remove the checkbox
+
+    // Create the remove button
+    const removeButton = document.createElement("button");
+    removeButton.innerHTML = '<img src="/static/icons/remove.svg">';
+    removeButton.classList.add("remove-button"); // Add a class for styling
+
+    // Add click event listener to the remove button
+    removeButton.addEventListener("click", function () {
+      listItem.remove();
+
+      const index = selections.indexOf(listItemHTML);
+      if (index > -1) {
+        selections.splice(index, 1);
+        localStorage.setItem("selectedNames", JSON.stringify(selections));
+      }
+    });
+
+    // Append the remove button to the list item
+    listItem.appendChild(removeButton);
+
     selectedNamesList.appendChild(listItem);
   });
 }
@@ -978,3 +1038,26 @@ function shuffleArray(array) {
   }
   return newArray;
 }
+
+function refreshButtonClick() {
+  console.log("refresh clicked");
+
+  setTimeout(() => {
+    fetch("/dbSync", {
+      method: "POST",
+    })
+      .then((response) => response.text())
+      .then((result) => {
+        console.log(result);
+        // Reload
+        location.reload();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, 500);
+}
+
+document
+  .getElementById("refreshButton")
+  .addEventListener("click", refreshButtonClick);

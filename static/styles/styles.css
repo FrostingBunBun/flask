@@ -822,3 +822,15 @@ li:hover {
   gap: 10px;
   margin-top: 10px;
 }
+
+.remove-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.matchmaking-list-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}

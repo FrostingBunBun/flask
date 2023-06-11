@@ -12,6 +12,7 @@ from datetime import date, datetime, timedelta
 from flask import jsonify, request
 import difflib
 from collections import defaultdict
+import math
 
 
 import numpy as np
@@ -260,76 +261,35 @@ def matchmaking():
 
 
 
-    values = wks_mmr.get_values()
-
-    player_names = [row[3] for row in values[3:] if row[3]]
-    mmr_values = [row[2] for row in values[3:] if row[2]]
-    total_matches_values = [row[9] for row in values[3:] if row[9]]
-    wins_values = [row[5] for row in values[3:] if row[5]]
-    losses_values = [row[6] for row in values[3:] if row[6]]
-
-    print("++++++++++++++++++++++++++++")
-    # print("Player Names: ", player_names)
 
 
-    # print("MMR Values: ", mmr_values)
-
-    # print("Total Matches: ", total_matches_values)
-
-    # print("Wins: ", wins_values)
-
-
-    # print("Losses: ", losses_values)
-
-
-    # print("++++++++++++++++++++++++++++")
-    # Loop through the data
-    for i in range(len(player_names)):
-        player_name = player_names[i]
-        mmr_str = mmr_values[i]
-        total_matches_str = total_matches_values[i]
-        wins_str = wins_values[i]
-        losses_str = losses_values[i]
-
-        # Check for empty cells
-        if player_name and mmr_str and total_matches_str and wins_str and losses_str:
-            mmr = int(mmr_str)
-            total_matches = int(total_matches_str)
-            wins = int(wins_str)
-            losses = int(losses_str)
-
-            # Check if the player already exists in the database
-            cursor.execute('SELECT * FROM Players WHERE player_name = ?', (player_name,))
-            existing_player = cursor.fetchone()
-
-            if existing_player:
-                # Player exists, update their information
-                cursor.execute('''
-                    UPDATE Players
-                    SET mmr = ?, total_matches = ?, wins = ?, losses = ?
-                    WHERE player_name = ?
-                ''', (mmr, total_matches, wins, losses, player_name))
-            else:
-                # Player doesn't exist, insert a new row
-                cursor.execute('''
-                    INSERT INTO Players (player_name, mmr, total_matches, wins, losses)
-                    VALUES (?, ?, ?, ?, ?)
-                ''', (player_name, mmr, total_matches, wins, losses))
+    cursor.execute('SELECT player_name FROM Players ORDER BY mmr DESC')
+    player_names = [row[0] for row in cursor.fetchall()]
+    cursor.execute('SELECT mmr FROM Players ORDER BY mmr DESC')
+    mmr_values = [row[0] for row in cursor.fetchall()]
+    cursor.execute('SELECT total_matches FROM Players ORDER BY mmr DESC')
+    total_matches_values = [row[0] for row in cursor.fetchall()]
+    cursor.execute('SELECT wins FROM Players ORDER BY mmr DESC')
+    wins_values = [row[0] for row in cursor.fetchall()]
+    cursor.execute('SELECT losses FROM Players ORDER BY mmr DESC')
+    losses_values = [row[0] for row in cursor.fetchall()]
+    
 
     # Commit the changes and close the connection
     conn.commit()
     conn.close()
-    # ===================================================
+
+
     
-    data_range = wks_mmr.batch_get(["D4:D", "C4:C", "F4:G"])
 
-    playersNames = data_range[0]
-    flat_names = [item for sublist in playersNames for item in sublist]
+    flat_names = player_names
+    flat_mmrs = mmr_values
+    
+    playersWinLose = []
+    for x in range(len(wins_values)):
+        playersWinLose.append([str(wins_values[x]), str(losses_values[x])])
 
-    playersMmr = data_range[1]
-    flat_mmrs = [item for sublist in playersMmr for item in sublist]
 
-    playersWinLose = data_range[2]
 
     winrate_list = []
     for player in playersWinLose:
@@ -348,11 +308,14 @@ def matchmaking():
     username = ''
     if 'username' in session:
         username = session['username']
+
+    
     
     print("==========================")
     print(session.items())
     print("==========================")
-    return render_template("matchmaking.html", my_dict=nameMmr_dict, username=username)
+    my_dict2 = nameMmr_dict
+    return render_template("matchmaking.html", my_dict=nameMmr_dict, my_dict2=my_dict2, username=username)
 
 
 
@@ -489,7 +452,7 @@ def leftWonProcess():
 ''')
 
     cursor.execute("INSERT INTO Matches (playerLeft, playerRight, winner, loser, timestamp, duration, shift, plane) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-               (left_name, right_name, right_name, left_name, timestamp, duration, abs(shift), jet))
+               (left_name, right_name, left_name, right_name, timestamp, duration, abs(shift), jet))
 
 
 
@@ -1079,7 +1042,6 @@ def profile_details_leaderboard(name):
 
 
     # ------------------------------------------------------------------
-
     player_name = name
 
     streak_count, result = get_streak(player_name)
@@ -1088,8 +1050,31 @@ def profile_details_leaderboard(name):
     else:
         print(f"No streak found for {player_name}")
 
-    return render_template('stats.html', name=name, avatar_url=avatar_url, history=history, lastMatch=lastMatch, wins=wins, losses=losses, mmr=mmr, 
-                           games_per_day=games_per_day, is_own_profile=is_own_profile, is_public=is_public, streak_count=streak_count, result=result)
+    if wins + losses == 0:
+        winrate = 0  # Set winrate to 0 if there are no wins and losses
+    else:
+        winrate = round(wins / (wins + losses) * 100, 2)
+    # print("winrate: ", winrate)
+    # print("winrate TYPE: ", type(winrate)) 
+
+    # print("111111111111111111111111")
+    # print("HISTORY: ", history)
+    # print("111111111111111111111111")
+
+
+    page = request.args.get('page', default=1, type=int)
+    items_per_page = 10  # Number of items to display per page
+
+    total_items = len(history)  # Total number of items in your dataset
+    total_pages = math.ceil(total_items / items_per_page)
+
+    # print("PAGE: ", page)
+    # print("total_items: ", total_items)
+    # print("total_pages: ", total_pages)
+
+    return render_template('stats.html', name=name, avatar_url=avatar_url, history=history, lastMatch=lastMatch, wins=wins, losses=losses, mmr=mmr, page=page, total_pages=total_pages, 
+                           items_per_page=items_per_page, games_per_day=games_per_day, is_own_profile=is_own_profile, is_public=is_public, streak_count=streak_count, result=result, 
+                           winrate=winrate)
 
 
 
@@ -1227,8 +1212,8 @@ def get_progression_history(name):
     conn.close()
     mmr_data.append({'Current MMR': currentMmr})
     print("000000000000000000000000000000000000000")
-    print(mmr_data)
-    print(type(mmr_data))  # Print the mmr_data list for debugging
+    # print(mmr_data)
+    # print(type(mmr_data))  # Print the mmr_data list for debugging
     print("000000000000000000000000000000000000000")
 
     return mmr_data
@@ -1271,7 +1256,7 @@ def get_planes_value(name):
     game_counts = []
 
     # Iterate over the results and append the game counts to the list in the same order as the planes
-    planes = ["F-14", "F-18", "Viggen", "Mig-29", "Eurofighter"]  # Specify the order of planes
+    planes = ["F-14", "F-18", "Viggen", "Mig-29", "Eurofighter", "JAS_Gripen"]  # Specify the order of planes
     for plane in planes:
         count = next((result[1] for result in results if result[0] == plane), 0)
         game_counts.append(count)
@@ -1401,7 +1386,7 @@ def get_matches_by_player(player_name, page=1, games_per_page=9999):
     matches = cursor.fetchall()
 
     # Convert date format for each match
-    matches = [(match[0], match[1], match[2], match[3], match[4], convert_date(match[5]), match[6], match[7]) for match in matches]
+    matches = [(match[0], match[1], match[2], match[3], match[4], convert_date(match[5]), match[6], match[7], match[8]) for match in matches]
 
     cursor.close()
     conn.close()
@@ -1449,13 +1434,91 @@ def setDefaultMmr():
 @login_required
 @mod_required
 def processing():
+
     return render_template("processing.html")
 
 @views.route("/matchmaking/match/processing/calculate")
 @login_required
 @mod_required
 def calculate():
+
+
     return render_template("calculate.html")
+
+@views.route("/dbSync", methods=['POST'])
+@login_required
+@mod_required
+def dbSync():
+
+
+    print("calculate start")
+    print("calculate start")
+    print("calculate start")
+    print("calculate start")
+
+    # Connect to the database
+    conn = sqlite3.connect('./db/players_data.db')
+    cursor = conn.cursor()
+    # clone db stuff--------------------------------------------------------
+    values = wks_mmr.get_all_values()
+
+    player_names = [row[3] for row in values[3:] if row[3]]
+    mmr_values = [row[2] for row in values[3:] if row[2]]
+    total_matches_values = [row[9] for row in values[3:] if row[9]]
+    wins_values = [row[5] for row in values[3:] if row[5]]
+    losses_values = [row[6] for row in values[3:] if row[6]]
+    print("++++++++++++++++++++++++++++")
+    print("Player Names: ", player_names)
+    print("MMR Values: ", mmr_values)
+    print("Total Matches: ", total_matches_values)
+    print("Wins: ", wins_values)
+    print("Losses: ", losses_values)
+    print("++++++++++++++++++++++++++++")
+    # Loop through the data
+    
+    for i in range(len(player_names)):
+        player_name = player_names[i]
+        mmr_str = mmr_values[i]
+        total_matches_str = total_matches_values[i]
+        wins_str = wins_values[i]
+        losses_str = losses_values[i]
+
+        # Check for empty cells
+        if player_name and mmr_str and total_matches_str and wins_str and losses_str:
+            mmr = int(mmr_str)
+            total_matches = int(total_matches_str)
+            wins = int(wins_str)
+            losses = int(losses_str)
+
+            # Check if the player already exists in the database
+            cursor.execute('SELECT * FROM Players WHERE player_name = ?', (player_name,))
+            existing_player = cursor.fetchone()
+
+            if existing_player:
+                # Player exists, update their information
+                cursor.execute('''
+                    UPDATE Players
+                    SET mmr = ?, total_matches = ?, wins = ?, losses = ?
+                    WHERE player_name = ?
+                ''', (mmr, total_matches, wins, losses, player_name))
+            else:
+                # Player doesn't exist, insert a new row
+                cursor.execute('''
+                    INSERT INTO Players (player_name, mmr, total_matches, wins, losses)
+                    VALUES (?, ?, ?, ?, ?)
+                ''', (player_name, mmr, total_matches, wins, losses))
+
+    # Commit the changes and close the connection
+    conn.commit()
+    conn.close()
+    # clone db stuff--------------------------------------------------------
+
+    print("calculate end")
+    print("calculate end")
+    print("calculate end")
+    print("calculate end")
+
+    return "Sync complete"
 
 
 @views.route("/")
@@ -1603,14 +1666,57 @@ def key():
     return render_template("key.html", password=password)
 
 
-@views.route('/sendJet', methods=['POST'])
-def receive_data():
+
+
+
+@views.route('/process-password', methods=['POST'])
+def process_password():
     data = request.get_json()
-    selected_name = data.get('selectedName')
-    
-    print("Selected Name:", selected_name)  # Print the selected name in Python
-    
-    session['jet'] = selected_name
-    print("Session Items:", session.items())  # Print the session items
-    
-    return jsonify(session=session)
+    current_pwd = data['currentPwd']
+    new_pwd = data['newPwd']
+    confirm_pwd = data['confirmPwd']
+    nickname = data['nickname']
+
+    try:
+        # Connect to the SQLite database
+        conn = sqlite3.connect('./db/users.db')
+
+        # Create a cursor object to execute SQL queries
+        cursor = conn.cursor()
+
+        # Execute a SELECT query to check if the password exists in the database
+        cursor.execute("SELECT COUNT(*) FROM users WHERE password=?", (current_pwd,))
+        result = cursor.fetchone()
+
+        if result[0] > 0:
+            print("Password exists in the database!")
+            if current_pwd == confirm_pwd:
+                print("Password Match")
+                cursor.execute("UPDATE users SET password=? WHERE username=?", (new_pwd, nickname))
+                resultEnd = "success"
+            else:
+                print("Password NOT Match")
+                resultEnd = "password_not_match"
+        else:
+            print("Password does not exist in the database.")
+            resultEnd = "user_not_found"
+
+        # Commit the changes to the database
+        conn.commit()
+
+    except Exception as e:
+        print("An error occurred:", str(e))
+        resultEnd = "error"
+
+    finally:
+        # Close the cursor and the database connection
+        cursor.close()
+        conn.close()
+
+    print("nickname: ", nickname)
+    print("current_pwd: ", current_pwd)
+    print("new_pwd: ", new_pwd)
+    print("confirm_pwd: ", confirm_pwd)
+
+    # Return the result as a JSON response
+    return jsonify(resultEnd=resultEnd)

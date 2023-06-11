@@ -5,7 +5,6 @@
   <title>Private Account Stats</title>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/stats.css') }}">
 </head>
-
 <body>
   <!-- <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> -->
 
@@ -13,18 +12,43 @@
   <script src="https://code.highcharts.com/highcharts-more.js"></script>
 
   <button id="home">Home</button>
-  <button onclick="goBack()" id="back">Back</button>
+  <button onclick="goBack()" id="back">Board</button>
+  {% if is_own_profile %}
+
+  <button id="changePwd">Change Password</button>
+
+
+  <!-- Modal -->
+  <div id="myModalPwd" class="modalPwd">
+    <div class="modal-contentPwd">
+      <!-- Your change password form can be placed here -->
+      <h2>Change Password</h2>
+      <form>
+        <label for="currentPwd">Current Password:</label>
+        <input type="password" id="currentPwd" name="currentPwd" required><br><br>
+        <label for="confirmPwd">Confirm Password:</label>
+        <input type="password" id="confirmPwd" name="confirmPwd" required><br><br>
+        <label for="newPwd">New Password:</label>
+        <input type="password" id="newPwd" name="newPwd" required><br><br>
+        <input type="submit" value="Change Password">
+      </form>
+    </div>
+  </div>
+
+  {% endif %}
   <div class="top-block">
 
 
 
 
     <div class="mainInfo">
+      
 
       <div class="profile-picture"><img src={{ avatar_url }} alt="Avatar"></div>
       <h2 class="nickname">{{ name }}</h2>
 
     </div>
+    
 
 
 
@@ -43,11 +67,12 @@
 
 
     <div class="profile-info">
+      <div class="tempInfo">(Win/Loss data may vary slightly due to merging old match history with the new one, this will be fixed in the new season))</div>
       <p>Last Match: <span class="last-match-value">{{ lastMatch[5].split(' ')[0] }}</span></p>
       <p>Wins: <span class="wins-value">{{wins}}</span></p>
       <p>Losses: <span class="losses-value">{{losses}}</span></p>
       <p>Mmr: <span class="mmr-value">{{mmr}}</span></p>
-      <p>Win Rate: <span class="win-rate-value">77%</span></p>
+      <p>Win Rate: <span class="win-rate-value">{{winrate}}%</span></p>
 
       {% if result == 'win' %}
       <p>Current Win Streak: <span class="streak_value win_streak">{{ streak_count }}</span></p>
@@ -78,32 +103,33 @@
 
 
         {% if is_public or is_own_profile %}
+
         <div class="match-history-container">
           <h2>Match History</h2>
           <div class="start">(starts from 2023-03-02)</div>
           <table>
             <thead>
               <tr>
-                <th>Plane</th>
-                <th>Result</th>
-                <th>Enemy</th>
-                <th>Duration</th>
-                <th>MMR Shift</th>
-                <th>Date</th>
+                <th>Plane<input type="text" id="filter-plane" onkeyup="filterTable('filter-plane', 'plane-type')"></th>
+                <th>Result<input type="text" id="filter-result" onkeyup="filterTable('filter-result', 'result')"></th>
+                <th>Enemy<input type="text" id="filter-enemy" onkeyup="filterTable('filter-enemy', 'enemy')"></th>
+                <th>Duration<input type="text" id="filter-duration" onkeyup="filterTable('filter-duration', 'duration')"></th>
+                <th>MMR Shift<input type="text" id="filter-mmr-shift" onkeyup="filterTable('filter-mmr-shift', 'mmr-shift')"></th>
+                <th>Date<input type="text" id="filter-date" onkeyup="filterTable('filter-date', 'date')"></th>
               </tr>
             </thead>
-
-
-            <tbody>
-              {% for match in history|reverse %}
+        
+            <tbody id="match-history-body">
+              {% set start_index = (page - 1) * items_per_page %}
+              {% set end_index = start_index + items_per_page %}
+              {% for match in history[::-1][start_index:end_index] %}
               <tr>
-                <td class="plane-type">f-14</td>
+                <td class="plane-type">{{ match[8] }}</td>
                 <td class="result {% if match[3].split()[0] == name %}win{% else %}loss{% endif %}">
                   {% if match[3].split()[0] == name %}Won Match{% else %}Lost Match{% endif %}
                 </td>
                 <td>
-                  <a class="enemy" href="/stats/{{ match[2] if match[1] == name else match[1] }}">{{ match[2] if
-                    match[1] == name else match[1] }}</a>
+                  <a class="enemy" href="/stats/{{ match[2] if match[1] == name else match[1] }}">{{ match[2] if match[1] == name else match[1] }}</a>
                 </td>
                 <td class="duration">{{ match[6] // 60 }}:{{ "%02d" % (match[6] % 60) }}</td>
                 <td class="mmr-shift {% if match[3].split()[0] == name %}positive{% else %}negative{% endif %}">
@@ -113,10 +139,20 @@
               </tr>
               {% endfor %}
             </tbody>
-
-
           </table>
+        
+          <!-- Generate pagination links -->
+          <div class="pagination">
+            {% for p in range(1, total_pages+1) %}
+            <a href="{{ url_for('views.profile_details_leaderboard', name=name, page=p) }}"
+              class="pagination-button{% if p == page %} active{% endif %}">{{ p }}</a>
+            {% endfor %}
+          </div>
+        
         </div>
+        
+        
+
         {% else %}
         <div class="private-profile">Private Profile</div>
         {% endif %}
