@@ -823,18 +823,35 @@ checkboxes.forEach(function (checkbox) {
 
   checkbox.addEventListener('change', function () {
     if (this.checked) {
+      // console.log(listItemHTML)
+      
+
+
       selections.push(listItemHTML);
     } else {
       const index = selections.indexOf(listItemHTML);
       if (index > -1) {
         selections.splice(index, 1);
       }
+      
     }
+
+
 
     // Store updated selections in local storage
     localStorage.setItem('selectedNames', JSON.stringify(selections));
 
     updateSelectedNamesList();
+
+
+    var selectedNamesList = document.querySelector("#selectedNamesList");
+      console.log("selectedNamesList: ", selectedNamesList)
+      var checkmark = selectedNamesList.getElementsByClassName("checkmark")[0];
+      console.log("checkmark: ", checkmark)
+
+      if (checkmark) {
+        checkmark.remove();
+      }
   });
 });
 
