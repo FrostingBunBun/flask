@@ -12,12 +12,6 @@ window.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-window.addEventListener("DOMContentLoaded", function () {
-  var statsButton = document.getElementById("register");
-  statsButton.addEventListener("click", function () {
-    window.location.href = "register";
-  });
-});
 
 // var leaderBoardsBtn = document.getElementById("leaderboards");
 // leaderBoardsBtn.addEventListener("click", function() {

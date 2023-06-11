@@ -372,12 +372,15 @@ document.addEventListener("DOMContentLoaded", function () {
     var rightNameElement = rightField.querySelector("p");
     var rightName = rightNameElement ? rightNameElement.textContent.trim() : "";
 
-    // console.log("SENT: ", leftName)
-    // console.log("SENT: ", rightName)
+    console.log("SENT: ", leftName)
+    console.log("SENT: ", rightName)
+
+    var fixLeftName = leftName.substring(0, leftName.indexOf("\n")).trim();
+    var fixRightName = rightName.substring(0, rightName.indexOf("\n")).trim();
 
     let userInfo = {
-      "1name": leftName,
-      "2name": rightName,
+      "1name": fixLeftName,
+      "2name": fixRightName,
     };
     const request = new XMLHttpRequest();
     request.open("POST", `/processUserInfo/${JSON.stringify(userInfo)}`);
@@ -399,7 +402,9 @@ document.addEventListener("DOMContentLoaded", function () {
       rightField.textContent.trim() !== "" &&
       rightField.textContent.trim() !== "Player Right"
     ) {
+      
       sendUserInfo();
+      console.log("SENT")
       window.location.href = "/matchmaking/match/processing";
     }
   });
