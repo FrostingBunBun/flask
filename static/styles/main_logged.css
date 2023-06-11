@@ -193,6 +193,7 @@ body {
   min-width: 400px;
   height: fit-content;
   flex-wrap: wrap;
+  position: relative;
 
   background: radial-gradient(
         80.01% 60.18% at 89.51% 83.9%,
