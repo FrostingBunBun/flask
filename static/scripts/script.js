@@ -273,7 +273,6 @@ function getMMRAndWinrate() {
 
 function filterNames() {
   var inputs = document.getElementsByClassName("searchBar"); // Updated to select all search input elements with the class "searchBar"
-
   for (var j = 0; j < inputs.length; j++) {
     var input = inputs[j];
     var filter = input.value.toLowerCase();
@@ -286,10 +285,7 @@ function filterNames() {
       var transformedFilter = transformString(filter);
 
       // Check if the original name or transformed name contains the filter
-      if (
-        name.includes(filter) ||
-        transformedName.includes(transformedFilter)
-      ) {
+      if (name.includes(filter) || transformedName.includes(transformedFilter)) {
         li[i].style.display = "";
       } else {
         li[i].style.display = "none";
@@ -372,12 +368,15 @@ document.addEventListener("DOMContentLoaded", function () {
     var rightNameElement = rightField.querySelector("p");
     var rightName = rightNameElement ? rightNameElement.textContent.trim() : "";
 
-    // console.log("SENT: ", leftName)
-    // console.log("SENT: ", rightName)
+    console.log("SENT: ", leftName);
+    console.log("SENT: ", rightName);
+
+    var fixLeftName = leftName.substring(0, leftName.indexOf("\n")).trim();
+    var fixRightName = rightName.substring(0, rightName.indexOf("\n")).trim();
 
     let userInfo = {
-      "1name": leftName,
-      "2name": rightName,
+      "1name": fixLeftName,
+      "2name": fixRightName,
     };
     const request = new XMLHttpRequest();
     request.open("POST", `/processUserInfo/${JSON.stringify(userInfo)}`);
@@ -400,6 +399,7 @@ document.addEventListener("DOMContentLoaded", function () {
       rightField.textContent.trim() !== "Player Right"
     ) {
       sendUserInfo();
+      console.log("SENT");
       window.location.href = "/matchmaking/match/processing";
     }
   });
@@ -703,13 +703,16 @@ checkboxes.forEach(function (checkbox) {
     updateSelectedNamesList();
 
     var selectedNamesList = document.querySelector("#selectedNamesList");
-    console.log("selectedNamesList: ", selectedNamesList);
-    var checkmark = selectedNamesList.getElementsByClassName("checkmark")[0];
-    console.log("checkmark: ", checkmark);
+console.log("selectedNamesList: ", selectedNamesList);
+var checkmarks = selectedNamesList.querySelectorAll(".checkmark");
 
-    if (checkmark) {
-      checkmark.remove();
-    }
+for (var i = 0; i < checkmarks.length; i++) {
+  var checkmark = checkmarks[i];
+  console.log("checkmark: ", checkmark);
+  checkmark.remove();
+}
+
+
   });
 });
 

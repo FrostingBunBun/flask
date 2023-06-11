@@ -178,27 +178,25 @@
         <div class="page-card" id="list">
           <h3>Participants</h3>
           <button onclick="openModal2()" class="matchmaking-btn-add">+</button>
-          <div class="matchmaking-input-search">
-            <input
-              class="auth-input"
-              placeholder="Search by name"
-              type="text"
-              autocomplete="off"
-              id="searchInput"
-            />
-          </div>
-          <div class="matchmaking-list-items" id="nameList">
-            {% for name, value in my_dict.items() %}
-            <li
-              class="matchmaking-list-item"
-              draggable="true"
-              ondragstart="drag(event)"
-            >
-              {{ name }}
-              <span id="flag_{{ name }}">({{ value[0] }})</span>
-              <span id="flag_{{ name }}">({{ value[1] }}%)</span>
-            </li>
-            {% endfor %}
+          <div class="list matchmaking-list-items" id="list">
+            <div class="search-container">
+              <input
+                class="searchBar auth-input"
+                type="text"
+                autocomplete="off"
+                id="searchInput"
+                placeholder="Search names..."
+              />
+            </div>
+            <ul id="nameList">
+              {% for name, value in my_dict.items() %}
+              <li class="matchmaking-list-item">
+                {{ name }}
+                <span id="flag_{{ name }}">({{ value[0] }})</span>
+                <span id="flag_{{ name }}">({{ value[1] }}%)</span>
+              </li>
+              {% endfor %}
+            </ul>
           </div>
         </div>
 
