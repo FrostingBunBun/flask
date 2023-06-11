@@ -5,58 +5,86 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: "Montserrat", sans-serif;
-  font-weight: 700;
-  background-color: #000000;
-  color: #000000;
-  line-height: 1.4;
-  margin: 0;
-  /* Remove default margin */
+::-webkit-scrollbar {
+  width: 0px;
 }
 
-.background-image {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  background-image: url("https://my.catgirls.forsale/xGXMv720.jpg");
-  background-repeat: no-repeat;
-  /* background-size: cover; */
-  /* background-position: center; */
-  /* background-position: center bottom -300px; */
-  filter: blur(5px);
-  transition: background-position 0.5s ease-out;
-  transform: scale(1.2);
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background: #302e2e;
 }
 
-/* @keyframes aslide {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 100% 0;
-  }
-} */
-
-.gradient-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 70%;
-  background-image: linear-gradient(to bottom, rgba(255, 0, 85, 0.1), rgba(255, 0, 0, 0));
-  z-index: -1;
+::-webkit-scrollbar-thumb {
+  background: #5b444d;
+  border-radius: 10px;
 }
 
-.container {
+::-webkit-scrollbar-thumb:hover {
+  background: #443138;
+}
+
+.matchmaking-btn-add {
+  width: 30px;
+  height: 30px;
+
+  background: #f90162;
+  border-radius: 5px;
+
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+
+  font-size: 28px;
+  color: white;
+  border: none;
+  transition: all 0.1s;
+
+  position: absolute;
+  right: 30px;
+  top: 30px;
+}
+
+.matchmaking-list-item {
+  background: rgba(255, 236, 255, 0.05);
+  border-radius: 56px;
+  padding: 15px 25px;
+
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
+  list-style: none;
+
+  color: #ffffff;
+  transition: all 0.1s;
+}
+.matchmaking-list-item:hover {
+  background: rgba(255, 236, 255, 0.199);
+}
+
+.matchmaking-list-item span {
+  font-style: normal;
+  font-weight: 400;
+  color: #d1c5cb;
+}
+
+.auth-input {
+  border-radius: 30px !important;
+  margin-top: 20px;
+}
+
+.matchmaking-btn-add:hover {
+  background: #bd0048;
+  cursor: pointer;
+}
+
+.matchmaking-list-items {
+  display: flex;
+  flex-direction: column;
+  grid-gap: 14px;
+  margin-top: 20px;
+  max-height: 650px;
+  overflow-y: auto;
 }
 
 .match-container {
@@ -124,7 +152,6 @@ body {
   font-weight: bold;
   font-size: 20px;
   color: rgb(230, 230, 230);
-
 }
 
 .additionalNumber1,
@@ -132,7 +159,6 @@ body {
   font-size: 18px;
   color: #9c9c9c;
 }
-
 
 .toMaking {
   padding: 10px 20px;
@@ -154,7 +180,7 @@ body {
   padding: 10px 20px;
   font-size: 16px;
   font-weight: bold;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -201,7 +227,6 @@ body {
   }
 }
 
-
 .gauge-container {
   display: flex;
   justify-content: center;
@@ -223,7 +248,6 @@ body {
   position: relative;
   animation: fillGauge 1.5s ease-out forwards;
   /* Add animation */
-
 }
 
 @keyframes fillGauge {
@@ -237,8 +261,6 @@ body {
     /* Animate to 100% width */
   }
 }
-
-
 
 .fill {
   height: 100%;
@@ -267,7 +289,8 @@ body {
   left: 50%;
   transform: translateX(-50%);
   font-weight: bold;
-  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+    1px 1px 0 black;
   /* Apply multiple shadows to create the outline */
   font-size: 20px;
 }
@@ -284,7 +307,8 @@ body {
   text-align: center;
   letter-spacing: 2px;
   line-height: 1.5;
-  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+    1px 1px 0 black;
   /* Apply multiple shadows to create the outline */
   opacity: 0;
   /* Make the element initially invisible */
@@ -328,7 +352,8 @@ body {
   border-radius: 4px;
   cursor: pointer;
   margin: 0 250px;
-  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black;
+  text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
+    1px 1px 0 black;
   /* Apply multiple shadows to create the outline */
   width: 150px;
   height: 50px;
@@ -340,7 +365,6 @@ body {
 .rightButton:hover,
 .leftButton:hover {
   background-color: #408145;
-
 }
 
 .bottomPart {
@@ -363,7 +387,6 @@ body {
   color: rgb(192, 129, 160);
 }
 
-
 #fixed-container,
 #fixed-scale {
   position: absolute;
@@ -374,7 +397,6 @@ body {
   align-items: center;
   /* additional styles */
   /* background-color: #000000; */
-
 }
 
 #fixed-container p,
@@ -427,7 +449,6 @@ body {
   align-items: center;
   /* additional styles */
   /* background-color: #000000; */
-
 }
 
 #fixed-scale p {
@@ -462,7 +483,6 @@ body {
   animation-fill-mode: forwards;
 }
 
-
 #fixed-scale button:hover {
   background-color: #181818;
 }
@@ -484,4 +504,187 @@ body {
 .match-duration span {
   font-weight: bold;
   color: #ff6347;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-width: 356px;
+  max-width: 356px;
+  height: 250px;
+
+  border: 2px dashed rgba(209, 197, 203, 0.9);
+  border-radius: 25px;
+  position: relative;
+  gap: 10px;
+  user-select: none;
+}
+
+.field h2 {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  /* identical to box height */
+
+  color: #9d9298;
+}
+
+.field p {
+  margin: 0;
+  font-weight: bold;
+  font-size: 16px;
+  color: #c2c2c2;
+  text-align: center;
+}
+
+.field p.empty {
+  color: #999;
+}
+
+.field:hover {
+  background-color: #b1b1b128;
+}
+
+.field.dragover {
+  background-color: #d3d3d313;
+}
+
+.field-container {
+  display: flex;
+  gap: 40px;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.clear-button {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 30px;
+
+  background-color: #150f11;
+  border: 2px solid rgba(209, 197, 203, 0.9);
+
+  cursor: pointer;
+  transition: all 0.1s ease;
+  position: absolute;
+  right: -8px;
+  top: -8px;
+  z-index: 10;
+}
+
+.clear-button:hover {
+  background-color: #b1b1b1;
+}
+
+.dragged-item {
+  width: 100%;
+  height: 100%;
+  background: #150f11;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  border-radius: 25px !important;
+  padding: 20px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  grid-gap: 5px !important;
+  flex-direction: column;
+}
+
+.dragged-item p,
+.dragged-item span {
+  margin: 0;
+  font-weight: bold;
+  font-size: 16px;
+  color: #c2c2c2;
+  text-align: center;
+}
+
+.match-button-container {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  grid-gap: 10px;
+  margin-top: 30px;
+}
+
+.matchmaking-btn-primary {
+  background: linear-gradient(90deg, #73002d 0%, #f90162 99.26%);
+  border-radius: 10px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px 20px;
+
+  color: #ffffff;
+  border: none;
+  transition: all 0.05s;
+}
+
+.matchmaking-btn-primary:hover {
+  cursor: pointer;
+  filter: brightness(0.9);
+}
+
+.matchmaking-btn-secondary {
+  background: rgba(91, 68, 77, 0.3);
+  border-radius: 10px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  color: #ffffff;
+  border: none;
+  transition: all 0.05s;
+  padding: 10px 15px;
+  margin: 0 !important;
+}
+
+.matchmaking-btn-secondary:hover {
+  cursor: pointer;
+  filter: brightness(1.1);
+}
+.matchmaking-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.matchmaking-prob {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 27px;
+
+  color: #ffffff;
+  margin: 0;
+}
+
+.gauge-container {
+  margin: 0;
+  margin-top: 20px;
+  background: rgba(183, 178, 181, 0.15);
+  border-radius: 54px;
+  border: none;
+  height: 15px;
+  overflow: hidden;
 }

@@ -6,231 +6,106 @@ h3,
 p,
 ul,
 li {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    background-color: #222;
-    color: #fff;
-    padding: 0 20px;
-}
-header {
-    padding: 20px;
-    text-align: center;
-    height: 250px; /* Adjust the height as needed */
-    background-image: url("https://my.catgirls.forsale/xGXMv720.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-    border-radius: 8px;
-    
-  }
-header h1 {
-    color: #dddddd;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; /* Outline effect */
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  background-color: #222;
+  color: #fff;
+  padding: 0 20px;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+.sidebar-buttons {
+  display: flex;
+  flex-direction: column;
+  grid-gap: 10px;
 }
 
-header {
-    background-color: #333;
-    padding: 20px;
+.sidebar-heading {
+  display: flex;
+  flex-direction: column;
+  grid-gap: 10px;
 }
-/* .topWrap{
-    
-} */
+.sidebar-heading h3 {
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 29px;
+  text-align: center;
 
-.background-wrap {
-    background-color: #000;
-    margin: 0 auto;
-    max-width: 450px; /* Adjust the value as needed */
-    padding: 20px;
-    border-radius: 10px;
-    opacity: 0.95;
-  }
-
-h1 {
-    font-size: 24px;
-    color: #fff;
+  color: #ffffff;
 }
+.sidebar-heading p {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  text-align: center;
 
-nav ul {
-    list-style: none;
+  color: #ffffff;
 }
 
-nav ul li {
-    display: inline;
-    margin-right: 10px;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; /* Outline effect */
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  grid-gap: 20px;
 }
 
-nav ul li a {
-    color: #ececec;
-    text-decoration: none;
-    transition: color 0.3s ease;
-    background-color: #2e2e2e;
-    border-radius: 4px;
-    padding: 4px;
+.sidebar-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  grid-gap: 5px;
 }
 
-nav ul li a:hover {
-    color: #FF4081;
+.primary-button {
+  background: #f90162;
+  border-radius: 8px;
+
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  color: #ffffff;
+  padding: 8px 25px;
+  border: none;
+  transition: all 0.1s;
 }
 
-main {
-    margin: 20px 0;
+.primary-button:hover {
+  background: #bd0048;
+  cursor: pointer;
 }
 
-section {
-    background-color: #181818;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+.secondary-button {
+  border: 1px solid #b9aeb3;
+  border-radius: 8px;
+  background: none;
+
+  font-style: normal;
+  font-weight: 500;
+  padding: 6px 25px;
+  font-size: 16px;
+
+  line-height: 22px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  color: #ffffff;
+  transition: all 0.1s;
 }
 
-
-h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
-    color: #fff;
+.secondary-button:hover {
+  color: #000000;
+  background: #b9aeb3;
+  cursor: pointer;
 }
-
-p {
-    margin-bottom: 10px;
-    color: #ccc;
-}
-
-.read-more a {
-    color: #FF4081;
-    text-decoration: none;
-    font-weight: bold;
-    transition: text-decoration 0.3s ease;
-}
-
-.read-more a:hover {
-    text-decoration: underline;
-}
-
-footer {
-    background-color: #333;
-    padding: 10px;
-    text-align: center;
-    font-size: 14px;
-    color: #ccc;
-}
-.gradient-overlay {
-    position: fixed;
-    top: 1;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: linear-gradient(to top, rgba(255, 0, 85, 0.1), rgba(255, 0, 0, 0));
-    z-index: -1;
-  }
-
-  .login-container {
-    display: flex;
-    justify-content:right;
-    align-items:right;
-    margin-top: 20px;
-  }
-  
-  .login-button,
-  .register-button {
-    background-color: #2e2e2e;
-    color: #ececec;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 20px;
-    margin: 0 10px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .login-button:hover,
-  .register-button:hover {
-    background-color: #1e1e1e;
-  }
-  
-  .login-button:focus,
-  .register-button:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px #FF4081;
-  }
-  
-
-  #login-message,
-  #login-message2 {
-    position: fixed;
-    top: 22%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 20px;
-    background-color: #494949;
-    border: 1px solid #acacac;
-    border-radius: 4px;
-    text-align: center;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-    z-index: 1;
-  }
-  
-  #login-message.visible,
-  #login-message2.visible {
-    opacity: 1;
-  }
-  
-  footer {
-    background-color: #333;
-    text-align: center;
-    color: #fff;
-  
-  }
-  
-  .footer-links {
-    margin-bottom: 10px;
-  }
-  
-  .footer-links a {
-    color: #fff;
-    text-decoration: none;
-    margin-right: 10px;
-  }
-  
-  .footer-links a:hover {
-    text-decoration: underline;
-  }
-  
-  .footer-text {
-    font-size: 14px;
-  }
-  
-  #jet {
-    position: relative;
-    width: 100%;
-    height: 40px;
-    background-color: rgb(34, 30, 30);
-    color: rgb(197, 197, 197);
-    font-size: 14px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: fade 2s ease-in-out infinite alternate;
-  }
-
-  @keyframes fade {
-    0% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0.8;
-    }
-  }

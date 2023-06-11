@@ -1,64 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GameStats - Home</title>
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main_logged.css') }}">
-</head>
-<body>
-    <div class="gradient-overlay"></div>
-  <header>
-    <div class="login-container">
-        <button class="match" id="logout">Log out</button>
-        <button class="match" id="matchmaking">Matchmaking</button>
-        <div id="fixed-container">
-            <!-- Content of your container goes here -->
-            <p>Logged on as: {{ username }}</p>
-            <span> {{mod}} </span>
-          </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GameStats - Home</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/main_logged.css') }}"
+    />
+  </head>
+  <body>
+    <div class="sidebar-container">
+      <div class="profile-data">
+        <img class="profile-pic" src="/static/pics/profile-pic.svg" />
+        <p class="profile-username">{{ username }}</p>
+         <span class="profile-mmr" style="color:#F90162; font-weight: 600;">{{mod}}</span>
+        <span class="profile-mmr">(0)</span>
       </div>
-      <div class="topWrap">
-        <div class="background-wrap">
-    <h1>Welcome to Dogfight Club</h1>
-    <nav>
-      <ul>  
-        <!-- <a href="/stats/{{ name }}">{{ name }}</a> -->
-        <li><a href="#" id="stats">Stats</a></li>
-        <li><a href="#" id="matches">Matches</a></li>
-        <li><a href="#" id="leaderboards">Leaderboards</a></li>
-      </ul>
-    </nav>
-    </div>
-</div>
-  </header>
-  <main>
-    <div class="container">
-      <section>
-        <h2>About Dogfight Club</h2>
-        <p>
-          Dogfight club is an exclusive hub for competitive dogfighting and learning BFM amongst the best pilots in VRC aviation.
-        </p>
-        <p>
-          Join our community of passionate pilots and take your dogfighting skills to the next level!
-        </p>
-      </section>
-      <section>
-        <h2>Info</h2>
-        <article>
-          <!-- <h3>Scrims</h3> -->
-          <p>
-            Private ranked/unranked lobbies for scrims will be hosted regularly, link to the instance and ping will be sent in the server.
-          </p>
-          <p>Feel free to join instance by clicking the link in the scrim-ping channel whenever available.</p>
-          <p>
 
+      <nav class="navigaton-container">
+        <button class="navigation-item" id="main">
+          <img src="/static/icons/home.svg" /> Home
+        </button>
+        <button class="navigation-item" id="matchmaking">
+          <img src="/static/icons/matchmaking.svg" /> Matchmaking
+        </button>
+        <button class="navigation-item" id="stats">
+          <img src="/static/icons/stats.svg" /> Statistics
+        </button>
+        <button class="navigation-item" id="matchmaking">
+          <img src="/static/icons/matches.svg" /> Matches
+        </button>
+        <button class="navigation-item" id="leaderboards">
+          <img src="/static/icons/leaderboard.svg" /> Leaderboard
+        </button>
+      </nav>
+
+      <button class="navigation-item" id="logout">
+        <img src="/static/icons/signout.svg" /> Sign Out
+      </button>
+    </div>
+
+    <div class="page-container">
+      <div class="page-heading">
+        <img src="/static/icons/plane-heading.png" />
+        <h2>Welcome to Dogfight Club</h2>
+      </div>
+      <div class="page-cards">
+        <div class="page-cards-column">
+               <div class="page-card">
+          <h3>About Dogfight Club</h3>
+          <p>
+            Dogfight club is an exclusive hub for competitive dogfighting and
+            learning BFM amongst the best pilots in VRC aviation. Join our
+            community of passionate pilots and take your dogfighting skills to
+            the next level!
           </p>
-        </article>
-      </section>
-      <section>
-        <article>
-          <h3>RULES</h3>
+          <h3>Info</h3>
+          <p>
+            Private ranked/unranked lobbies for scrims will be hosted regularly,
+            link to the instance and ping will be sent in the server. Feel free
+            to join instance by clicking the link in the scrim-ping channel
+            whenever available
+          </p>
+        </div>  
+        <div class="page-card">
+     <h3>RULES</h3>
           <p>1. You don't talk about the dogfight club.</p>
           <p>2. YOU DO NOT TALK ABOUT THE DOGFIGHT CLUB.</p>
           <p>3. Negotiate terms of the dogfight beforehand.</p>
@@ -67,20 +75,36 @@
           <p>6. You do not throw excuses for losing.</p>
           <p>7. You back up your words with equivalent actions.</p>
           <p>8. If this is your first night at dogfight club you have to fight.</p>
-        </article>
-      </section>
+        </div>
+        </div>
+   
+        <div class="page-card">
+          <h3>
+            Upcoming Scrims
+            <button class="page-card-info-button">
+              <img src="/static/icons/info-circle.svg" />
+            </button>
+          </h3>
+
+          <div class="page-card-content">There are none for now</div>
+        </div>
+  
+
     </div>
     <div id="jet"></div>
   </main>
 
-  <footer>
+  <!-- <footer>
     <div class="footer-links">
       <a href="https://discord.gg/k3n6jhmjcg">Discord</a>
       <a href="https://docs.google.com/spreadsheets/d/12P7ayv29VJmKmgqIAlDKqGHmMhLWoqV6K6jNkqMaeJI/edit?usp=sharing">Google Sheets</a>
     </div>
     <p class="footer-text">© 2023 Dogfight Club. No rights reserved.</p>
-  </footer>
+  </footer> -->
   
-  <script src="{{ url_for('static', filename='scripts/main_logged.js') }}"></script>
-</body>
+      </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='scripts/main_logged.js') }}"></script>
+  </body>
 </html>

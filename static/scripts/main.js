@@ -1,57 +1,29 @@
-var loginMessageTimeout = null;
-
-function showLoginMessage(messageId) {
-  clearTimeout(loginMessageTimeout);
-  
-  var loginMessage = document.getElementById('login-message');
-  var loginMessage2 = document.getElementById('login-message2');
-
-  if (messageId === 'login-message') {
-    loginMessage2.classList.remove('visible');
-  } else {
-    loginMessage.classList.remove('visible');
-  }
-
-  var messageToShow = document.getElementById(messageId);
-  messageToShow.classList.add('visible');
-
-  loginMessageTimeout = setTimeout(function() {
-    messageToShow.classList.remove('visible');
-  }, 2000);
-}
-
-
-
-var leaderBoardsBtn = document.getElementById("leaderboards");
-leaderBoardsBtn.addEventListener("click", function() {
-  // Redirect to the login page or perform necessary actions
-  window.location.href = "/leaderboards";
+window.addEventListener("DOMContentLoaded", function () {
+  var statsButton = document.getElementById("login");
+  statsButton.addEventListener("click", function () {
+    window.location.href = "login";
+  });
 });
 
-window.addEventListener('DOMContentLoaded', function() {
-    var statsButton = document.getElementById("login");
-    statsButton.addEventListener("click", function() {
-        window.location.href = "login";
-    });
+window.addEventListener("DOMContentLoaded", function () {
+  var statsButton = document.getElementById("register");
+  statsButton.addEventListener("click", function () {
+    window.location.href = "register";
+  });
 });
 
-window.addEventListener('DOMContentLoaded', function() {
-    var statsButton = document.getElementById("register");
-    statsButton.addEventListener("click", function() {
-        window.location.href = "register";
-    });
+window.addEventListener("DOMContentLoaded", function () {
+  var statsButton = document.getElementById("register");
+  statsButton.addEventListener("click", function () {
+    window.location.href = "register";
+  });
 });
-
-
-
-
 
 // var leaderBoardsBtn = document.getElementById("leaderboards");
 // leaderBoardsBtn.addEventListener("click", function() {
 //   // Redirect to the login page or perform necessary actions
 //   window.location.href = "/leaderboards";
 // });
-
 
 const facts = [
   "Beyond Visual Range (BVR) combat involves engaging enemy aircraft outside of visual range using radar-guided missiles and advanced target tracking systems.",
@@ -98,10 +70,9 @@ const facts = [
 ];
 
 function changeFact() {
-  const jetElement = document.getElementById('jet');
+  const jetElement = document.getElementById("jet");
   const randomIndex = Math.floor(Math.random() * facts.length);
   jetElement.textContent = facts[randomIndex];
-
 }
 // maybe put it somewhere on the main pages, not sure if its a good idea
 changeFact();
