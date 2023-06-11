@@ -60,6 +60,7 @@
               {{ name }}
               <span id="flag_{{ name }}">({{ value[0] }})</span>
               <span id="flag_{{ name }}">({{ value[1] }}%)</span>
+              
             </li>
             {% endfor %}
           </ul>
@@ -190,7 +191,7 @@
             </div>
             <ul id="nameList">
               {% for name, value in my_dict.items() %}
-              <li class="matchmaking-list-item">
+              <li class="matchmaking-list-item" draggable="true">
                 {{ name }}
                 <span id="flag_{{ name }}">({{ value[0] }})</span>
                 <span id="flag_{{ name }}">({{ value[1] }}%)</span>
@@ -322,7 +323,6 @@
                   <img
                     id="selected-image"
                     class="selected-image"
-                    src="default-image.jpg"
                     alt="Selected Jet"
                   />
                 </div>
