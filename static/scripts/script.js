@@ -273,7 +273,6 @@ function getMMRAndWinrate() {
 
 function filterNames() {
   var inputs = document.getElementsByClassName("searchBar"); // Updated to select all search input elements with the class "searchBar"
-
   for (var j = 0; j < inputs.length; j++) {
     var input = inputs[j];
     var filter = input.value.toLowerCase();
@@ -372,8 +371,8 @@ document.addEventListener("DOMContentLoaded", function () {
     var rightNameElement = rightField.querySelector("p");
     var rightName = rightNameElement ? rightNameElement.textContent.trim() : "";
 
-    console.log("SENT: ", leftName)
-    console.log("SENT: ", rightName)
+    console.log("SENT: ", leftName);
+    console.log("SENT: ", rightName);
 
     var fixLeftName = leftName.substring(0, leftName.indexOf("\n")).trim();
     var fixRightName = rightName.substring(0, rightName.indexOf("\n")).trim();
@@ -402,9 +401,8 @@ document.addEventListener("DOMContentLoaded", function () {
       rightField.textContent.trim() !== "" &&
       rightField.textContent.trim() !== "Player Right"
     ) {
-      
       sendUserInfo();
-      console.log("SENT")
+      console.log("SENT");
       window.location.href = "/matchmaking/match/processing";
     }
   });
