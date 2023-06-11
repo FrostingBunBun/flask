@@ -57,6 +57,7 @@
 
   color: #ffffff;
   transition: all 0.1s;
+  user-select: none;
 }
 .matchmaking-list-item:hover {
   background: rgba(255, 236, 255, 0.199);

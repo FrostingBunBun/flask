@@ -28,80 +28,109 @@
   </head>
 
   <body>
-    <div class="background-image"></div>
-    <div class="gradient-overlay"></div>
-    <div id="fixed-container">
-      <!-- Content of your container goes here -->
-      <p>Logged on as: {{ username }}</p>
-      <button id="logout">Log out</button>
+    <div class="sidebar-container">
+      <div class="profile-data">
+        <img class="profile-pic" src="/static/pics/profile-pic.svg" />
+        <p class="profile-username">{{ username }}</p>
+        <span class="profile-mmr" style="color: #f90162; font-weight: 600"
+          >{{mod}}</span
+        >
+        <span class="profile-mmr">(0)</span>
+      </div>
+
+      <nav class="navigaton-container">
+        <button class="navigation-item" id="main">
+          <img src="/static/icons/home.svg" /> Home
+        </button>
+        <button class="navigation-item" id="matchmaking">
+          <img src="/static/icons/matchmaking.svg" /> Matchmaking
+        </button>
+        <button class="navigation-item" id="stats">
+          <img src="/static/icons/stats.svg" /> Statistics
+        </button>
+        <button class="navigation-item" id="matchmaking">
+          <img src="/static/icons/matches.svg" /> Matches
+        </button>
+        <button class="navigation-item" id="leaderboards">
+          <img src="/static/icons/leaderboard.svg" /> Leaderboard
+        </button>
+      </nav>
+
+      <button class="navigation-item" id="logout">
+        <img src="/static/icons/signout.svg" /> Sign Out
+      </button>
     </div>
 
-    <div class="match-container" id="match-container">
-      <div class="player">
-        <div class="player-image">
-          <img class="vs-image" id="1vsImg" src="" alt="Avatar" />
-        </div>
-
-        <div class="player-info">
-          <div class="boxName">
-            <h3 id="playerName1">{{ leftNAME }}</h3>
-          </div>
-          <div class="rating1">mmr: {{ leftMMR }}</div>
-          <div class="additionalNumber1">Winrate: {{ leftWINRATE }}</div>
-          <div class="newMMRwin1">win case:</div>
-          <div class="newMMRlose1">lose case:</div>
-        </div>
-      </div>
-      <div class="player">
-        <div class="player-image">
-          <img class="avatar-image" id="2vsImg" src="" alt="Avatar" />
-        </div>
-        <div class="player-info">
-          <div class="boxName">
-            <h3 id="playerName2">{{ rightNAME }}</h3>
-          </div>
-          <div class="rating2">mmr: {{ rightMMR }}</div>
-          <div class="additionalNumber2">Winrate: {{ rightWINRATE }}</div>
-          <div class="newMMRwin2">win case:</div>
-          <div class="newMMRlose2">lose case:</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="bottomPart">
-      <div class="button-container">
-        <button class="leftButton" id="leftButton">WON</button>
-        <button class="rightButton" id="rightButton">WON</button>
+    <div class="page-container">
+      <div class="page-heading">
+        <img src="/static/icons/plane-heading.png" />
+        <h2>Match: ongoing</h2>
       </div>
 
-      <div class="prob">Win Probability</div>
-      <div class="gauge-container">
-        <div class="gauge">
-          <div class="fill" id="fill1">
-            <div id="leftGauge" class="gauge-label gauge-label1">1</div>
+      <div class="match-container" id="match-container">
+        <div class="player">
+          <div class="player-image">
+            <img class="vs-image" id="1vsImg" src="" alt="Avatar" />
           </div>
-          <div class="fill" id="fill2">
-            <div id="rightGauge" class="gauge-label gauge-label2">2</div>
+
+          <div class="player-info">
+            <div class="boxName">
+              <h3 id="playerName1">{{ leftNAME }}</h3>
+            </div>
+            <div class="rating1">mmr: {{ leftMMR }}</div>
+            <div class="additionalNumber1">Winrate: {{ leftWINRATE }}</div>
+            <div class="newMMRwin1">win case:</div>
+            <div class="newMMRlose1">lose case:</div>
+          </div>
+        </div>
+        <div class="player">
+          <div class="player-image">
+            <img class="avatar-image" id="2vsImg" src="" alt="Avatar" />
+          </div>
+          <div class="player-info">
+            <div class="boxName">
+              <h3 id="playerName2">{{ rightNAME }}</h3>
+            </div>
+            <div class="rating2">mmr: {{ rightMMR }}</div>
+            <div class="additionalNumber2">Winrate: {{ rightWINRATE }}</div>
+            <div class="newMMRwin2">win case:</div>
+            <div class="newMMRlose2">lose case:</div>
           </div>
         </div>
       </div>
 
-      <div class="button-container">
-        <button class="toMaking" id="toMaking">Cancel</button>
+      <div class="bottomPart">
+        <div class="button-container">
+          <button class="leftButton" id="leftButton">WON</button>
+          <button class="rightButton" id="rightButton">WON</button>
+        </div>
+
+        <div class="prob">Win Probability</div>
+        <div class="gauge-container">
+          <div class="gauge">
+            <div class="fill" id="fill1">
+              <div id="leftGauge" class="gauge-label gauge-label1">1</div>
+            </div>
+            <div class="fill" id="fill2">
+              <div id="rightGauge" class="gauge-label gauge-label2">2</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="button-container">
+          <button class="toMaking" id="toMaking">Cancel</button>
+        </div>
+        <div class="containerTimer">
+          <p class="match-duration" class="hidden">
+            Match Duration: <span id="match-duration">00:00:00</span>
+          </p>
+        </div>
+
+        <div id="error-message" class="error-message"></div>
+
+        <script src="{{ url_for('static', filename='scripts/match.js') }}"></script>
+        <script src="{{ url_for('static', filename='scripts/sidebar.js') }}"></script>
       </div>
-      <div class="containerTimer">
-        <p class="match-duration" class="hidden">
-          Match Duration: <span id="match-duration">00:00:00</span>
-        </p>
-      </div>
-
-      <div id="error-message" class="error-message"></div>
-
-      <!-- <div id="fixed-scale">
-      <p>SCALE</p>
-    </div> -->
-
-      <script src="{{ url_for('static', filename='scripts/match.js') }}"></script>
     </div>
   </body>
 
