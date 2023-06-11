@@ -30,14 +30,90 @@
       type="text/css"
       href="{{ url_for('static', filename='styles/main_logged.css') }}"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/main.css') }}"
+    />
   </head>
   <body>
+    <div id="myModal" class="modal">
+      <div class="modal-content-pool modal-content">
+        <button class="close close-button" onclick="closeModal2()">
+          <img src="/static/icons/times.svg" />
+        </button>
+        <div class="list matchmaking-list-items" id="list">
+          <div class="search-container">
+            <input
+              class="searchBar auth-input"
+              type="text"
+              autocomplete="off"
+              id="searchInput"
+              placeholder="Search names..."
+            />
+          </div>
+          <h2>The Deadpool</h2>
+          <ul id="nameList">
+            {% for name, value in my_dict.items() %}
+            <li class="matchmaking-list-item">
+              <input type="checkbox" class="checkmark" data-name="{{ name }}" />
+              {{ name }}
+              <span id="flag_{{ name }}">({{ value[0] }})</span>
+              <span id="flag_{{ name }}">({{ value[1] }}%)</span>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="added">
+          <h2>Custom Pool Container</h2>
+          <ul id="selectedNamesList"></ul>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal2" class="modal2 modal">
+      <div class="modal-content2 modal-content">
+        <h2>Add a user</h2>
+        <button class="close-button" onclick="closeModal2()">
+          <img src="/static/icons/times.svg" />
+        </button>
+        <p>Write the username lower and click Submit</p>
+        <p></p>
+        <input
+          type="text"
+          id="usernameInput"
+          class="auth-input add-input"
+          placeholder="Enter username..."
+        />
+        <button class="primary-button" onclick="addUsername()">Submit</button>
+
+        <div class="confirmField" id="confirmField"></div>
+
+        <div class="confirm-buttons">
+          <button
+            class="add2 primary-button"
+            onclick="confirmUsername()"
+            style="display: none"
+          >
+            Confirm
+          </button>
+          <button
+            class="cancel2 top-container-btn"
+            onclick="cancelConfirmation()"
+            style="display: none"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div id="confirmationModal" class="modal">
       <div class="modal-content">
         <h2>Confirmation</h2>
         <p>Are you sure you want to submit?</p>
         <div class="modal-buttons">
-          <button id="confirmYes" class="primary-button">Yes</button>
+          <button id="confirmYes">Yes</button>
 
           <button id="confirmNo">No</button>
         </div>
@@ -91,72 +167,6 @@
         </button>
       </div>
 
-      <div id="modal2" class="modal2">
-        <div class="modal-content2">
-          <button class="close-button" onclick="closeModal2()">&times;</button>
-          <p>Write the username lower and click Submit</p>
-          <p></p>
-          <input
-            type="text"
-            id="usernameInput"
-            placeholder="Enter username..."
-          />
-          <button class="modal-button" onclick="addUsername()">Submit</button>
-          <div class="confirmField" id="confirmField"></div>
-
-          <button
-            class="add2"
-            onclick="confirmUsername()"
-            style="display: none"
-          >
-            Confirm
-          </button>
-          <button
-            class="cancel2"
-            onclick="cancelConfirmation()"
-            style="display: none"
-          >
-            Cancel
-          </button>
-        </div>
-      </div>
-
-      <!-- Modal HTML -->
-      <div id="myModal" class="modal">
-        <div class="modal-content-pool">
-          <span class="close">&times;</span>
-          <div class="list" id="list">
-            <div class="search-container">
-              <input
-                class="searchBar"
-                type="text"
-                autocomplete="off"
-                id="searchInput"
-                placeholder="Search names..."
-              />
-            </div>
-            <h2>The Deadpool</h2>
-            <ul id="nameList">
-              {% for name, value in my_dict.items() %}
-              <li>
-                <input
-                  type="checkbox"
-                  class="checkmark"
-                  data-name="{{ name }}"
-                />
-                {{ name }}
-                <span id="flag_{{ name }}">({{ value[0] }})</span>
-                <span id="flag_{{ name }}">({{ value[1] }}%)</span>
-              </li>
-              {% endfor %}
-            </ul>
-          </div>
-        </div>
-        <div class="added">
-          <p>Custom Pool Container</p>
-          <ul id="selectedNamesList"></ul>
-        </div>
-      </div>
       <div class="page-cards">
         <div class="page-card" id="list">
           <h3>Participants</h3>

@@ -519,6 +519,7 @@
   border-radius: 25px;
   position: relative;
   gap: 10px;
+  user-select: none;
 }
 
 .field h2 {

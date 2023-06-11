@@ -531,7 +531,7 @@ function openWindow() {
 }
 
 function openModal2() {
-  document.getElementById("modal2").style.display = "block";
+  document.getElementById("modal2").style.display = "flex";
 
   // Check if the userInput element exists
   var userInput = document.getElementById("userInput");
@@ -622,7 +622,7 @@ const closeBtn = document.getElementsByClassName("close")[0];
 
 // Open the modal when the button is clicked
 customPoolBtn.addEventListener("click", function () {
-  modal.style.display = "block";
+  modal.style.display = "flex";
 });
 
 // Close the modal when the close button is clicked
@@ -678,7 +678,7 @@ function updateSelectedNamesList() {
   selections.forEach(function (listItemHTML) {
     const listItem = document.createElement("li");
     listItem.innerHTML = listItemHTML;
-    listItem.classList.add("added-item"); // Add a class for styling
+    listItem.classList.add("added-item", "matchmaking-list-item"); // Add a class for styling
     listItem.querySelector(".checkmark").remove(); // Remove the checkbox
     selectedNamesList.appendChild(listItem);
   });
