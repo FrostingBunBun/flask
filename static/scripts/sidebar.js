@@ -21,8 +21,11 @@ function handleNavigationItemClick(event) {
     case "stats":
       window.location.href = "/stats/" + usernameContent; // Replace "/statistics" with the desired path for the "Statistics" button
       break;
-    case "matchmaking":
+    case "matches":
       window.location.href = "/matches"; // Replace "/matches" with the desired path for the "Matches" button
+      break;
+    case "matchmaking":
+      window.location.href = "/matchmaking"; // Replace "/matches" with the desired path for the "Matches" button
       break;
     case "leaderboards":
       window.location.href = "/leaderboards"; // Replace "/leaderboard" with the desired path for the "Leaderboard" button

@@ -168,6 +168,24 @@ body{
   #back:hover {
     background-color: #6b6b6b;
   }
+
+  #backT {
+    position: absolute;
+    top: 10px;
+    left: 190px;
+    background-color: #838383;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Add transition property for background-color */
+  }
+  #backT:hover {
+    background-color: #6b6b6b;
+  }
+
+  
   
   .day-box {
     display: flex;
