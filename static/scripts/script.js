@@ -285,10 +285,7 @@ function filterNames() {
       var transformedFilter = transformString(filter);
 
       // Check if the original name or transformed name contains the filter
-      if (
-        name.includes(filter) ||
-        transformedName.includes(transformedFilter)
-      ) {
+      if (name.includes(filter) || transformedName.includes(transformedFilter)) {
         li[i].style.display = "";
       } else {
         li[i].style.display = "none";
@@ -706,13 +703,16 @@ checkboxes.forEach(function (checkbox) {
     updateSelectedNamesList();
 
     var selectedNamesList = document.querySelector("#selectedNamesList");
-    console.log("selectedNamesList: ", selectedNamesList);
-    var checkmark = selectedNamesList.getElementsByClassName("checkmark")[0];
-    console.log("checkmark: ", checkmark);
+console.log("selectedNamesList: ", selectedNamesList);
+var checkmarks = selectedNamesList.querySelectorAll(".checkmark");
 
-    if (checkmark) {
-      checkmark.remove();
-    }
+for (var i = 0; i < checkmarks.length; i++) {
+  var checkmark = checkmarks[i];
+  console.log("checkmark: ", checkmark);
+  checkmark.remove();
+}
+
+
   });
 });
 
