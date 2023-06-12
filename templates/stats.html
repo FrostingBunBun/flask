@@ -6,6 +6,8 @@
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/stats.css') }}">
 </head>
 <body>
+
+  <div class="tempInfo">(Win/Loss data may vary slightly due to merging old match history with the new one, this will be fixed in the new season)</div>
   <!-- <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> -->
 
   <script src="https://code.highcharts.com/highcharts.js"></script>
@@ -68,7 +70,6 @@
 
 
     <div class="profile-info">
-      <div class="tempInfo">(Win/Loss data may vary slightly due to merging old match history with the new one, this will be fixed in the new season))</div>
       <p>Last Match: <span class="last-match-value">{{ lastMatch[5].split(' ')[0] }}</span></p>
       <p>Wins: <span class="wins-value">{{wins}}</span></p>
       <p>Losses: <span class="losses-value">{{losses}}</span></p>
@@ -111,12 +112,24 @@
           <table>
             <thead>
               <tr>
-                <th>Plane<input type="text" id="filter-plane" onkeyup="filterTable('filter-plane', 'plane-type')"></th>
-                <th>Result<input type="text" id="filter-result" onkeyup="filterTable('filter-result', 'result')"></th>
-                <th>Enemy<input type="text" id="filter-enemy" onkeyup="filterTable('filter-enemy', 'enemy')"></th>
-                <th>Duration<input type="text" id="filter-duration" onkeyup="filterTable('filter-duration', 'duration')"></th>
-                <th>MMR Shift<input type="text" id="filter-mmr-shift" onkeyup="filterTable('filter-mmr-shift', 'mmr-shift')"></th>
-                <th>Date<input type="text" id="filter-date" onkeyup="filterTable('filter-date', 'date')"></th>
+                <th>Plane
+                  <!-- <input type="text" id="filter-plane" onkeyup="filterTable('filter-plane', 'plane-type')"> -->
+                </th>
+                <th>Result
+                  <!-- <input type="text" id="filter-result" onkeyup="filterTable('filter-result', 'result')"> -->
+                </th>
+                <th>Enemy
+                  <!-- <input type="text" id="filter-enemy" onkeyup="filterTable('filter-enemy', 'enemy')"> -->
+                </th>
+                <th>Duration
+                  <!-- <input type="text" id="filter-duration" onkeyup="filterTable('filter-duration', 'duration')"> -->
+                </th>
+                <th>MMR Shift
+                  <!-- <input type="text" id="filter-mmr-shift" onkeyup="filterTable('filter-mmr-shift', 'mmr-shift')"> -->
+                </th>
+                <th>Date
+                  <!-- <input type="text" id="filter-date" onkeyup="filterTable('filter-date', 'date')"> -->
+                </th>
               </tr>
             </thead>
         
@@ -171,7 +184,8 @@
 
       <div class="holder">
         <div class="right-container">
-          <div></div>
+          
+          <div>TESTING</div>
           
           <div class="calendar">
             <div class="weekdays"></div>
