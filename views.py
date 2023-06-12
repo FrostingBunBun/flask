@@ -678,6 +678,7 @@ def main():
     print(session.items())
     print("==========================")
     username = ""
+    mmr = ""  # Initialize mmr with a default value
 
     if session.get('logged_in'):
         username = session.get('username', '')
@@ -708,8 +709,6 @@ def main():
 
         # Close the database connection
         conn.close()
-
-    
 
         return render_template("main_logged.html", is_mod=is_mod, username=username, mod=mod, mmr=mmr)
     else:
