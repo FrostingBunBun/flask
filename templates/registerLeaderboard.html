@@ -4,76 +4,113 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GameStats - Home</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main_logged.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/registerLeaderboard.css') }}">
+  
 </head>
-<body>
-
-  <div class="message">You Need To Be Registered On The Leaderboard To See Your Profile,<br> Please Ask Staff To Be In
+<div id="container">
+  <div class="blur-overlay"></div>
+  <div class="message">You Need To Be Registered On The Leaderboard To See Your Profile<br>You Will Get In With Your First Scrim 
     <button class="goBack" onclick="redirectToPreviousPage()">Go Back</button>
   </div>
-  
-  
-
-  <div class="blur">
-  <div id="login-message" class="hidden">
-    <p>Please log in or Register to see your private stats</p>
-  </div>
-    <div class="gradient-overlay"></div>
-  <header>
-    <div class="login-container">
-      
-    </div>
-      <div class="topWrap">
-        <div class="background-wrap">
-    <h1>Welcome to Dogfight Club</h1>
-    <nav>
-      <ul>
-        
-      </ul>
-    </nav>
-    </div>
-  </div>
-  </header>
-  <main>
-    <div class="container">
-      <section>
-        <h2>About Dogfight Club</h2>
-        <p>
-          Dogfight club is an exclusive hub for competitive dogfighting and learning BFM amongst the best pilots in VRC aviation.
-        </p>
-        <p>
-          Join our community of passionate pilots and take your dogfighting skills to the next level!
-        </p>
-      </section>
-      <section>
-        <h2>Info</h2>
-        <article>
-          <!-- <h3>Scrims</h3> -->
-          <p>
-            Private ranked/unranked lobbies for scrims will be hosted regularly, link to the instance and ping will be sent in the server.
-          </p>
-          <p>Feel free to join instance by clicking the link in the scrim-ping channel whenever available.</p>
-          <p>
-
-          </p>
-        </article>
-      </section>
-      <section>
-        <h2>Upcoming Scrims</h2>
-        <article>
-          <h3>SCRIMS</h3>
-          <p>
-            Get ready for the most thrilling dogfighting of vrchat! The Scrim will bring together the best pilots from around vrchat to compete for the ultimate glory.
-          </p>
-          <p>
-            All skill levels are welcomed, sportsmanship is encouraged. DM @r3aper#0013 to become a member.
-          </p>
-          <p class="read-more"><a href="#">Learn todo</a></p>
-        </article>
-      </section>
-    </div>
-  </main>
 </div>
+
+<body>
+    <div class="sidebar-container">
+      <div class="sidebar-content">
+           <div class="sidebar-heading">
+  <h3>Login required</h3>
+  <p>Please login to view the full application</p>
+</div>
+<div class="sidebar-buttons">
+<button id="login" class="primary-button">
+  Log In
+</button>
+<span>or</span>
+<button id="register" class="secondary-button">
+Register
+</button>
+</div>
+      </div>
+   
+    </div>
+
+  
+
+    <div class="page-container">
+      <div class="page-heading">
+        <img src="/static/icons/plane-heading.png" />
+        <h2>Welcome to Dogfight Club</h2>
+      </div>
+      <div class="page-cards">
+        <div class="page-cards-column">
+               <div class="page-card">
+          <h3>About Dogfight Club</h3>
+          <p>
+            Dogfight club is an exclusive hub for competitive dogfighting and
+            learning BFM amongst the best pilots in VRC aviation. Join our
+            community of passionate pilots and take your dogfighting skills to
+            the next level!
+          </p>
+          <h3>Info</h3>
+          <p>
+            Private ranked/unranked lobbies for scrims will be hosted regularly,
+            link to the instance and ping will be sent in the server. Feel free
+            to join instance by clicking the link in the scrim-ping channel
+            whenever available
+          </p>
+        </div>  
+        <div class="page-card">
+     <h3>RULES</h3>
+          <p>1. You don't talk about the dogfight club.</p>
+          <p>2. YOU DO NOT TALK ABOUT THE DOGFIGHT CLUB.</p>
+          <p>3. Negotiate terms of the dogfight beforehand.</p>
+          <p>4. You do not interfere with an ongoing fight.</p>
+          <p>5. You do not forfeit or abandon the fight.</p>
+          <p>6. You do not throw excuses for losing.</p>
+          <p>7. You back up your words with equivalent actions.</p>
+          <p>8. If this is your first night at dogfight club you have to fight.</p>
+        </div>
+        </div>
+   
+        <div class="page-card">
+          <h3>
+            Upcoming Scrims
+            <button class="page-card-info-button">
+              <img src="/static/icons/info-circle.svg" />
+            </button>
+          </h3>
+
+          <div class="page-card-content">There are none for now</div>
+        </div>
+  
+
+    </div>
+    <div id="jet"></div>
+  </main>
+
+  <!-- <footer>
+    <div class="footer-links">
+      <a href="https://discord.gg/k3n6jhmjcg">Discord</a>
+      <a href="https://docs.google.com/spreadsheets/d/12P7ayv29VJmKmgqIAlDKqGHmMhLWoqV6K6jNkqMaeJI/edit?usp=sharing">Google Sheets</a>
+    </div>
+    <p class="footer-text">© 2023 Dogfight Club. No rights reserved.</p>
+  </footer> -->
+  
+      </div>
+    </div>
+
+
+  <!-- <footer>
+    <div class="footer-links">
+      <a href="https://discord.gg/k3n6jhmjcg" target="_blank">Discord</a>
+      <a href="https://docs.google.com/spreadsheets/d/12P7ayv29VJmKmgqIAlDKqGHmMhLWoqV6K6jNkqMaeJI/edit?usp=sharing" target="_blank">Google Sheets</a>
+    </div>
+    <p class="footer-text">© 2023 Dogfight Club. No rights reserved.</p>
+  </footer> -->
+
+  <script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
   <script src="{{ url_for('static', filename='scripts/registerLeaderboard.js') }}"></script>
 </body>
 </html>
