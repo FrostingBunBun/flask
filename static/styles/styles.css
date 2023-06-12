@@ -598,6 +598,10 @@ li:hover {
   gap: 5px;
 }
 
+.top-container-btn:hover {
+  background: #14070c !important;
+}
+
 .bottom-container {
   display: flex;
   align-items: center;

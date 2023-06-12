@@ -1,10 +1,10 @@
-window.addEventListener("load", function () {
-  var leftGaugeElement = document.getElementById("leftGauge");
-  leftGaugeElement.classList.add("fade-in");
+// window.addEventListener("load", function () {
+//   var leftGaugeElement = document.getElementById("leftGauge");
+//   leftGaugeElement.classList.add("fade-in");
 
-  var rightGaugeElement = document.getElementById("rightGauge");
-  rightGaugeElement.classList.add("fade-in");
-});
+//   var rightGaugeElement = document.getElementById("rightGauge");
+//   rightGaugeElement.classList.add("fade-in");
+// });
 window.addEventListener("load", function () {
   var bottomPartElement = document.querySelector(".bottomPart");
   bottomPartElement.classList.add("fade-in");
@@ -165,17 +165,17 @@ document.addEventListener("DOMContentLoaded", function () {
   // console.log("Left player's probability of winning:", leftProbability);
   // console.log("Right player's probability of winning:", rightProbability);
 
-  var percentageLeft = (leftProbability * 100).toFixed(2) + "%";
-  var percentageRight = (rightProbability * 100).toFixed(2) + "%";
+  // var percentageLeft = (leftProbability * 100).toFixed(2) + "%";
+  // var percentageRight = (rightProbability * 100).toFixed(2) + "%";
 
-  var leftPercentElement = document.getElementById("leftGauge");
-  leftPercentElement.textContent = percentageLeft;
+  // var leftPercentElement = document.getElementById("leftGauge");
+  // leftPercentElement.textContent = percentageLeft;
 
-  var rightPercentElement = document.getElementById("rightGauge");
-  rightPercentElement.textContent = percentageRight;
+  // var rightPercentElement = document.getElementById("rightGauge");
+  // rightPercentElement.textContent = percentageRight;
 
   // Example usage: update the gauge with values 60 and 40
-  updateGauge(leftProbability, rightProbability);
+  // updateGauge(leftProbability, rightProbability);
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Set initial button states
@@ -506,16 +506,16 @@ document.addEventListener("DOMContentLoaded", function () {
   // // ===================win right
 
   var newMMRwin1 = document.querySelector(".newMMRwin1");
-  newMMRwin1.innerHTML = "win case: +" + shift_left;
+  newMMRwin1.innerHTML = `<p>Win case:</p> <span>+${shift_left}</span>`;
 
   var newMMRlose1 = document.querySelector(".newMMRlose1");
-  newMMRlose1.innerHTML = "lose case: -" + shift_right;
+  newMMRlose1.innerHTML = `<p>Lose case:</p> <span>-${shift_right}</span>`;
 
   var newMMRwin2 = document.querySelector(".newMMRwin2");
-  newMMRwin2.innerHTML = "win case: +" + shift_right;
+  newMMRwin2.innerHTML = `<p>Win case:</p> <span>+${shift_right}</span>`;
 
   var newMMRlose2 = document.querySelector(".newMMRlose2");
-  newMMRlose2.innerHTML = "lose case: -" + shift_left;
+  newMMRlose2.innerHTML = `<p>Lose case:</p> <span>-${shift_left}</span>`;
 
   // ================================================================
 
@@ -576,17 +576,17 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-var backgroundImage = document.querySelector(".background-image");
+// var backgroundImage = document.querySelector(".background-image");
 
-document.addEventListener("mousemove", function (event) {
-  var mouseX = event.clientX;
-  var mouseY = event.clientY;
+// document.addEventListener("mousemove", function (event) {
+//   var mouseX = event.clientX;
+//   var mouseY = event.clientY;
 
-  var percentX = (mouseX / window.innerWidth) * 10;
-  var percentY = (mouseY / window.innerHeight) * 300;
+//   var percentX = (mouseX / window.innerWidth) * 10;
+//   var percentY = (mouseY / window.innerHeight) * 300;
 
-  backgroundImage.style.backgroundPosition = percentX + "% " + percentY + "%";
-});
+//   backgroundImage.style.backgroundPosition = percentX + "% " + percentY + "%";
+// });
 
 // Get the element where you want to display the match duration
 const matchDurationElement = document.getElementById("match-duration");
