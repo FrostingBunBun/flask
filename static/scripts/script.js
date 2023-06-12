@@ -92,8 +92,20 @@ function allowDrop(event) {
   event.preventDefault();
 }
 
+// Select the draggable elements
+const draggableElements = document.querySelectorAll('.matchmaking-list-item');
+
+// Attach the drag event listener to each draggable element
+draggableElements.forEach((element) => {
+  element.addEventListener('dragstart', drag);
+});
+
+
 function drag(event) {
+  console.log('Drag function called');
   var target = event.target;
+
+  console.log("TARGET: ", target)
 
   if (!target.classList.contains("matchmaking-list-item")) {
     event.preventDefault();
@@ -101,6 +113,7 @@ function drag(event) {
   }
 
   let string = target.textContent;
+  console.log("STRING: ", string)
   let mmr_number = null;
   let winrate = null;
 

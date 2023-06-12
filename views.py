@@ -87,7 +87,7 @@ def mod_required(func):
         is_mod = session.get('mod')
         
         if not is_mod:
-            return redirect(url_for('views.login'))
+            return redirect(url_for('views.main'))
         
         return func(*args, **kwargs)
     
@@ -678,16 +678,45 @@ def main():
     print(session.items())
     print("==========================")
     username = ""
+
     if session.get('logged_in'):
         username = session.get('username', '')
         if session.get('mod'):
             mod = "MOD ACCOUNT"
+            is_mod = True
         else:
             mod = ""
-        return render_template("main_logged.html", username=username, mod=mod)
+            is_mod = False
+        
+
+        # Connect to the database
+        conn = sqlite3.connect('./db/players_data.db')
+        cursor = conn.cursor()
+
+        # Assuming the 'players' table has 'name' and 'mmr' columns
+        name = username
+
+        # Execute the SELECT query
+        cursor.execute("SELECT mmr FROM Players WHERE player_name = ?", (name,))
+        result = cursor.fetchone()
+
+        if result:
+            mmr = result[0]
+            print(f"The MMR for {name} is: {mmr}")
+        else:
+            print(f"No MMR found for {name}")
+
+        # Close the database connection
+        conn.close()
+
+    
+
+        return render_template("main_logged.html", is_mod=is_mod, username=username, mod=mod, mmr=mmr)
     else:
         return render_template("main.html")
     
+
+
 
 @views.route('/stats')
 @login_required

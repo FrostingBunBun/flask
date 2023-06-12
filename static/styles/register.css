@@ -11,6 +11,29 @@
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
+.home-button {
+  background: linear-gradient(90deg, #73002d 0%, #f90162 99.26%);
+  border-radius: 10px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px 20px;
+
+  color: #ffffff;
+  border: none;
+  /* margin-top: 10px; */
+  transition: all 0.05s;
+}
+
+.home-button:hover {
+  cursor: pointer;
+  filter: brightness(0.9);
+}
 
 .btn:hover {
   background-color: #0056b3;

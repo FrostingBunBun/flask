@@ -16,7 +16,7 @@
         <img class="profile-pic" src="/static/pics/profile-pic.svg" />
         <p class="profile-username">{{ username }}</p>
          <span class="profile-mmr" style="color:#F90162; font-weight: 600;">{{mod}}</span>
-        <span class="profile-mmr">(0)</span>
+        <span class="profile-mmr">{{mmr}}</span>
       </div>
 
       <nav class="navigaton-container">
@@ -29,7 +29,7 @@
         <button class="navigation-item" id="stats">
           <img src="/static/icons/stats.svg" /> Statistics
         </button>
-        <button class="navigation-item" id="matchmaking">
+        <button class="navigation-item" id="matches">
           <img src="/static/icons/matches.svg" /> Matches
         </button>
         <button class="navigation-item" id="leaderboards">
@@ -84,8 +84,12 @@
             <button class="page-card-info-button">
               <img src="/static/icons/info-circle.svg" />
             </button>
-          </h3>
+            {% if is_mod %}
+            <button id="addScrim">ADD</button>
+            {% endif %}
 
+          </h3>
+          
           <div class="page-card-content">There are none for now</div>
         </div>
   
@@ -106,5 +110,6 @@
     </div>
 
     <script src="{{ url_for('static', filename='scripts/main_logged.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/sidebar.js') }}"></script>
   </body>
 </html>
