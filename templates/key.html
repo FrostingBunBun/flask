@@ -1,25 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registration Success</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/entry.css') }}">
-</head>
-<body>
-    <div class="container">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/entry.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/main_logged.css') }}"
+    />
+  </head>
+  <body>
+    <div class="full-page-container">
+      <div class="page-card container">
         <h1>Registration Successful</h1>
-        <p>Your registration is complete. Below is your unique password, DONT LOSE IT:</p>
+        <p>
+          Your registration is complete. Below is your unique password, DONT
+          LOSE IT:
+        </p>
         <p id="passwordDisplay">{{ password }}</p>
-        <button class="btn btn-primary" onclick="goToEntryPage()">Go to Entry Page</button>
+        <button class="btn btn-primary" onclick="goToEntryPage()">
+          Go to Entry Page
+        </button>
+      </div>
     </div>
-    
     <script>
-        // Function to navigate to the entry page
-        function goToEntryPage() {
-            window.location.href = "/";
-        }
+      // Function to navigate to the entry page
+      function goToEntryPage() {
+        window.location.href = "/";
+      }
     </script>
-</body>
+  </body>
 </html>
