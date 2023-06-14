@@ -41,3 +41,30 @@ function handleNavigationItemClick(event) {
 navigationItems.forEach((item) => {
   item.addEventListener("click", handleNavigationItemClick);
 });
+
+// Get the button element
+var logOutButton = document.getElementById("logout");
+
+// Add event listener to the button
+logOutButton.addEventListener("click", function () {
+  var key = "username"; // Replace with the key of the item you want to delete
+
+  // Make an AJAX request to the Flask route
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", "/delete-item", true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE) {
+      if (xhr.status === 200) {
+        var response = JSON.parse(xhr.responseText);
+        console.log(response.message);
+        window.location.href = "/login";
+        // Handle the response as needed
+      } else {
+        console.log("Error: " + xhr.status);
+        // Handle the error as needed
+      }
+    }
+  };
+  xhr.send(JSON.stringify({ key: key }));
+});

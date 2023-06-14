@@ -1,27 +1,25 @@
-window.addEventListener("load", function () {
+// window.addEventListener("load", function () {
+//   var leftGaugeElement = document.getElementById("leftGauge");
+//   leftGaugeElement.classList.add("fade-in");
 
-  var leftGaugeElement = document.getElementById("leftGauge");
-  leftGaugeElement.classList.add("fade-in");
-
-  var rightGaugeElement = document.getElementById("rightGauge");
-  rightGaugeElement.classList.add("fade-in");
-});
+//   var rightGaugeElement = document.getElementById("rightGauge");
+//   rightGaugeElement.classList.add("fade-in");
+// });
 window.addEventListener("load", function () {
   var bottomPartElement = document.querySelector(".bottomPart");
   bottomPartElement.classList.add("fade-in");
 });
 
 function convertDurationToSeconds(duration) {
-  var timeParts = duration.split(':');
+  var timeParts = duration.split(":");
   var hours = parseInt(timeParts[0]);
   var minutes = parseInt(timeParts[1]);
   var seconds = parseInt(timeParts[2]);
 
-  var totalSeconds = (hours * 3600) + (minutes * 60) + seconds;
+  var totalSeconds = hours * 3600 + minutes * 60 + seconds;
 
   return totalSeconds;
 }
-
 
 document.addEventListener("DOMContentLoaded", function () {
   console.log("LENGTH COOKIE: ", document.cookie.length);
@@ -152,10 +150,10 @@ document.addEventListener("DOMContentLoaded", function () {
     : "";
   // console.log("right Winrate value:", rightWinrateValue);
 
-  console.log("leftWinrate MATCH: ", leftWinrateValue)
-  console.log("leftWinrate MATCH TYPE: ", typeof(leftWinrateValue))
-  console.log("rightWinrate MATCH: ", rightWinrateValue)
-  console.log("rightWinrate MATCH TYPE: ",typeof(rightWinrateValue))
+  console.log("leftWinrate MATCH: ", leftWinrateValue);
+  console.log("leftWinrate MATCH TYPE: ", typeof leftWinrateValue);
+  console.log("rightWinrate MATCH: ", rightWinrateValue);
+  console.log("rightWinrate MATCH TYPE: ", typeof rightWinrateValue);
 
   var [rightProbability, leftProbability] = calculateWinProbabilities(
     leftRatingValue,
@@ -167,20 +165,17 @@ document.addEventListener("DOMContentLoaded", function () {
   // console.log("Left player's probability of winning:", leftProbability);
   // console.log("Right player's probability of winning:", rightProbability);
 
-  var percentageLeft = (leftProbability * 100).toFixed(2) + "%";
-  var percentageRight = (rightProbability * 100).toFixed(2) + "%";
+  // var percentageLeft = (leftProbability * 100).toFixed(2) + "%";
+  // var percentageRight = (rightProbability * 100).toFixed(2) + "%";
 
-  var leftPercentElement = document.getElementById("leftGauge");
-  leftPercentElement.textContent = percentageLeft;
+  // var leftPercentElement = document.getElementById("leftGauge");
+  // leftPercentElement.textContent = percentageLeft;
 
-  var rightPercentElement = document.getElementById("rightGauge");
-  rightPercentElement.textContent = percentageRight;
+  // var rightPercentElement = document.getElementById("rightGauge");
+  // rightPercentElement.textContent = percentageRight;
 
   // Example usage: update the gauge with values 60 and 40
-  updateGauge(leftProbability, rightProbability);
-
-
-
+  // updateGauge(leftProbability, rightProbability);
 
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   // Set initial button states
@@ -194,18 +189,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (leftButtonClicks === 1) {
       // First click on left button
-      console.log("Left button clicked (1st time). Changing text to 'Confirm'.");
+      console.log(
+        "Left button clicked (1st time). Changing text to 'Confirm'."
+      );
       document.getElementById("leftButton").textContent = "Confirm";
       document.getElementById("rightButton").textContent = "WON"; // Reset left button text
     } else if (leftButtonClicks === 2) {
       // Second click on left button
       console.log("Left button clicked (2nd time). Redirecting...");
       // Perform the redirect action for left button
-      var matchDurationElement = document.getElementById('match-duration');
+      var matchDurationElement = document.getElementById("match-duration");
       var duration = matchDurationElement.textContent;
 
       var totalSeconds = convertDurationToSeconds(duration);
-      console.log('Match Duration (seconds):', totalSeconds);
+      console.log("Match Duration (seconds):", totalSeconds);
       handleLeftWin();
       resetButtons();
       sessionStorage.clear();
@@ -219,18 +216,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (rightButtonClicks === 1) {
       // First click on right button
-      console.log("Right button clicked (1st time). Changing text to 'Confirm'.");
+      console.log(
+        "Right button clicked (1st time). Changing text to 'Confirm'."
+      );
       document.getElementById("rightButton").textContent = "Confirm";
       document.getElementById("leftButton").textContent = "WON"; // Reset left button text
     } else if (rightButtonClicks === 2) {
       // Second click on right button
       console.log("Right button clicked (2nd time). Redirecting...");
       // Perform the redirect action for right button
-      var matchDurationElement = document.getElementById('match-duration');
+      var matchDurationElement = document.getElementById("match-duration");
       var duration = matchDurationElement.textContent;
-          
+
       var totalSeconds = convertDurationToSeconds(duration);
-      console.log('Match Duration (seconds):', totalSeconds);
+      console.log("Match Duration (seconds):", totalSeconds);
       handleRightWin();
       resetButtons();
       sessionStorage.clear();
@@ -253,8 +252,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Example usage:
   // Assuming you have HTML buttons with ids "leftButton" and "rightButton"
-  document.getElementById("leftButton").addEventListener("click", leftButtonClicked);
-  document.getElementById("rightButton").addEventListener("click", rightButtonClicked);
+  document
+    .getElementById("leftButton")
+    .addEventListener("click", leftButtonClicked);
+  document
+    .getElementById("rightButton")
+    .addEventListener("click", rightButtonClicked);
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   function handleLeftWin() {
@@ -263,12 +266,9 @@ document.addEventListener("DOMContentLoaded", function () {
     var expected_score =
       1 /
       (1 +
-        Math.pow(
-          10,
-          Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 300
-        ));
+        Math.pow(10, Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 300));
     K = 50;
-    console.log("========================================================")
+    console.log("========================================================");
     left_mmr = parseInt(leftRatingValue[0]);
     right_mmr = parseInt(rightRatingValue[0]);
     console.log("left_mmr: ", left_mmr);
@@ -305,59 +305,55 @@ document.addEventListener("DOMContentLoaded", function () {
       leftName: leftName,
       left_new_mmr: left_new_mmr,
       rightName: rightName,
-      right_new_mmr: right_new_mmr
+      right_new_mmr: right_new_mmr,
     };
 
-    fetch('/process-data', {
-      method: 'POST',
+    fetch("/process-data", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
-      .then(response => response.json())
-      .then(responseData => {
+      .then((response) => response.json())
+      .then((responseData) => {
         // Process the response data received from the server
         console.log(responseData);
       })
-      .catch(error => {
-        console.error('Error:', error);
+      .catch((error) => {
+        console.error("Error:", error);
       });
-      // +++++++++++++++++++++++++++++++++++++++++ DATABASE STUFF
+    // +++++++++++++++++++++++++++++++++++++++++ DATABASE STUFF
 
-      
-
-
-    var matchDurationElement = document.getElementById('match-duration');
-    var duration = matchDurationElement.textContent;  
+    var matchDurationElement = document.getElementById("match-duration");
+    var duration = matchDurationElement.textContent;
     var totalSeconds = convertDurationToSeconds(duration);
     var currentTimestamp = new Date().toISOString();
 
     playerLeftWinData = {
-    playerLeft: leftName,
-    playerRight: rightName,
-    winner: leftName,
-    loser: rightName,
-    timestamp: currentTimestamp,
-    duration: totalSeconds,
-    shift: Math.abs(shift)
-    }
+      playerLeft: leftName,
+      playerRight: rightName,
+      winner: leftName,
+      loser: rightName,
+      timestamp: currentTimestamp,
+      duration: totalSeconds,
+      shift: Math.abs(shift),
+    };
 
-    fetch('/leftWonProcess', {
-      method: 'POST',
+    fetch("/leftWonProcess", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(playerLeftWinData)
+      body: JSON.stringify(playerLeftWinData),
     })
-      .then(response => response.json())
-      .then(responseData => {
+      .then((response) => response.json())
+      .then((responseData) => {
         console.log(responseData);
       })
-      .catch(error => {
-        console.error('Error:', error);
+      .catch((error) => {
+        console.error("Error:", error);
       });
-
 
     // +++++++++++++++++++++++++++++++++++++++++ DATABASE STUFF
 
@@ -365,13 +361,15 @@ document.addEventListener("DOMContentLoaded", function () {
     window.location.href = "/matchmaking/match/processing/calculate";
   }
 
-
   function handleRightWin() {
     // ====================================================================================== RIGHT WON
     // 300 orig
-    var expected_score = 1 /(1 + Math.pow(10, Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 300));
+    var expected_score =
+      1 /
+      (1 +
+        Math.pow(10, Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 300));
     K = 50;
-    console.log("========================================================")
+    console.log("========================================================");
     left_mmr = parseInt(leftRatingValue[0]);
     right_mmr = parseInt(rightRatingValue[0]);
     console.log("left_mmr: ", left_mmr);
@@ -408,84 +406,76 @@ document.addEventListener("DOMContentLoaded", function () {
       leftName: leftName,
       left_new_mmr: left_new_mmr,
       rightName: rightName,
-      right_new_mmr: right_new_mmr
+      right_new_mmr: right_new_mmr,
     };
 
-    fetch('/process-data', {
-      method: 'POST',
+    fetch("/process-data", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
-      .then(response => response.json())
-      .then(responseData => {
+      .then((response) => response.json())
+      .then((responseData) => {
         // Process the response data received from the server
         console.log(responseData);
       })
-      .catch(error => {
-        console.error('Error:', error);
+      .catch((error) => {
+        console.error("Error:", error);
       });
     // +++++++++++++++++++++++++++++++++++++++++ DATABASE STUFF
 
-      
-
-
-    var matchDurationElement = document.getElementById('match-duration');
-    var duration = matchDurationElement.textContent;  
+    var matchDurationElement = document.getElementById("match-duration");
+    var duration = matchDurationElement.textContent;
     var totalSeconds = convertDurationToSeconds(duration);
     var currentTimestamp = new Date().toISOString();
 
     playerLeftWinData = {
-    playerLeft: leftName,
-    playerRight: rightName,
-    winner: rightName,
-    loser: leftName,
-    timestamp: currentTimestamp,
-    duration: totalSeconds,
-    shift: Math.abs(shift)
-    }
+      playerLeft: leftName,
+      playerRight: rightName,
+      winner: rightName,
+      loser: leftName,
+      timestamp: currentTimestamp,
+      duration: totalSeconds,
+      shift: Math.abs(shift),
+    };
 
-    fetch('/rightWonProcess', {
-      method: 'POST',
+    fetch("/rightWonProcess", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(playerLeftWinData)
+      body: JSON.stringify(playerLeftWinData),
     })
-      .then(response => response.json())
-      .then(responseData => {
+      .then((response) => response.json())
+      .then((responseData) => {
         console.log(responseData);
       })
-      .catch(error => {
-        console.error('Error:', error);
+      .catch((error) => {
+        console.error("Error:", error);
       });
-
 
     // +++++++++++++++++++++++++++++++++++++++++ DATABASE STUFF
 
     // ====================================================================================== RIGHT WON
     window.location.href = "/matchmaking/match/processing/calculate";
   }
-
-
-
-
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-
-
   var leftRatingElement = document.querySelector(".rating1");
-  var leftRatingValue = leftRatingElement ? leftRatingElement.textContent.trim().match(/\d+/) : "";
+  var leftRatingValue = leftRatingElement
+    ? leftRatingElement.textContent.trim().match(/\d+/)
+    : "";
 
   var rightRatingElement = document.querySelector(".rating2");
-  var rightRatingValue = rightRatingElement ? rightRatingElement.textContent.trim().match(/\d+/) : "";
+  var rightRatingValue = rightRatingElement
+    ? rightRatingElement.textContent.trim().match(/\d+/)
+    : "";
 
   left_mmr = parseInt(leftRatingValue[0]);
   right_mmr = parseInt(rightRatingValue[0]);
-
-
 
   // ===================win left
   var expected_score_left =
@@ -515,22 +505,19 @@ document.addEventListener("DOMContentLoaded", function () {
   // console.log("SHIFTTTTT right win: ", shift_right)
   // // ===================win right
 
-  var newMMRwin1 = document.querySelector('.newMMRwin1');
-  newMMRwin1.innerHTML = "win case: +" + shift_left;
+  var newMMRwin1 = document.querySelector(".newMMRwin1");
+  newMMRwin1.innerHTML = `<p>Win case:</p> <span>+${shift_left}</span>`;
 
   var newMMRlose1 = document.querySelector(".newMMRlose1");
-  newMMRlose1.innerHTML = "lose case: -" + shift_right;
+  newMMRlose1.innerHTML = `<p>Lose case:</p> <span>-${shift_right}</span>`;
 
   var newMMRwin2 = document.querySelector(".newMMRwin2");
-  newMMRwin2.innerHTML = "win case: +" + shift_right;
+  newMMRwin2.innerHTML = `<p>Win case:</p> <span>+${shift_right}</span>`;
 
   var newMMRlose2 = document.querySelector(".newMMRlose2");
-  newMMRlose2.innerHTML = "lose case: -" + shift_left;
+  newMMRlose2.innerHTML = `<p>Lose case:</p> <span>-${shift_left}</span>`;
 
   // ================================================================
-
-
-
 
   const leftName = document.getElementById("playerName1").textContent;
   const rightName = document.getElementById("playerName2").textContent;
@@ -582,58 +569,27 @@ document.addEventListener("DOMContentLoaded", function () {
       setDefaultAvatar("2vsImg");
     });
 
-
-
-
-
   function setDefaultAvatar(imageId) {
     const defaultImageUrl = "https://my.catgirls.forsale/QukeB047.png"; // Replace with your default image URL
     const avatarImage = document.getElementById(imageId);
     avatarImage.src = defaultImageUrl;
   }
 });
-// Get the button element
-var logOutButton = document.getElementById('logout');
 
-// Add event listener to the button
-logOutButton.addEventListener('click', function() {
-    var key = 'username'; // Replace with the key of the item you want to delete
-    
-    // Make an AJAX request to the Flask route
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/delete-item', true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                console.log(response.message);
-                window.location.href = "/login"
-                // Handle the response as needed
-            } else {
-                console.log('Error: ' + xhr.status);
-                // Handle the error as needed
-            }
-        }
-    };
-    xhr.send(JSON.stringify({ 'key': key }));
-});
+// var backgroundImage = document.querySelector(".background-image");
 
-var backgroundImage = document.querySelector('.background-image');
+// document.addEventListener("mousemove", function (event) {
+//   var mouseX = event.clientX;
+//   var mouseY = event.clientY;
 
-document.addEventListener('mousemove', function(event) {
-  var mouseX = event.clientX;
-  var mouseY = event.clientY;
-  
-  var percentX = (mouseX / window.innerWidth) * 10;
-  var percentY = (mouseY / window.innerHeight) * 300;
-  
-  backgroundImage.style.backgroundPosition = percentX + '% ' + percentY + '%';
-});
+//   var percentX = (mouseX / window.innerWidth) * 10;
+//   var percentY = (mouseY / window.innerHeight) * 300;
 
+//   backgroundImage.style.backgroundPosition = percentX + "% " + percentY + "%";
+// });
 
 // Get the element where you want to display the match duration
-const matchDurationElement = document.getElementById('match-duration');
+const matchDurationElement = document.getElementById("match-duration");
 
 // Start time of the match
 const startTime = new Date();
@@ -654,12 +610,14 @@ function updateMatchDuration() {
   const seconds = Math.floor((elapsedTime % 60000) / 1000);
 
   // Format the time with leading zeros
-  const formattedTime = `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
+  const formattedTime = `${padZero(hours)}:${padZero(minutes)}:${padZero(
+    seconds
+  )}`;
 
   // Update the match duration element
   matchDurationElement.textContent = formattedTime;
 }
 
 function padZero(number) {
-  return number.toString().padStart(2, '0');
+  return number.toString().padStart(2, "0");
 }
