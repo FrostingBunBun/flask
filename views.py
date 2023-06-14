@@ -315,7 +315,35 @@ def matchmaking():
     print(session.items())
     print("==========================")
     my_dict2 = nameMmr_dict
-    return render_template("matchmaking.html", my_dict=nameMmr_dict, my_dict2=my_dict2, username=username)
+
+# Connect to the database
+    conn = sqlite3.connect('./db/players_data.db')
+    cursor = conn.cursor()
+    # Assuming the 'players' table has 'name' and 'mmr' columns
+    name = username
+    # Execute the SELECT query
+    cursor.execute("SELECT mmr FROM Players WHERE player_name = ?", (name,))
+    result = cursor.fetchone()
+    if result:
+        mmr = result[0]
+        print(f"The MMR for {name} is: {mmr}")
+    else:
+        print(f"No MMR found for {name}")
+    # Close the database connection
+    conn.close()
+
+    if session.get('logged_in'):
+        username = session.get('username', '')
+        if session.get('mod'):
+
+            is_mod = True
+        else:
+
+            is_mod = False
+
+    return render_template("matchmaking.html", my_dict=nameMmr_dict, 
+                           my_dict2=my_dict2, username=username, 
+                           mmr=mmr, is_mod=is_mod)
 
 
 
