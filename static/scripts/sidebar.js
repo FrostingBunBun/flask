@@ -24,9 +24,27 @@ function handleNavigationItemClick(event) {
     case "matches":
       window.location.href = "/matches"; // Replace "/matches" with the desired path for the "Matches" button
       break;
-    case "matchmaking":
-      window.location.href = "/matchmaking"; // Replace "/matches" with the desired path for the "Matches" button
-      break;
+
+      case "matchmaking":
+        // Send an AJAX request to the server to check if the user is a moderator
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/check_mod_status", true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var isModerator = JSON.parse(xhr.responseText).is_moderator;
+                // Redirect the user based on their moderator status
+                if (isModerator) {
+                    window.location.href = "/matchmaking";
+                    // console.log("TRUE: ", isModerator)
+                } else {
+                  // console.log("FALSE: ", isModerator)
+                    window.location.href = "/matchmaking/spectate";
+                }
+            }
+        };
+        xhr.send();
+        break;
+    
     case "leaderboards":
       window.location.href = "/leaderboards"; // Replace "/leaderboard" with the desired path for the "Leaderboard" button
       break;
@@ -68,3 +86,5 @@ logOutButton.addEventListener("click", function () {
   };
   xhr.send(JSON.stringify({ key: key }));
 });
+
+

@@ -1,8 +1,7 @@
-var login = document.getElementById("matchmaking");
-login.addEventListener("click", function() {
-    // Redirect to the registration page or perform necessary actions
-    window.location.href = "/matchmaking";
-});
+
+
+
+
 
 // Get the button element
 var logOutButton = document.getElementById('logout');
@@ -97,3 +96,5 @@ const facts = [
   // maybe put it somewhere on the main pages, not sure if its a good idea
   changeFact();
   setInterval(changeFact, 10000);
+
+

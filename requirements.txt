@@ -8,3 +8,5 @@ numpy==1.23.5
 protobuf==4.23.2
 python-dotenv==1.0.0
 scipy==1.10.1
+flask-socketio
+eventlet

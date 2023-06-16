@@ -13,6 +13,7 @@ from flask import jsonify, request
 import difflib
 from collections import defaultdict
 import math
+from flask_socketio import SocketIO, emit
 
 
 import numpy as np
@@ -700,6 +701,22 @@ def test():
     return render_template("test.html", var=var)
 
 
+
+
+@views.route("/matchmaking/spectate")
+def spectate():
+    return render_template("spectate.html")
+
+
+@views.route('/check_mod_status')
+def check_mod_status():
+    is_moderator = session.get('mod')
+    return jsonify({'is_moderator': is_moderator})
+
+
+
+
+
 @views.route("/main")
 def main():
     print("==========================")
@@ -716,6 +733,7 @@ def main():
         else:
             mod = ""
             is_mod = False
+
         
 
         # Connect to the database
