@@ -23,6 +23,9 @@ function handleNavigationItemClick(event) {
     case "matchmaking":
       window.location.href = "/matchmaking";
       break;
+    case "matches":
+      window.location.href = "/matches"; // Replace "/matches" with the desired path for the "Matches" button
+      break;
     case "leaderboards":
       window.location.href = "/leaderboards";
       break;
