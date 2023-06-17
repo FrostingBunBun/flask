@@ -1,8 +1,7 @@
 // Get the navigation buttons
 const navigationItems = document.querySelectorAll(".navigation-item");
 
-
-const profileUsername = document.querySelector('.profile-username');
+const profileUsername = document.querySelector(".profile-username");
 const usernameContent = profileUsername.textContent;
 
 console.log(usernameContent);
@@ -15,20 +14,22 @@ function handleNavigationItemClick(event) {
   // Navigate the user to the corresponding path based on the ID
   switch (itemId) {
     case "main":
-      window.location.href = "/main"; // Replace "/home" with the desired path for the "Home" button
+      window.location.href = "/main";
       break;
- 
+
     case "stats":
-      window.location.href = "/stats/" + usernameContent; // Replace "/statistics" with the desired path for the "Statistics" button
+      window.location.href = "/stats/" + usernameContent;
       break;
     case "matchmaking":
-      window.location.href = "/matches"; // Replace "/matches" with the desired path for the "Matches" button
+      window.location.href = "/matchmaking";
       break;
     case "leaderboards":
-      window.location.href = "/leaderboards"; // Replace "/leaderboard" with the desired path for the "Leaderboard" button
+      window.location.href = "/leaderboards";
+      break;
+    case "matches":
+      window.location.href = "/matches";
       break;
     default:
-      // Handle unknown button clicks or add more cases for additional buttons
       console.log("Unknown button clicked");
       break;
   }
