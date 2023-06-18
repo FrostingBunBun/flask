@@ -9,6 +9,7 @@
     />
     <meta http-equiv="pragma" content="no-cache" />
     <meta http-equiv="expires" content="0" />
+    <button onclick="goBack()">back</button>
     <title>Match</title>
     <link
       rel="stylesheet"
@@ -64,10 +65,11 @@
               <p>win case:</p>
             </div>
             <div class="newMMRlose1 player-info-field"><p>lose case:</p></div>
-
+            {% if is_mod %}
             <button class="leftButton primary-button" id="leftButton">
               WON
             </button>
+            {% endif %}
           </div>
         </div>
         <div class="player">
@@ -87,18 +89,22 @@
               <p>win case:</p>
             </div>
             <div class="newMMRlose2 player-info-field"><p>lose case:</p></div>
+            {% if is_mod %}
             <button class="rightButton primary-button" id="rightButton">
               WON
             </button>
+            {% endif %}
           </div>
         </div>
       </div>
 
       <div class="bottomPart">
         <div class="button-container">
+          {% if is_mod %}
           <button class="toMaking top-container-btn" id="toMaking">
             Cancel
           </button>
+          {% endif %}
         </div>
 
         <div id="error-message" class="error-message"></div>
@@ -106,6 +112,7 @@
         <script src="{{ url_for('static', filename='scripts/match.js') }}"></script>
         <script src="{{ url_for('static', filename='scripts/sidebar.js') }}"></script>
       </div>
+
     </div>
   </body>
 

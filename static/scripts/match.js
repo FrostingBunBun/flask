@@ -622,3 +622,7 @@ function updateMatchDuration() {
 function padZero(number) {
   return number.toString().padStart(2, "0");
 }
+
+function goBack() {
+  history.back();
+}

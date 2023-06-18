@@ -76,6 +76,7 @@ def login_required(f):
             return f(*args, **kwargs)
         else:
             return render_template('unauthorized.html')
+            print('qwe')
 
     return decorated_function
 
@@ -580,7 +581,7 @@ def sendJet():
 
 @views.route("/matchmaking/match", methods=['GET', 'POST'])
 @login_required
-@mod_required
+# @mod_required
 def match():
 
     
@@ -612,6 +613,9 @@ def match():
     print(session.items())
     print("==========================")
 
+
+    is_mod = session.get('mod') is not None
+
     return render_template("match.html",
                            leftNAME=leftNAME,
                            leftMMR=leftMMR,
@@ -619,7 +623,7 @@ def match():
                            rightNAME=rightNAME,
                            rightMMR=rightMMR,
                            rightWINRATE=rightWINRATE,
-                           username=username)
+                           username=username, is_mod=is_mod)
 
 
 

@@ -38,7 +38,7 @@ function handleNavigationItemClick(event) {
                     // console.log("TRUE: ", isModerator)
                 } else {
                   // console.log("FALSE: ", isModerator)
-                    window.location.href = "/matchmaking/spectate";
+                    window.location.href = "/matchmaking/match";
                 }
             }
         };
