@@ -357,6 +357,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // +++++++++++++++++++++++++++++++++++++++++ DATABASE STUFF
 
+    //
+    // HERE
+    //
     // ====================================================================================== LEFT WON
     window.location.href = "/matchmaking/match/processing/calculate";
   }
@@ -502,7 +505,6 @@ document.addEventListener("DOMContentLoaded", function () {
   } else {
     var shift_right = Math.abs(Math.round(K * (0 - expected_score_right)));
   }
-  // console.log("SHIFTTTTT right win: ", shift_right)
   // // ===================win right
 
   var newMMRwin1 = document.querySelector(".newMMRwin1");
@@ -535,7 +537,6 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error(data.error);
         setDefaultAvatar("1vsImg");
       } else {
-        // console.log("DAAAAAAAAAAAA BLIAT")
         const avatarUrl = data.avatar_url;
         const avatarImage = document.getElementById("1vsImg");
         avatarImage.src = avatarUrl;
