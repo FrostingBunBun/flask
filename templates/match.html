@@ -9,7 +9,6 @@
     />
     <meta http-equiv="pragma" content="no-cache" />
     <meta http-equiv="expires" content="0" />
-    <button onclick="goBack()">back</button>
     <title>Match</title>
     <link
       rel="stylesheet"
@@ -28,6 +27,9 @@
     />
   </head>
 <div>
+  
+
+  <button onclick="goBack()">back</button>
   <div>username Left: {{leftNAME}}</div>
   <div>MMR Left: {{leftMMR}}</div>
   <div>winrate Left: {{leftWINRATE}}</div>
@@ -40,6 +42,7 @@
 </div>
   <body>
     <div class="match-page-container">
+      
       <div class="containerTimer">
         <p class="match-duration" class="hidden">
           Match Duration: <span id="match-duration">00:00:00</span>
@@ -65,6 +68,29 @@
               <p>win case:</p>
             </div>
             <div class="newMMRlose1 player-info-field"><p>lose case:</p></div>
+
+            <div class="name-list-container">
+              test list left (modal)
+              <ul id="nameList">
+                {% set names = my_dict.keys()|list %}
+                {% set index = names.index(leftNAME) %}
+                {% set start = index - 4 if index >= 4 else 0 %}
+                {% set end = start + 9 if start + 9 <= names|length else names|length %}
+                {% set selected_names = names[start:end] %}
+            
+                {% for name in selected_names %}
+                  {% set value = my_dict[name] %}
+                  <li class="name-list-item matchmaking-list-item" draggable="true">
+                    {{ name }}
+                    <span id="flag_{{ name }}">({{ value[0] }})</span>
+                    <span id="flag_{{ name }}">({{ value[1] }}%)</span>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+            
+            
+
             {% if is_mod %}
             <button class="leftButton primary-button" id="leftButton">
               WON
@@ -89,6 +115,49 @@
               <p>win case:</p>
             </div>
             <div class="newMMRlose2 player-info-field"><p>lose case:</p></div>
+            <!-- TEMP STYLE -->
+            <style> 
+              .name-list-container {
+                font-size: 12px; /* Adjust the font size as needed */
+                line-height: 1.2; /* Adjust the line height as needed */
+                margin: 0;
+                padding: 0;
+                list-style: none;
+              }
+            
+              .name-list-item {
+                margin: 5px;
+                padding: 2px 5px; /* Adjust the padding as needed */
+              }
+            
+              .name-list-item span {
+                display: inline-block;
+                margin-left: 5px; /* Adjust the spacing between name and values */
+              }
+            </style>
+
+            
+<div class="name-list-container">
+  <p>test list right (modal)</p>
+  <ul id="nameList">
+    {% set names = my_dict.keys()|list %}
+    {% set index = names.index(rightNAME) %}
+    {% set start = index - 4 if index >= 4 else 0 %}
+    {% set end = start + 9 if start + 9 <= names|length else names|length %}
+    {% set selected_names = names[start:end] %}
+
+    {% for name in selected_names %}
+      {% set value = my_dict[name] %}
+      <li class="name-list-item matchmaking-list-item" draggable="true">
+        {{ name }}
+        <span id="flag_{{ name }}">({{ value[0] }})</span>
+        <span id="flag_{{ name }}">({{ value[1] }}%)</span>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+
+
             {% if is_mod %}
             <button class="rightButton primary-button" id="rightButton">
               WON

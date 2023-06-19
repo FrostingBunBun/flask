@@ -754,3 +754,13 @@
 .top-container-btn:hover {
   background: #14070c !important;
 }
+
+.name-list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.name-list-item {
+  margin-bottom: 10px;
+}

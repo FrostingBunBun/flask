@@ -307,6 +307,7 @@ def matchmaking():
 
     for i in range(len(flat_names)):
         nameMmr_dict[flat_names[i]] = flat_mmrs[i], winrate_list[i]
+
     username = ''
     if 'username' in session:
         username = session['username']
@@ -616,6 +617,52 @@ def match():
 
     is_mod = session.get('mod') is not None
 
+
+
+    # Connect to the database
+    conn = sqlite3.connect('./db/players_data.db')
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT player_name FROM Players ORDER BY mmr DESC')
+    player_names = [row[0] for row in cursor.fetchall()]
+    cursor.execute('SELECT mmr FROM Players ORDER BY mmr DESC')
+    mmr_values = [row[0] for row in cursor.fetchall()]
+    cursor.execute('SELECT total_matches FROM Players ORDER BY mmr DESC')
+    total_matches_values = [row[0] for row in cursor.fetchall()]
+    cursor.execute('SELECT wins FROM Players ORDER BY mmr DESC')
+    wins_values = [row[0] for row in cursor.fetchall()]
+    cursor.execute('SELECT losses FROM Players ORDER BY mmr DESC')
+    losses_values = [row[0] for row in cursor.fetchall()]
+    
+
+    # Commit the changes and close the connection
+    conn.commit()
+    conn.close()
+
+
+    playersWinLose = []
+    for x in range(len(wins_values)):
+        playersWinLose.append([str(wins_values[x]), str(losses_values[x])])
+
+    winrate_list = []
+    for player in playersWinLose:
+        wins = int(player[0])
+        losses = int(player[1])
+        winrate = "{:.2f}".format((wins / (wins + losses)) * 100, 2) if wins + losses > 0 else 0
+        winrate_list.append(winrate)
+
+    nameMmr_dict = {}
+
+    for i in range(len(flat_names)):
+        nameMmr_dict[flat_names[i]] = mmr_values[i], winrate_list[i]
+
+    names_around_left = get_names_around(player_names, leftNAME)
+    names_around_right = get_names_around(player_names, rightNAME)
+    print("LEFT NAME: ", leftNAME)
+    print("RIGHT NAME: ", rightNAME)
+    print("111111111111111: ", names_around_left)
+    print("222222222222222: ", names_around_right)
+
     return render_template("match.html",
                            leftNAME=leftNAME,
                            leftMMR=leftMMR,
@@ -623,11 +670,22 @@ def match():
                            rightNAME=rightNAME,
                            rightMMR=rightMMR,
                            rightWINRATE=rightWINRATE,
-                           username=username, is_mod=is_mod)
+                           username=username, is_mod=is_mod,
+                           my_dict=nameMmr_dict,
+                           names_around_left=names_around_left,
+                           names_around_right=names_around_right)
 
 
 
-
+def get_names_around(players, desired_name):
+    if desired_name not in players:
+        return []
+    
+    index = players.index(desired_name)
+    start_index = max(0, index - 4)
+    end_index = min(len(players), index + 4)
+    names_around = players[start_index:end_index]
+    return names_around
 
 @views.route("/processUserInfo/<string:userInfo>", methods=['POST'])
 @login_required
