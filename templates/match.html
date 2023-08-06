@@ -1,193 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      http-equiv="cache-control"
-      content="no-cache, no-store, must-revalidate"
-    />
-    <meta http-equiv="pragma" content="no-cache" />
-    <meta http-equiv="expires" content="0" />
-    <title>Match</title>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{{ url_for('static', filename='styles/match.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{{ url_for('static', filename='styles/main.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{{ url_for('static', filename='styles/main_logged.css') }}"
-    />
-  </head>
-<div>
-  
 
-  <button onclick="goBack()">back</button>
-  <div>username Left: {{leftNAME}}</div>
-  <div>MMR Left: {{leftMMR}}</div>
-  <div>winrate Left: {{leftWINRATE}}</div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="pragma" content="no-cache" />
+  <meta http-equiv="expires" content="0" />
+  <title>Match</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/match.css') }}" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main.css') }}" />
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main_logged.css') }}" />
+</head>
+
+<!-- <div>
+  <button onclick="goBack()">Back</button>
+  <div>Username Left: <span id="leftNAME"></span></div>
+  <div>MMR Left: <span id="leftMMR"></span></div>
+  <div>Winrate Left: <span id="leftWINRATE"></span></div>
+
+  <div>Username Right: <span id="rightNAME"></span></div>
+  <div>MMR Right: <span id="rightMMR"></span></div>
+  <div>Winrate Right: <span id="rightWINRATE"></span></div>
+</div> -->
+
+<body>
+  <div class="match-page-container">
+
+    <div class="containerTimer">
+      <p class="match-duration" class="hidden">
+        Match Duration: <span id="match-duration">00:00:00</span>
+      </p>
+    </div>
+    <div class="playerIdle">
+    <div id="noMatch">No current match</div>
+    </div>
 
 
-  <div>username RIght: {{rightNAME}}</div>
-  <div>MMR Right: {{rightMMR}}</div>
-  <div>winrate Right: {{rightWINRATE}}</div>
-  <div></div>
-</div>
-  <body>
-    <div class="match-page-container">
-      
-      <div class="containerTimer">
-        <p class="match-duration" class="hidden">
-          Match Duration: <span id="match-duration">00:00:00</span>
-        </p>
-      </div>
 
-      <div class="match-container" id="match-container">
-        <div class="player">
-          <div class="player-image">
-            <img class="vs-image" id="1vsImg" src="" alt="Avatar" />
-          </div>
-
-          <div class="player-info">
-            <div class="boxName">
-              <h3 id="playerName1">{{ leftNAME }}</h3>
-            </div>
-            <div class="rating1">({{ leftMMR }})</div>
-            <div class="additionalNumber1 player-info-field">
-              <p>Winrate:</p>
-              <span>{{ leftWINRATE }}</span>
-            </div>
-            <div style="margin-top: 35px" class="newMMRwin1 player-info-field">
-              <p>win case:</p>
-            </div>
-            <div class="newMMRlose1 player-info-field"><p>lose case:</p></div>
-
-            <div class="name-list-container">
-              test list left (modal)
-              <ul id="nameList">
-                {% set names = my_dict.keys()|list %}
-                {% set index = names.index(leftNAME) %}
-                {% set start = index - 4 if index >= 4 else 0 %}
-                {% set end = start + 9 if start + 9 <= names|length else names|length %}
-                {% set selected_names = names[start:end] %}
-            
-                {% for name in selected_names %}
-                  {% set value = my_dict[name] %}
-                  <li class="name-list-item matchmaking-list-item" draggable="true">
-                    {{ name }}
-                    <span id="flag_{{ name }}">({{ value[0] }})</span>
-                    <span id="flag_{{ name }}">({{ value[1] }}%)</span>
-                  </li>
-                {% endfor %}
-              </ul>
-            </div>
-            
-            
-
-            {% if is_mod %}
-            <button class="leftButton primary-button" id="leftButton">
-              WON
-            </button>
-            {% endif %}
-          </div>
+    <div class="match-container" id="match-container">
+      <div class="player">
+        <div class="player-image">
+          <img class="vs-image" id="1vsImg" src="" alt="Avatar" />
         </div>
-        <div class="player">
-          <div class="player-image">
-            <img class="avatar-image" id="2vsImg" src="" alt="Avatar" />
+
+        <div class="player-info">
+          <div class="boxName">
+            <h3 id="playerName1"><span id="leftNAME"></span></h3>
           </div>
-          <div class="player-info">
-            <div class="boxName">
-              <h3 id="playerName2">{{ rightNAME }}</h3>
-            </div>
-            <div class="rating2">({{ rightMMR }})</div>
-            <div class="additionalNumber2 player-info-field">
-              <p>Winrate:</p>
-              <span>{{ rightWINRATE }}</span>
-            </div>
-            <div style="margin-top: 35px" class="newMMRwin2 player-info-field">
-              <p>win case:</p>
-            </div>
-            <div class="newMMRlose2 player-info-field"><p>lose case:</p></div>
-            <!-- TEMP STYLE -->
-            <style> 
-              .name-list-container {
-                font-size: 12px; /* Adjust the font size as needed */
-                line-height: 1.2; /* Adjust the line height as needed */
-                margin: 0;
-                padding: 0;
-                list-style: none;
-              }
-            
-              .name-list-item {
-                margin: 5px;
-                padding: 2px 5px; /* Adjust the padding as needed */
-              }
-            
-              .name-list-item span {
-                display: inline-block;
-                margin-left: 5px; /* Adjust the spacing between name and values */
-              }
-            </style>
-
-            
-<div class="name-list-container">
-  <p>test list right (modal)</p>
-  <ul id="nameList">
-    {% set names = my_dict.keys()|list %}
-    {% set index = names.index(rightNAME) %}
-    {% set start = index - 4 if index >= 4 else 0 %}
-    {% set end = start + 9 if start + 9 <= names|length else names|length %}
-    {% set selected_names = names[start:end] %}
-
-    {% for name in selected_names %}
-      {% set value = my_dict[name] %}
-      <li class="name-list-item matchmaking-list-item" draggable="true">
-        {{ name }}
-        <span id="flag_{{ name }}">({{ value[0] }})</span>
-        <span id="flag_{{ name }}">({{ value[1] }}%)</span>
-      </li>
-    {% endfor %}
-  </ul>
-</div>
-
-
-            {% if is_mod %}
-            <button class="rightButton primary-button" id="rightButton">
-              WON
-            </button>
-            {% endif %}
+          <div class="rating1">(<span id="leftMMR"></span>)</div>
+          <div class="additionalNumber1 player-info-field">
+            <p>Winrate:</p>
+            <span><span id="leftWINRATE"></span></span>
           </div>
-        </div>
-      </div>
+          <div style="margin-top: 35px" class="newMMRwin1 player-info-field">
+            <p>win case:</p>
+          </div>
+          <div class="newMMRlose1 player-info-field">
+            <p>lose case:</p>
+          </div>
 
-      <div class="bottomPart">
-        <div class="button-container">
+
+
+
+
           {% if is_mod %}
-          <button class="toMaking top-container-btn" id="toMaking">
-            Cancel
+          <button class="leftButton primary-button" id="leftButton">
+            WON
           </button>
           {% endif %}
         </div>
+      </div>
+      <div class="player">
+        <div class="player-image">
+          <img class="avatar-image" id="2vsImg" src="" alt="Avatar" />
+        </div>
+        <div class="player-info">
+          <div class="boxName">
+            <h3 id="playerName2"><span id="rightNAME"></h3>
+          </div>
+          <div class="rating2">(<span id="rightMMR"></span>)</div>
+          <div class="additionalNumber2 player-info-field">
+            <p>Winrate:</p>
+            <span><span id="rightWINRATE"></span>
+          </div>
+          <div style="margin-top: 35px" class="newMMRwin2 player-info-field">
+            <p>win case:</p>
+          </div>
+          <div class="newMMRlose2 player-info-field">
+            <p>lose case:</p>
+          </div>
+          <!-- TEMP STYLE -->
+          <style>
+            .name-list-container {
+              font-size: 12px;
+              /* Adjust the font size as needed */
+              line-height: 1.2;
+              /* Adjust the line height as needed */
+              margin: 0;
+              padding: 0;
+              list-style: none;
+            }
 
-        <div id="error-message" class="error-message"></div>
+            .name-list-item {
+              margin: 5px;
+              padding: 2px 5px;
+              /* Adjust the padding as needed */
+            }
 
-        <script src="{{ url_for('static', filename='scripts/match.js') }}"></script>
-        <script src="{{ url_for('static', filename='scripts/sidebar.js') }}"></script>
+            .name-list-item span {
+              display: inline-block;
+              margin-left: 5px;
+              /* Adjust the spacing between name and values */
+            }
+          </style>
+
+
+
+
+
+          {% if is_mod %}
+          <button class="rightButton primary-button" id="rightButton">
+            WON
+          </button>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="bottomPart">
+      <div class="button-container">
+        {% if is_mod %}
+        <button class="toMaking top-container-btn" id="toMaking">
+          Cancel
+        </button>
+        {% endif %}
       </div>
 
-    </div>
-  </body>
+      <div id="error-message" class="error-message"></div>
 
-  <script
-    src="https://code.jquery.com/jquery-3.7.0.js"
-    integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
-    crossorigin="anonymous"
-  ></script>
+      <script src="{{ url_for('static', filename='scripts/match.js') }}"></script>
+      <!-- <script src="{{ url_for('static', filename='scripts/sidebar.js') }}"></script> -->
+    </div>
+
+  </div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+  crossorigin="anonymous"></script>
+  
+
 </html>

@@ -9,11 +9,12 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from difflib import get_close_matches
 from datetime import date, datetime, timedelta
-from flask import jsonify, request
+from flask import jsonify, request, Response
 import difflib
 from collections import defaultdict
 import math
 from flask_socketio import SocketIO, emit
+import time
 
 
 import numpy as np
@@ -43,7 +44,7 @@ for i in range(len(flat_names)):
 
 
 
-
+match_is_going = False
 
 
 
@@ -254,6 +255,11 @@ def leaderboards():
 @mod_required
 def matchmaking():
 
+    keys_to_remove = ['leftMMR', 'leftNAME', 'leftWINRATE', 'rightMMR', 'rightNAME', 'rightWINRATE']
+    for key in keys_to_remove:
+        session.pop(key, None)
+
+
     # =========================
     # =========================
 
@@ -319,7 +325,7 @@ def matchmaking():
     print("==========================")
     my_dict2 = nameMmr_dict
 
-# Connect to the database
+    # Connect to the database
     conn = sqlite3.connect('./db/players_data.db')
     cursor = conn.cursor()
     # Assuming the 'players' table has 'name' and 'mmr' columns
@@ -343,6 +349,26 @@ def matchmaking():
         else:
 
             is_mod = False
+
+    # Connect to the SQLite database
+
+    connection = sqlite3.connect('./db/current_match.db')
+    cursor = connection.cursor()
+
+    # Get a list of all tables in the database
+    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    tables = [row[0] for row in cursor.fetchall()]
+
+    # Delete all records from each table
+    for table in tables:
+        cursor.execute(f"DELETE FROM {table};")
+        print(f"Deleted all records from table '{table}'.")
+
+    # Commit the changes and close the connection
+    connection.commit()
+    connection.close()
+
+    
 
     return render_template("matchmaking.html", my_dict=nameMmr_dict, 
                            my_dict2=my_dict2, username=username, 
@@ -580,100 +606,17 @@ def sendJet():
     return "Name received and processed successfully."
 
 
-@views.route("/matchmaking/match", methods=['GET', 'POST'])
+@views.route("/matchmaking/match/idle")
 @login_required
-# @mod_required
-def match():
 
-    
-
-    # Clear the session variables to prevent reusing old values
-    # print("SESSION ITEMS: ", session.items())
-    confirmed = session.get('confirmed')
-
-
-    print("CONFIRMED", confirmed)
-
-    # Retrieve the stored variables from the session
-    leftNAME = session.get('leftNAME')
-    leftMMR = session.get('leftMMR')
-    leftWINRATE = session.get('leftWINRATE')
-    rightNAME = session.get('rightNAME')
-    rightMMR = session.get('rightMMR')
-    rightWINRATE = session.get('rightWINRATE')
-    # print("==========================")
-    # print(session.items())
-    # print("==========================")
-    if 'username' in session:
-        username = session['username']
-    # print("==========================")
-    # print(session.items())
-    # print("==========================")
-    
-    print("==========================")
-    print(session.items())
-    print("==========================")
-
+def matchIdle():
 
     is_mod = session.get('mod') is not None
 
+    return render_template("matchIdle.html", is_mod=is_mod)
 
 
-    # Connect to the database
-    conn = sqlite3.connect('./db/players_data.db')
-    cursor = conn.cursor()
 
-    cursor.execute('SELECT player_name FROM Players ORDER BY mmr DESC')
-    player_names = [row[0] for row in cursor.fetchall()]
-    cursor.execute('SELECT mmr FROM Players ORDER BY mmr DESC')
-    mmr_values = [row[0] for row in cursor.fetchall()]
-    cursor.execute('SELECT total_matches FROM Players ORDER BY mmr DESC')
-    total_matches_values = [row[0] for row in cursor.fetchall()]
-    cursor.execute('SELECT wins FROM Players ORDER BY mmr DESC')
-    wins_values = [row[0] for row in cursor.fetchall()]
-    cursor.execute('SELECT losses FROM Players ORDER BY mmr DESC')
-    losses_values = [row[0] for row in cursor.fetchall()]
-    
-
-    # Commit the changes and close the connection
-    conn.commit()
-    conn.close()
-
-
-    playersWinLose = []
-    for x in range(len(wins_values)):
-        playersWinLose.append([str(wins_values[x]), str(losses_values[x])])
-
-    winrate_list = []
-    for player in playersWinLose:
-        wins = int(player[0])
-        losses = int(player[1])
-        winrate = "{:.2f}".format((wins / (wins + losses)) * 100, 2) if wins + losses > 0 else 0
-        winrate_list.append(winrate)
-
-    nameMmr_dict = {}
-
-    for i in range(len(flat_names)):
-        nameMmr_dict[flat_names[i]] = mmr_values[i], winrate_list[i]
-
-    names_around_left = get_names_around(player_names, leftNAME)
-    names_around_right = get_names_around(player_names, rightNAME)
-    print("LEFT NAME: ", leftNAME)
-    print("RIGHT NAME: ", rightNAME)
-    print("111111111111111: ", names_around_left)
-    print("222222222222222: ", names_around_right)
-
-    return render_template("match.html",
-                           leftNAME=leftNAME,
-                           leftMMR=leftMMR,
-                           leftWINRATE=leftWINRATE,
-                           rightNAME=rightNAME,
-                           rightMMR=rightMMR,
-                           rightWINRATE=rightWINRATE,
-                           username=username, is_mod=is_mod,
-                           my_dict=nameMmr_dict,
-                           names_around_left=names_around_left,
-                           names_around_right=names_around_right)
 
 
 
@@ -708,15 +651,36 @@ def processUserInfo(userInfo):
 
     userInfo = json.loads(userInfo)
     print("USER INFO RECEIVED")
-    leftNAME = userInfo['1name']
-    rightNAME = userInfo['2name']
-    leftMMR = cell_values[leftNAME][0]
-    rightMMR = cell_values[rightNAME][0]
-    leftWINRATE = cell_values[leftNAME][1]
-    rightWINRATE = cell_values[rightNAME][1]
+    # Check if '1name' and '2name' exist in userInfo dictionary and assign values accordingly, otherwise, use "noData"
+    if '1name' in userInfo:
+        leftNAME = userInfo['1name']
+    else:
+        leftNAME = "noData"
+    
+    if '2name' in userInfo:
+        rightNAME = userInfo['2name']
+    else:
+        rightNAME = "noData"
+    
+    # Check if the names exist in cell_values dictionary and get their values, otherwise, use "noData"
+    if leftNAME in cell_values:
+        leftMMR = cell_values[leftNAME][0]
+        leftWINRATE = cell_values[leftNAME][1]
+    else:
+        leftMMR = "noData"
+        leftWINRATE = "noData"
+    
+    if rightNAME in cell_values:
+        rightMMR = cell_values[rightNAME][0]
+        rightWINRATE = cell_values[rightNAME][1]
+    else:
+        rightMMR = "noData"
+        rightWINRATE = "noData"
+
 
     print("==============================================")
     print("==============================================")
+
 
     # print(f"1 name: {leftNAME}")
     # print(f"1 mmr: {leftMMR}")
@@ -744,12 +708,30 @@ def processUserInfo(userInfo):
     session['rightMMR'] = rightMMR
     session['rightWINRATE'] = rightWINRATE
 
+    # avatarLeft = 
+
+    conn = sqlite3.connect('user_dsAvis.db')
+    cursor = conn.cursor()
+
+  
+    conn.close()
+
+
+    current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    conn = sqlite3.connect('./db/current_match.db')
+    cursor = conn.cursor()
+
+    cursor.execute('INSERT INTO Matches (nameLeft, nameRight, mmrLeft, mmrRight, winrateLeft, winrateRight, date) VALUES (?, ?, ?, ?, ?, ?, ?)', (
+        leftNAME, rightNAME, leftMMR, rightMMR, leftWINRATE, rightWINRATE, current_time))
+    conn.commit()
+    conn.close()
+
 
     # print("cell_values: ", cell_values)
     
     # Redirect to the 'match' route
     return redirect(url_for('views.match'))
-
 
 
 
@@ -1181,6 +1163,7 @@ def profile_details_leaderboard(name):
     player_name = name
 
     streak_count, result = get_streak(player_name)
+
     if streak_count > 0:
         print(f"{player_name} has a {result} streak of {streak_count}")
     else:
@@ -1207,6 +1190,9 @@ def profile_details_leaderboard(name):
     # print("PAGE: ", page)
     # print("total_items: ", total_items)
     # print("total_pages: ", total_pages)
+
+    print("WINSSSSSSSSSSSSS: ", wins)
+    print("LOSESSSSSSSSSSSSSSS: ", losses)
 
     return render_template('stats.html', name=name, avatar_url=avatar_url, history=history, lastMatch=lastMatch, wins=wins, losses=losses, mmr=mmr, page=page, total_pages=total_pages, 
                            items_per_page=items_per_page, games_per_day=games_per_day, is_own_profile=is_own_profile, is_public=is_public, streak_count=streak_count, result=result, 
@@ -1250,6 +1236,7 @@ def get_streak(player_name):
 
         current_match_id -= 1
 
+
     if initial_result is None:
         conn.close()
         return 0, None
@@ -1258,6 +1245,8 @@ def get_streak(player_name):
     while current_match_id is not None:
         cursor.execute("SELECT * FROM Matches WHERE match_id = ?", (current_match_id,))
         match_data = cursor.fetchone()
+
+
 
         # Check if match_data is None
         if match_data is None:
@@ -1495,22 +1484,42 @@ def check_player_exists(player_name):
 
 
 
+import sqlite3
+
 def get_wins_loses_mmr(player_name):
-    conn = sqlite3.connect('./db/players_data.db')
-    cursor = conn.cursor()
+    old_db_conn = sqlite3.connect('./db/players_data.db')
+    old_db_cursor = old_db_conn.cursor()
 
-    query = "SELECT wins, losses, mmr FROM Players WHERE player_name = ?"
-    cursor.execute(query, (player_name,))
-    result = cursor.fetchone()
+    new_db_conn = sqlite3.connect('./db/matches_data.db')
+    new_db_cursor = new_db_conn.cursor()
 
-    cursor.close()
-    conn.close()
+    # Retrieve mmr from the old database
+    mmr_query = "SELECT mmr FROM Players WHERE player_name = ?"
+    old_db_cursor.execute(mmr_query, (player_name,))
+    mmr_result = old_db_cursor.fetchone()
 
-    if result:
-        wins, losses, mmr = result
-        return wins, losses, mmr
+    if mmr_result:
+        mmr = mmr_result[0]
     else:
-        return None
+        mmr = None
+
+    # Retrieve wins and losses from the new database
+    wins_query = "SELECT COUNT(*) FROM matches WHERE (playerLeft = ? OR playerRight = ?) AND winner = ?"
+    new_db_cursor.execute(wins_query, (player_name, player_name, player_name))
+    wins = new_db_cursor.fetchone()[0]
+
+    losses_query = "SELECT COUNT(*) FROM matches WHERE (playerLeft = ? OR playerRight = ?) AND loser = ?"
+    new_db_cursor.execute(losses_query, (player_name, player_name, player_name))
+    losses = new_db_cursor.fetchone()[0]
+
+    old_db_cursor.close()
+    old_db_conn.close()
+
+    new_db_cursor.close()
+    new_db_conn.close()
+
+    return wins, losses, mmr
+
 
 def get_matches_by_player(player_name, page=1, games_per_page=9999):
     conn = sqlite3.connect("./db/matches_data.db")
@@ -1735,7 +1744,7 @@ def login():
 
 @views.route('/avatar', methods=['POST'])
 @login_required
-@mod_required
+
 def get_avatar():
     name = request.form['name']  # Get the name from the request data
 
@@ -1748,7 +1757,8 @@ def get_avatar():
 
     conn.close()
 
-    matching_results = difflib.get_close_matches(name, [result[0] for result in results], n=1)
+    matching_results = difflib.get_close_matches(name, [str(result[0]) for result in results], n=1, cutoff=0.5)
+
 
     # print("TESTTTTTT: ", matching_results)
 
@@ -1764,7 +1774,7 @@ def get_avatar():
 
 @views.route('/left-avatar', methods=['POST'])
 @login_required
-@mod_required
+
 def get_left_avatar():
     name = request.form['name']  # Get the name from the request data
 
@@ -1777,7 +1787,7 @@ def get_left_avatar():
 
     conn.close()
 
-    matching_results = difflib.get_close_matches(name, [result[0] for result in results], n=1, cutoff=0.5)
+    matching_results = difflib.get_close_matches(name, [str(result[0]) for result in results], n=1, cutoff=0.5)
 
     # print("TESTTTTTT: ", matching_results)
 
@@ -1856,3 +1866,258 @@ def process_password():
 
     # Return the result as a JSON response
     return jsonify(resultEnd=resultEnd)
+
+@views.route('/clear-database', methods=['POST'])
+def clear_database():
+    if request.method == 'POST':
+        # Connect to the SQLite database
+        conn = sqlite3.connect('./db/current_match.db')
+        cursor = conn.cursor()
+
+        # Execute the SQL query to delete all records from the database table
+        cursor.execute('DELETE FROM Matches;')
+
+        # Commit the changes and close the connection
+        conn.commit()
+        conn.close()
+
+        return jsonify({'message': 'Database cleared successfully'})
+
+    return jsonify({'message': 'Invalid request'})
+
+
+
+
+
+
+
+
+
+
+@views.route("/matchmaking/match", methods=['GET', 'POST'])
+@login_required
+# @mod_required
+def match():
+
+    
+
+    # Clear the session variables to prevent reusing old values
+    # print("SESSION ITEMS: ", session.items())
+    confirmed = session.get('confirmed')
+
+
+    print("CONFIRMED", confirmed)
+
+    # Retrieve the stored variables from the session
+    leftNAME = session.get('leftNAME')
+    leftMMR = session.get('leftMMR')
+    leftWINRATE = session.get('leftWINRATE')
+    rightNAME = session.get('rightNAME')
+    rightMMR = session.get('rightMMR')
+    rightWINRATE = session.get('rightWINRATE')
+    # print("==========================")
+    # print(session.items())
+    # print("==========================")
+    if 'username' in session:
+        username = session['username']
+    # print("==========================")
+    # print(session.items())
+    # print("==========================")
+    
+    print("==========================")
+    print(session.items())
+    print("==========================")
+
+
+    is_mod = session.get('mod') is not None
+
+
+
+    # Connect to the database
+    conn = sqlite3.connect('./db/players_data.db')
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT player_name FROM Players ORDER BY mmr DESC')
+    player_names = [row[0] for row in cursor.fetchall()]
+    cursor.execute('SELECT mmr FROM Players ORDER BY mmr DESC')
+    mmr_values = [row[0] for row in cursor.fetchall()]
+    cursor.execute('SELECT total_matches FROM Players ORDER BY mmr DESC')
+    total_matches_values = [row[0] for row in cursor.fetchall()]
+    cursor.execute('SELECT wins FROM Players ORDER BY mmr DESC')
+    wins_values = [row[0] for row in cursor.fetchall()]
+    cursor.execute('SELECT losses FROM Players ORDER BY mmr DESC')
+    losses_values = [row[0] for row in cursor.fetchall()]
+    
+
+    # Commit the changes and close the connection
+    conn.commit()
+    conn.close()
+
+
+    playersWinLose = []
+    for x in range(len(wins_values)):
+        playersWinLose.append([str(wins_values[x]), str(losses_values[x])])
+
+    winrate_list = []
+    for player in playersWinLose:
+        wins = int(player[0])
+        losses = int(player[1])
+        winrate = "{:.2f}".format((wins / (wins + losses)) * 100, 2) if wins + losses > 0 else 0
+        winrate_list.append(winrate)
+
+    nameMmr_dict = {}
+    
+
+    print(len(player_names), len(mmr_values), len(winrate_list))
+    print("NAMES: ", player_names)
+    print(len(player_names))
+    print("000000000000000000000000000000000")
+    print("MMRS: ", mmr_values)
+    print(len(mmr_values))
+    print("000000000000000000000000000000000")
+    print("WINRATES: ", winrate_list)
+    print(len(winrate_list))
+
+
+    for i in range(len(player_names)):
+        nameMmr_dict[player_names[i]] = mmr_values[i], winrate_list[i]
+
+    names_around_left = get_names_around(player_names, leftNAME)
+    names_around_right = get_names_around(player_names, rightNAME)
+    print("LEFT NAME: ", leftNAME)
+    print("RIGHT NAME: ", rightNAME)
+    print("111111111111111: ", names_around_left)
+    print("222222222222222: ", names_around_right)
+
+
+
+
+    
+
+    conn = sqlite3.connect('./db/current_match.db')
+    cursor = conn.cursor()
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Matches (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nameLeft TEXT,
+        nameRight TEXT,
+        mmrLeft INTEGER,
+        mmrRight INTEGER,
+        winrateLeft REAL,
+        winrateRight REAL,
+        date TEXT
+    )
+    ''')
+    conn.commit()
+    conn.close()
+
+
+
+
+
+
+
+    
+    
+    return render_template("match.html",
+                           leftNAME=leftNAME,
+                           leftMMR=leftMMR,
+                           leftWINRATE=leftWINRATE,
+                           rightNAME=rightNAME,
+                           rightMMR=rightMMR,
+                           rightWINRATE=rightWINRATE,
+                           username=username, is_mod=is_mod,
+                           my_dict=nameMmr_dict,
+                           names_around_left=names_around_left,
+                           names_around_right=names_around_right)
+
+
+
+
+
+
+
+
+# In-memory data store to simulate ongoing match updates
+ongoing_match = {
+    "status": "Idle",
+    "name_left": None,
+    "name_right": None,
+    "mmr_left": None,
+    "mmr_right": None,
+    "winrate_left": None,
+    "winrate_right": None,
+    "date": None,
+}
+
+def generate_match_events():
+    event_name = "match_status"  # Event name for all match status updates
+
+    while True:
+        # Replace this with your actual data retrieval mechanism from the database
+        # For demo purposes, we'll use SQLite to fetch data from the database.
+        # Adjust the database path and query as per your actual database setup.
+        conn = sqlite3.connect('./db/current_match.db')
+        cursor = conn.cursor()
+
+        # Replace this query with your actual database query to retrieve match data
+        cursor.execute('SELECT id, nameLeft, nameRight, mmrLeft, mmrRight, winrateLeft, winrateRight, date FROM Matches ORDER BY id DESC LIMIT 1;')
+        row = cursor.fetchone()
+        conn.close()
+
+        # Check if there are any matches in the database and update the status accordingly
+        if row:
+            ongoing_match["status"] = "Ongoing"
+            (
+                ongoing_match["id"],
+                ongoing_match["nameLeft"],
+                ongoing_match["nameRight"],
+                ongoing_match["mmrLeft"],
+                ongoing_match["mmrRight"],
+                ongoing_match["winrateLeft"],
+                ongoing_match["winrateRight"],
+                ongoing_match["date"],
+            ) = row
+        else:
+            ongoing_match["status"] = "Idle"
+            # If there is no match data, set default values
+            (
+                ongoing_match["id"],
+                ongoing_match["nameLeft"],
+                ongoing_match["nameRight"],
+                ongoing_match["mmrLeft"],
+                ongoing_match["mmrRight"],
+                ongoing_match["winrateLeft"],
+                ongoing_match["winrateRight"],
+                ongoing_match["date"],
+            ) = None, None, None, None, None, None, None, None
+
+        # Create a dictionary containing all the match data fields
+        match_data = {
+            "status": ongoing_match["status"],
+            "nameLeft": ongoing_match["nameLeft"],
+            "nameRight": ongoing_match["nameRight"],
+            "mmrLeft": ongoing_match["mmrLeft"],
+            "mmrRight": ongoing_match["mmrRight"],
+            "winrateLeft": ongoing_match["winrateLeft"],
+            "winrateRight": ongoing_match["winrateRight"],
+            "date": ongoing_match["date"],
+        }
+
+        
+        # Convert the dictionary to JSON and yield it as an SSE event
+        # print(match_data)
+        yield f"event: {event_name}\ndata: {json.dumps(match_data)}\n\n"
+        time.sleep(1)
+
+
+
+
+
+
+@views.route('/sse-match-status')
+def sse_match_status():
+    print("/see-match-status call")
+    return Response(generate_match_events(), content_type='text/event-stream')
+

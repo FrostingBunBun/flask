@@ -1,3 +1,7 @@
+window.onload = function () {
+  localStorage.removeItem('buttonClicked');
+};
+
 // window.addEventListener("load", function () {
 //   var leftGaugeElement = document.getElementById("leftGauge");
 //   leftGaugeElement.classList.add("fade-in");
@@ -98,7 +102,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   var toMaking = document.getElementById("toMaking");
   toMaking.addEventListener("click", function () {
-    window.location.href = "/matchmaking";
+    fetch('/clear-database', { method: 'POST' })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data.message);
+        window.location.href = "/matchmaking";
+      })
+      .catch(error => {
+        console.error('Error occurred:', error);
+      });
   });
 
   var refreshFlag = sessionStorage.getItem("refreshFlag");
@@ -261,8 +273,17 @@ document.addEventListener("DOMContentLoaded", function () {
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   function handleLeftWin() {
-    // ====================================================================================== LEFT WON
 
+    if (localStorage.getItem('buttonClicked')) {
+      return;
+    }
+    // ====================================================================================== LEFT WON
+    const leftRatingElement2 = document.getElementsByClassName("rating1")[0];
+    const leftMMRElement = leftRatingElement2.querySelector("#leftMMR");
+    const rightRatingElement2 = document.getElementsByClassName("rating2")[0];
+    const rightMMRElement = rightRatingElement2.querySelector("#rightMMR");
+    leftRatingValue = leftMMRElement.textContent;
+    rightRatingValue = rightMMRElement.textContent;
     var expected_score =
       1 /
       (1 +
@@ -361,12 +382,23 @@ document.addEventListener("DOMContentLoaded", function () {
     // HERE
     //
     // ====================================================================================== LEFT WON
-    window.location.href = "/matchmaking/match/processing/calculate";
+    localStorage.setItem('buttonClicked', true);
+    // window.location.href = "/matchmaking/match/processing/calculate";
   }
 
   function handleRightWin() {
+    if (localStorage.getItem('buttonClicked')) {
+      return;
+    }
     // ====================================================================================== RIGHT WON
+    const leftRatingElement2 = document.getElementsByClassName("rating1")[0];
+    const leftMMRElement = leftRatingElement2.querySelector("#leftMMR");
+    const rightRatingElement2 = document.getElementsByClassName("rating2")[0];
+    const rightMMRElement = rightRatingElement2.querySelector("#rightMMR");
+    leftRatingValue = leftMMRElement.textContent;
+    rightRatingValue = rightMMRElement.textContent;
     // 300 orig
+
     var expected_score =
       1 /
       (1 +
@@ -462,119 +494,146 @@ document.addEventListener("DOMContentLoaded", function () {
     // +++++++++++++++++++++++++++++++++++++++++ DATABASE STUFF
 
     // ====================================================================================== RIGHT WON
-    window.location.href = "/matchmaking/match/processing/calculate";
+    localStorage.setItem('buttonClicked', true);
+    // window.location.href = "/matchmaking/match/processing/calculate";
   }
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  var leftRatingElement = document.querySelector(".rating1");
-  var leftRatingValue = leftRatingElement
-    ? leftRatingElement.textContent.trim().match(/\d+/)
-    : "";
+  const maxAttempts = 10; // Maximum number of attempts
+  let attempts = 0;
 
-  var rightRatingElement = document.querySelector(".rating2");
-  var rightRatingValue = rightRatingElement
-    ? rightRatingElement.textContent.trim().match(/\d+/)
-    : "";
+  function tryAccessElements() {
+    console.log("try to fetch data: ", attempts)
+    // Check if the maximum number of attempts has been reached
+    if (attempts >= maxAttempts) {
+      console.error("Failed to access elements after multiple attempts.");
+      return;
+    }
 
-  left_mmr = parseInt(leftRatingValue[0]);
-  right_mmr = parseInt(rightRatingValue[0]);
+    var leftRatingElement = document.querySelector(".rating1");
+    var leftRatingValue = leftRatingElement
+      ? leftRatingElement.textContent.trim().match(/\d+/)
+      : "";
 
-  // ===================win left
-  var expected_score_left =
-    1 /
-    (1 +
-      Math.pow(10, Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 300));
-  K = 50;
-  if (left_mmr < right_mmr) {
-    var shift_left = Math.abs(Math.round(K * (1 - expected_score_left)));
-  } else {
-    var shift_left = Math.abs(Math.round(K * (0 - expected_score_left)));
-  }
-  // console.log("SHIFTTTTT left win: ", shift_left)
-  // ===================win left
+    var rightRatingElement = document.querySelector(".rating2");
+    var rightRatingValue = rightRatingElement
+      ? rightRatingElement.textContent.trim().match(/\d+/)
+      : "";
 
-  // // ===================win right
-  var expected_score_right =
-    1 /
-    (1 +
-      Math.pow(10, Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 300));
-  K = 50;
-  if (left_mmr > right_mmr) {
-    var shift_right = Math.abs(Math.round(K * (1 - expected_score_right)));
-  } else {
-    var shift_right = Math.abs(Math.round(K * (0 - expected_score_right)));
-  }
-  // // ===================win right
+    // Check if both elements are successfully accessed
+    if (leftRatingValue && rightRatingValue) {
+      // Your existing code that depends on leftRatingValue and rightRatingValue
+      left_mmr = parseInt(leftRatingValue[0]);
+      right_mmr = parseInt(rightRatingValue[0]);
 
-  var newMMRwin1 = document.querySelector(".newMMRwin1");
-  newMMRwin1.innerHTML = `<p>Win case:</p> <span>+${shift_left}</span>`;
-
-  var newMMRlose1 = document.querySelector(".newMMRlose1");
-  newMMRlose1.innerHTML = `<p>Lose case:</p> <span>-${shift_right}</span>`;
-
-  var newMMRwin2 = document.querySelector(".newMMRwin2");
-  newMMRwin2.innerHTML = `<p>Win case:</p> <span>+${shift_right}</span>`;
-
-  var newMMRlose2 = document.querySelector(".newMMRlose2");
-  newMMRlose2.innerHTML = `<p>Lose case:</p> <span>-${shift_left}</span>`;
-
-  // ================================================================
-
-  const leftName = document.getElementById("playerName1").textContent;
-  const rightName = document.getElementById("playerName2").textContent;
-
-  fetch("/left-avatar", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: `name=${leftName}`,
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.error) {
-        console.error(data.error);
-        setDefaultAvatar("1vsImg");
+      // ===================win left
+      var expected_score_left =
+        1 /
+        (1 +
+          Math.pow(10, Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 300));
+      K = 50;
+      if (left_mmr < right_mmr) {
+        var shift_left = Math.abs(Math.round(K * (1 - expected_score_left)));
       } else {
-        const avatarUrl = data.avatar_url;
-        const avatarImage = document.getElementById("1vsImg");
-        avatarImage.src = avatarUrl;
+        var shift_left = Math.abs(Math.round(K * (0 - expected_score_left)));
       }
-    })
-    .catch((error) => {
-      console.error(error);
-      setDefaultAvatar("1vsImg");
-    });
 
-  fetch("/avatar", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: `name=${rightName}`,
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.error) {
-        console.error(data.error);
-        setDefaultAvatar("2vsImg");
+      // console.log("SHIFTTTTT left win: ", shift_left)
+      // ===================win left
+
+      // // ===================win right
+      var expected_score_right =
+        1 /
+        (1 +
+          Math.pow(10, Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 300));
+      K = 50;
+      if (left_mmr > right_mmr) {
+        var shift_right = Math.abs(Math.round(K * (1 - expected_score_right)));
       } else {
-        const avatarUrl = data.avatar_url;
-        const avatarImage = document.getElementById("2vsImg");
-        avatarImage.src = avatarUrl;
+        var shift_right = Math.abs(Math.round(K * (0 - expected_score_right)));
       }
-    })
-    .catch((error) => {
-      console.error(error);
-      setDefaultAvatar("2vsImg");
-    });
+      // // ===================win right
 
-  function setDefaultAvatar(imageId) {
-    const defaultImageUrl = "https://my.catgirls.forsale/QukeB047.png"; // Replace with your default image URL
-    const avatarImage = document.getElementById(imageId);
-    avatarImage.src = defaultImageUrl;
+      var newMMRwin1 = document.querySelector(".newMMRwin1");
+      newMMRwin1.innerHTML = `<p>Win case:</p> <span>+${shift_left}</span>`;
+
+
+      var newMMRlose1 = document.querySelector(".newMMRlose1");
+      newMMRlose1.innerHTML = `<p>Lose case:</p> <span>-${shift_right}</span>`;
+
+      var newMMRwin2 = document.querySelector(".newMMRwin2");
+      newMMRwin2.innerHTML = `<p>Win case:</p> <span>+${shift_right}</span>`;
+
+      var newMMRlose2 = document.querySelector(".newMMRlose2");
+      newMMRlose2.innerHTML = `<p>Lose case:</p> <span>-${shift_left}</span>`;
+
+      // ================================================================
+
+      // const leftName = document.getElementById("playerName1").textContent;
+      // const rightName = document.getElementById("playerName2").textContent;
+
+      // fetch("/left-avatar", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/x-www-form-urlencoded",
+      //   },
+      //   body: `name=${leftName}`,
+      // })
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     if (data.error) {
+      //       console.error(data.error);
+      //       setDefaultAvatar("1vsImg");
+      //     } else {
+      //       const avatarUrl = data.avatar_url;
+      //       const avatarImage = document.getElementById("1vsImg");
+      //       avatarImage.src = avatarUrl;
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     console.error(error);
+      //     setDefaultAvatar("1vsImg");
+      //   });
+
+      // fetch("/avatar", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/x-www-form-urlencoded",
+      //   },
+      //   body: `name=${rightName}`,
+      // })
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     if (data.error) {
+      //       console.error(data.error);
+      //       setDefaultAvatar("2vsImg");
+      //     } else {
+      //       const avatarUrl = data.avatar_url;
+      //       const avatarImage = document.getElementById("2vsImg");
+      //       avatarImage.src = avatarUrl;
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     console.error(error);
+      //     setDefaultAvatar("2vsImg");
+      //   });
+
+      // function setDefaultAvatar(imageId) {
+      //   const defaultImageUrl =
+      //     "https://my.catgirls.forsale/QukeB047.png"; // Replace with your default image URL
+      //   const avatarImage = document.getElementById(imageId);
+      //   avatarImage.src = defaultImageUrl;
+      // }
+    } else {
+      // If one or both elements are not available yet, retry after a short delay
+      attempts++;
+      setTimeout(tryAccessElements, 1000); // Retry after 1 second
+    }
   }
+
+  // Start the initial attempt to access elements
+  tryAccessElements();
 });
 
 // var backgroundImage = document.querySelector(".background-image");
@@ -598,26 +657,6 @@ const startTime = new Date();
 // Update the match duration every second
 setInterval(updateMatchDuration, 1000);
 
-function updateMatchDuration() {
-  // Current time
-  const currentTime = new Date();
-
-  // Calculate the elapsed time in milliseconds
-  const elapsedTime = currentTime - startTime;
-
-  // Convert elapsed time to hours, minutes, and seconds
-  const hours = Math.floor(elapsedTime / 3600000);
-  const minutes = Math.floor((elapsedTime % 3600000) / 60000);
-  const seconds = Math.floor((elapsedTime % 60000) / 1000);
-
-  // Format the time with leading zeros
-  const formattedTime = `${padZero(hours)}:${padZero(minutes)}:${padZero(
-    seconds
-  )}`;
-
-  // Update the match duration element
-  matchDurationElement.textContent = formattedTime;
-}
 
 function padZero(number) {
   return number.toString().padStart(2, "0");
@@ -625,4 +664,261 @@ function padZero(number) {
 
 function goBack() {
   history.back();
+}
+
+
+
+// Function to handle SSE events
+// function handleSSE(event) {
+//   console.log('Received SSE event:', event);
+//   if (event.type === 'match_status') {
+//     const eventData = JSON.parse(event.data);
+//     console.log('Parsed event data:', eventData);
+
+//     // Update the match status element with the new status
+//     const matchStatusElement = document.getElementById('matchStatus');
+//     matchStatusElement.innerText = eventData.status;
+
+//     if (eventData.status === 'Ongoing') {
+//       // If the match status is "Ongoing," update the player details
+//       const nameLeftElement = document.getElementById('playerName1');
+//       const mmrLeftElement = document.querySelector('.rating1');
+//       const winrateLeftElement = document.getElementById('winrateLeft');
+//       const nameRightElement = document.getElementById('playerName2');
+//       const mmrRightElement = document.querySelector('.rating2');
+//       const winrateRightElement = document.getElementById('winrateRight');
+
+//       // Update the elements with the new data
+//       nameLeftElement.innerText = eventData.nameLeft;
+//       mmrLeftElement.innerText = `(${eventData.mmrLeft})`;
+//       winrateLeftElement.innerText = eventData.winrateLeft;
+//       nameRightElement.innerText = eventData.nameRight;
+//       mmrRightElement.innerText = `(${eventData.mmrRight})`;
+//       winrateRightElement.innerText = eventData.winrateRight;
+
+
+
+//       // You can also show or hide buttons based on the match status if needed.
+//       // For example:
+//       const leftButton = document.getElementById('leftButton');
+//       const rightButton = document.getElementById('rightButton');
+//       leftButton.style.display = 'block';
+//       rightButton.style.display = 'block';
+//     } else {
+//       // If the match status is not "Ongoing," show a different UI or message
+//       const nameLeftElement = document.getElementById('playerName1');
+//       const mmrLeftElement = document.querySelector('.rating1');
+//       const winrateLeftElement = document.getElementById('winrateLeft');
+//       const nameRightElement = document.getElementById('playerName2');
+//       const mmrRightElement = document.querySelector('.rating2');
+//       const winrateRightElement = document.getElementById('winrateRight');
+
+//       // Clear the player details when there is no ongoing match
+//       nameLeftElement.innerText = '';
+//       mmrLeftElement.innerText = '';
+//       winrateLeftElement.innerText = '';
+//       nameRightElement.innerText = '';
+//       mmrRightElement.innerText = '';
+//       winrateRightElement.innerText = '';
+
+//       // You can also show or hide buttons based on the match status if needed.
+//       // For example:
+//       const leftButton = document.getElementById('leftButton');
+//       const rightButton = document.getElementById('rightButton');
+//       leftButton.style.display = 'none';
+//       rightButton.style.display = 'none';
+//     }
+//   }
+
+// }
+
+// // Connect to the SSE endpoint
+// const eventSource = new EventSource('/sse-match-status');
+
+// // Listen for SSE events and handle them using the handleSSE function
+// eventSource.onmessage = handleSSE;
+
+// eventSource.onerror = function(event) {
+//   console.error('SSE Error:', event);
+// };
+
+
+
+// // Add event listener to close the SSE connection when the page is being unloaded
+// window.addEventListener('beforeunload', function () {
+//   eventSource.close();
+// });
+
+
+
+// Function to update the data in the HTML page
+function updateData(data) {
+  // Check if the status is "Idle"
+  if (data.status === "Idle") {
+    // Hide the elements when the status is "Idle"
+    document.getElementById("match-container").style.display = "none";
+    const containerTimerElement = document.querySelector(".containerTimer");
+    const cancelBtn = document.querySelector("bottomPart fade-in")
+    if (containerTimerElement) {
+      containerTimerElement.style.display = "none";
+    }
+    if (cancelBtn) {
+      cancelBtn.stlye.display = "none";
+    }
+    const displayField = document.querySelector(".playerIdle");
+            displayField.style.display = "flex";
+
+
+    // Display a message or update the UI to indicate there is no ongoing match
+    const noMatchMessage = "There is no currently ongoing match.";
+    const noMatchElement = document.createElement("div");
+    noMatchElement.textContent = noMatchMessage;
+    const matchInfoElement = document.getElementById("matchInfo");
+    matchInfoElement.innerHTML = '';
+    matchInfoElement.appendChild(noMatchElement);
+  } else {
+    // Unhide the elements when the status is not "Idle"
+    document.getElementById("match-container").style.display = "flex";
+    const containerTimerElement = document.querySelector(".containerTimer");
+    const cancelBtn = document.querySelector("bottomPart fade-in")
+    if (containerTimerElement) {
+      containerTimerElement.style.display = "flex";
+    }
+    if (cancelBtn) {
+      cancelBtn.stlye.display = "flex";
+    }
+    const displayField = document.querySelector(".playerIdle");
+            displayField.style.display = "none";
+    // Update left side data
+    if (data.nameLeft !== null && data.nameLeft !== undefined) {
+      document.getElementById('leftNAME').textContent = data.nameLeft;
+    } else {
+      document.getElementById('leftNAME').textContent = 'N/A';
+    }
+
+    if (data.mmrLeft !== null && data.mmrLeft !== undefined) {
+      document.getElementById('leftMMR').textContent = data.mmrLeft;
+    } else {
+      document.getElementById('leftMMR').textContent = 'N/A';
+    }
+
+    if (data.winrateLeft !== null && data.winrateLeft !== undefined) {
+      document.getElementById('leftWINRATE').textContent = data.winrateLeft;
+    } else {
+      document.getElementById('leftWINRATE').textContent = 'N/A';
+    }
+
+    // Update right side data
+    if (data.nameRight !== null && data.nameRight !== undefined) {
+      document.getElementById('rightNAME').textContent = data.nameRight;
+    } else {
+      document.getElementById('rightNAME').textContent = 'N/A';
+    }
+
+    if (data.mmrRight !== null && data.mmrRight !== undefined) {
+      document.getElementById('rightMMR').textContent = data.mmrRight;
+    } else {
+      document.getElementById('rightMMR').textContent = 'N/A';
+    }
+
+    if (data.winrateRight !== null && data.winrateRight !== undefined) {
+      document.getElementById('rightWINRATE').textContent = data.winrateRight;
+    } else {
+      document.getElementById('rightWINRATE').textContent = 'N/A';
+    }
+  }
+}
+
+
+
+// Set up the SSE connection
+const eventSource = new EventSource('/sse-match-status');
+
+// Initialize a variable to store the start timestamp received from SSE
+let startTimestamp;
+
+// Listen for SSE messages and call the handleSSE function
+eventSource.addEventListener('match_status', function (event) {
+  // Parse the data sent from the server (assuming it's a JSON string)
+  const data = JSON.parse(event.data);
+
+  // Log the received SSE data to the console
+  // console.log('Received SSE data:', data);
+
+  // Update the start timestamp only if it's not null or undefined
+  if (data.date !== null && data.date !== undefined) {
+    // Store the start timestamp received from SSE
+    startTimestamp = new Date(data.date);
+  }
+
+  // Call the function to update the page with the received data
+  updateData(data);
+
+  // Fetch avatars with the updated names from SSE data
+  const leftName = data.nameLeft;
+  const rightName = data.nameRight;
+
+  fetchAvatar(leftName, '1vsImg');
+  fetchAvatar(rightName, '2vsImg');
+});
+
+// Update the match duration every second
+setInterval(updateMatchDuration, 1000);
+
+function updateMatchDuration() {
+  if (!startTimestamp) return; // Don't update if startTimestamp is not available
+
+  // Current time
+  const currentTime = new Date();
+
+  // Calculate the elapsed time in milliseconds
+  const elapsedTime = currentTime - startTimestamp;
+
+  // Convert elapsed time to hours, minutes, and seconds
+  const hours = Math.floor(elapsedTime / 3600000);
+  const minutes = Math.floor((elapsedTime % 3600000) / 60000);
+  const seconds = Math.floor((elapsedTime % 60000) / 1000);
+
+  // Function to format time with leading zeros
+  function padZero(num) {
+    return num.toString().padStart(2, '0');
+  }
+
+  // Format the time with leading zeros
+  const formattedTime = `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
+
+  // Update the match duration element
+  const matchDurationElement = document.getElementById("match-duration");
+  matchDurationElement.textContent = formattedTime;
+}
+
+function fetchAvatar(name, imageId) {
+  fetch(`/left-avatar`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: `name=${name}`,
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.error) {
+        console.error(data.error);
+        setDefaultAvatar(imageId);
+      } else {
+        const avatarUrl = data.avatar_url;
+        const avatarImage = document.getElementById(imageId);
+        avatarImage.src = avatarUrl;
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      setDefaultAvatar(imageId);
+    });
+}
+
+function setDefaultAvatar(imageId) {
+  const defaultImageUrl = "https://my.catgirls.forsale/QukeB047.png"; // Replace with your default image URL
+  const avatarImage = document.getElementById(imageId);
+  avatarImage.src = defaultImageUrl;
 }
