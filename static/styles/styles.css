@@ -525,6 +525,7 @@ li:hover {
   margin-left: -45px;
 }
 
+
 .field1Winrate,
 .field2Winrate {
   color: #979797;
@@ -803,7 +804,11 @@ li:hover {
   width: 100% !important;
   max-width: 100% !important;
 }
-
+input[type="checkbox"].checkmark {
+  /* Increase the size of the checkbox */
+  width: 20px;
+  height: 20px;
+}
 #nameList {
   display: flex;
   flex-direction: column;

@@ -23,8 +23,42 @@
   <div>MMR Right: <span id="rightMMR"></span></div>
   <div>Winrate Right: <span id="rightWINRATE"></span></div>
 </div> -->
-
+<button id="homeT">Back</button>
 <body>
+  <div class="sidebar-container">
+    <div class="profile-data">
+      <img class="profile-pic" src="/static/pics/profile-pic.svg" />
+      <p class="profile-username">{{ username }}</p>
+      <span class="profile-mmr" style="color: #f90162; font-weight: 600"
+        >{{mod}}</span
+      >
+      <span class="profile-mmr" style="color:#F90162; font-weight: 600;">MOD ACCOUNT</span>
+      <span class="profile-mmr">{{mmr}}</span>
+    </div>
+
+    <nav class="navigaton-container">
+      <button class="navigation-item" id="main">
+        <img src="/static/icons/home.svg" /> Home
+      </button>
+      <button class="navigation-item" id="matchmaking">
+        <img src="/static/icons/matchmaking.svg" /> Matchmaking
+      </button>
+      <button class="navigation-item" id="stats">
+        <img src="/static/icons/stats.svg" /> Statistics
+      </button>
+      <button class="navigation-item" id="matchmaking">
+        <img src="/static/icons/matches.svg" /> Matches
+      </button>
+      <button class="navigation-item" id="leaderboards">
+        <img src="/static/icons/leaderboard.svg" /> Leaderboard
+      </button>
+    </nav>
+
+    <button class="navigation-item" id="logout">
+      <img src="/static/icons/signout.svg" /> Sign Out
+    </button>
+  </div>
+
   <div class="match-page-container">
 
     <div class="containerTimer">
@@ -150,6 +184,7 @@
 
 <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
   crossorigin="anonymous"></script>
+  <script src="{{ url_for('static', filename='scripts/sidebar.js') }}"></script>
   
 
 </html>

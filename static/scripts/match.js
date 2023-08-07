@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
     sessionStorage.setItem("refreshFlag", "true");
 
     // Perform the page refresh
-    window.location.reload();
+    // window.location.reload();
   }
 
   // Function to update the gauge based on two values
@@ -922,3 +922,10 @@ function setDefaultAvatar(imageId) {
   const avatarImage = document.getElementById(imageId);
   avatarImage.src = defaultImageUrl;
 }
+
+
+var homeBtn = document.getElementById("homeT");
+homeBtn.addEventListener("click", function() {
+
+    history.back();
+});

@@ -191,17 +191,22 @@ def leaderboards():
 
 
     # Create a list to store the avatar URLs
+    # Create a list to store the avatar URLs
     avatar_urls = []
-
+    
     # Iterate over the names and fetch the corresponding avatar URLs from dsLinks
     for name in player_data:
+        # Assuming that name[0] contains the player's name as a string
+        name_str = str(name[0])
+    
         cursor1.execute("SELECT avatar_url, name FROM dsLinks")
         results = cursor1.fetchall()
-        matched_names = get_close_matches(name[0], [result[1] for result in results], n=1, cutoff=0.5)
-
+    
+        matched_names = get_close_matches(name_str, [str(result[1]) for result in results], n=1, cutoff=0.5)
+    
         if matched_names:
             matched_name = matched_names[0]
-            result = next((result for result in results if result[1] == matched_name), None)
+            result = next((result for result in results if str(result[1]) == matched_name), None)
             if result:
                 avatar_url = result[0]
                 avatar_urls.append(avatar_url)
@@ -209,12 +214,11 @@ def leaderboards():
                 avatar_urls.append("https://my.catgirls.forsale/QukeB047.png")
         else:
             avatar_urls.append("https://my.catgirls.forsale/QukeB047.png")
-
-
+    
     # Close the database connections
     conn1.close()
     conn2.close()
-
+    
 
 
 
@@ -1036,24 +1040,24 @@ def profile_details_leaderboard(name):
 
     conn = sqlite3.connect('user_dsAvis.db')
     cursor = conn.cursor()
-
+    
     # Execute the SELECT query with a WHERE clause to search for the name
-    cursor.execute("SELECT avatar_url FROM dsLinks WHERE name=?", (name,))
-
+    cursor.execute("SELECT avatar_url FROM dsLinks WHERE name=?", (str(name),))  # Convert name to string
+    
     # Fetch the result (URL) from the query
     result = cursor.fetchone()
-
+    
     # Check if a matching record was found
     if result:
         avatar_url = result[0]
     else:
         # No exact match found, use get_close_matches to find similar names
         cursor.execute("SELECT name FROM dsLinks")
-        all_names = [row[0] for row in cursor.fetchall()]
-
+        all_names = [str(row[0]) for row in cursor.fetchall()]  # Convert elements to strings
+    
         # Adjust the cutoff value as desired (e.g., 0.7 for a higher similarity threshold)
-        close_matches = difflib.get_close_matches(name, all_names, cutoff=0.5)
-
+        close_matches = difflib.get_close_matches(str(name), all_names, cutoff=0.5)  # Convert name to string
+    
         if close_matches:
             closest_name = close_matches[0]
             cursor.execute("SELECT avatar_url FROM dsLinks WHERE name=?", (closest_name,))
@@ -1061,9 +1065,8 @@ def profile_details_leaderboard(name):
             avatar_url = closest_result[0] if closest_result else "https://my.catgirls.forsale/QukeB047.png"
         else:
             avatar_url = "https://my.catgirls.forsale/QukeB047.png"
-
-
-    history = get_matches_by_player(name)
+    
+    history = get_matches_by_player(str(name))  # Convert name to string
     print("LENGTH OF THE HISTORY: ", len(history))
 
     if check_player_exists(name):

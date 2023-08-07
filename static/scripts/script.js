@@ -230,6 +230,10 @@ function drop(event) {
   var rightPercentElement = document.getElementById("rightGauge");
   rightPercentElement.textContent = percentageRight;
 
+  console.log("percentageLeft: ", percentageLeft)
+  console.log("percentageRight: ", percentageRight)
+  
+
   updateGauge(leftProbability, rightProbability);
 }
 
