@@ -383,7 +383,7 @@ document.addEventListener("DOMContentLoaded", function () {
     //
     // ====================================================================================== LEFT WON
     localStorage.setItem('buttonClicked', true);
-    // window.location.href = "/matchmaking/match/processing/calculate";
+    window.location.href = "/matchmaking/match/processing/calculate";
   }
 
   function handleRightWin() {
@@ -495,7 +495,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ====================================================================================== RIGHT WON
     localStorage.setItem('buttonClicked', true);
-    // window.location.href = "/matchmaking/match/processing/calculate";
+    window.location.href = "/matchmaking/match/processing/calculate";
   }
 });
 
@@ -860,8 +860,24 @@ eventSource.addEventListener('match_status', function (event) {
 
   fetchAvatar(leftName, '1vsImg');
   fetchAvatar(rightName, '2vsImg');
-});
 
+
+  
+
+
+});
+// Get the element with the class "profile-username"
+const profileUsernameElement = document.querySelector('.profile-username');
+  
+// Check if the element exists
+if (profileUsernameElement) {
+  // Get the text content of the element (which is "testAccount" in this case)
+  const username = profileUsernameElement.textContent;
+  console.log('Username:', username);
+  fetchAvatar(username, 'profilePic');
+} else {
+  console.log('Element with class "profile-username" not found.');
+}
 // Update the match duration every second
 setInterval(updateMatchDuration, 1000);
 
@@ -903,7 +919,7 @@ function fetchAvatar(name, imageId) {
     .then((response) => response.json())
     .then((data) => {
       if (data.error) {
-        console.error(data.error);
+        // console.error(data.error);
         setDefaultAvatar(imageId);
       } else {
         const avatarUrl = data.avatar_url;

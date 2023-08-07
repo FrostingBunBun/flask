@@ -1,47 +1,55 @@
 /* Styles for the popup container */
 .popup {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    background-color: rgba(41, 9, 25, 0.8);
-    color: #fff;
-    border-radius: 10px;
-    padding: 15px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
-    z-index: 9999;
-    cursor: pointer;
-    display: none;
-    animation: fadeInOut 10s linear;
-  }
-  
-  /* Styles for the popup message */
-  .popup span {
-    display: block;
-    margin-bottom: 10px;
-    font-size: 18px;
-  }
-  
-  /* Styles for the team names container */
-  .team-names {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 10px;
-    font-size: 20px;
-  }
-  
-  /* Styles for each team name */
-  .team-names span {
-    padding: 0 10px; /* Add padding around VS for better spacing */
-  }
-  
-  /* Styles for the hyperlink in the popup */
-  .popup a {
-    color: #ff8888;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(41, 9, 25, 0.8);
+  color: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  cursor: pointer;
+  display: none;
+  animation: fadeInOut 12s linear;
+}
+
+/* Styles for the popup message */
+.popup span {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+/* Styles for the team names container */
+.team-names {
+  display: flex;
+  flex-direction: column; /* Display each team name on a new line */
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+/* Styles for each team name */
+.team-names span {
+  padding: 0 10px; /* Add padding around VS for better spacing */
+}
+
+/* Styles for the hyperlink in the popup */
+.popup a {
+  display: block; /* Display the hyperlink on a new line */
+  color: #ff8888;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#popup-countdown {
+  display: flex;
+  justify-content: center; /* Center items horizontally */
+
+}
+
   /* Keyframes for the fade in and out animation */
   @keyframes fadeInOut {
     0% {

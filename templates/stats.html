@@ -5,6 +5,29 @@
   <title>Private Account Stats</title>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/stats.css') }}">
 </head>
+
+
+<link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/popup.css') }}"
+    />
+  </head>
+
+  <script src="{{ url_for('static', filename='scripts/popup.js') }}"></script>
+
+  <div class="popup" id="popup-container">
+    <span id="popup-message"></span>
+    <div class="team-names">
+      <span id="team-left"></span>
+      <span id="vs">VS</span>
+      <span id="team-right"></span>
+    </div>
+    <div id="spectate-link"></div>
+    <span id="popup-countdown"></span>
+  </div>
+
+  
 <body>
 
   <div class="tempInfo">(Win/Loss data may vary slightly due to merging old match history with the new one, this will be fixed in the new season)</div>

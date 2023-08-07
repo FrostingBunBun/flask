@@ -21,16 +21,29 @@
 
   <script src="{{ url_for('static', filename='scripts/popup.js') }}"></script>
 
-  <div class="popup" id="popup-container">
-    <span id="popup-message"></span>
-    <div class="team-names">
-      <span id="team-left"></span>
-      <span id="vs">VS</span>
-      <span id="team-right"></span>
+  
+  <div class="popup" id="popup-container" style="display: block;">
+    <!-- Top section: Match in progress -->
+    <div class="top-section">
+      <span id="popup-message">Match in progress!</span>
     </div>
-    <div id="spectate-link"></div>
-    <span id="popup-countdown"></span>
+  
+    <!-- Middle section: Team names -->
+    <div class="middle-section">
+      <div class="team-names">
+        <span id="team-left">pkqk</span>
+        <span id="vs">VS</span>
+        <span id="team-right">Prince-chan</span>
+      </div>
+    </div>
+  
+    <!-- Bottom section: Hyperlink and countdown -->
+    <div class="bottom-section">
+      <a href="#" id="spectate-link"></a>
+      <span id="popup-countdown">5</span>
+    </div>
   </div>
+  
   
   
   
@@ -40,9 +53,13 @@
     
     <div class="sidebar-container">
       <div class="profile-data">
-        <img class="profile-pic" src="/static/pics/profile-pic.svg" />
-        <p class="profile-username">{{ username }}</p>
-         <span class="profile-mmr" style="color:#F90162; font-weight: 600;">{{mod}}</span>
+        <img class="profile-pic" id="profilePic" src="/static/pics/profile-pic.svg" />
+        <a class="profile-username" href="{{ url_for('views.profile_details_leaderboard', name=username) }}">{{ username }}</a>
+        <span class="profile-mmr" style="color: #f90162; font-weight: 600">{{mod}}</span>
+        {% if is_mod %}
+        <span class="profile-mmr" style="color:#F90162; font-weight: 600;">MOD ACCOUNT</span>
+        {% endif %}
+  
         <span class="profile-mmr">{{mmr}}</span>
       </div>
 

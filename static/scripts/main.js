@@ -71,3 +71,6 @@ function changeFact() {
 // maybe put it somewhere on the main pages, not sure if its a good idea
 changeFact();
 setInterval(changeFact, 10000);
+
+
+

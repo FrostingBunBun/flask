@@ -24,15 +24,17 @@
   <div>Winrate Right: <span id="rightWINRATE"></span></div>
 </div> -->
 <button id="homeT">Back</button>
+
 <body>
   <div class="sidebar-container">
     <div class="profile-data">
-      <img class="profile-pic" src="/static/pics/profile-pic.svg" />
-      <p class="profile-username">{{ username }}</p>
-      <span class="profile-mmr" style="color: #f90162; font-weight: 600"
-        >{{mod}}</span
-      >
+      <img class="profile-pic" id="profilePic" src="/static/pics/profile-pic.svg" />
+      <a class="profile-username" href="{{ url_for('views.profile_details_leaderboard', name=username) }}">{{ username }}</a>
+      <span class="profile-mmr" style="color: #f90162; font-weight: 600">{{mod}}</span>
+      {% if is_mod %}
       <span class="profile-mmr" style="color:#F90162; font-weight: 600;">MOD ACCOUNT</span>
+      {% endif %}
+
       <span class="profile-mmr">{{mmr}}</span>
     </div>
 
@@ -67,7 +69,7 @@
       </p>
     </div>
     <div class="playerIdle">
-    <div id="noMatch">No current match</div>
+      <div id="noMatch">No current match</div>
     </div>
 
 
@@ -184,7 +186,7 @@
 
 <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
   crossorigin="anonymous"></script>
-  <script src="{{ url_for('static', filename='scripts/sidebar.js') }}"></script>
-  
+<script src="{{ url_for('static', filename='scripts/sidebar.js') }}"></script>
+
 
 </html>

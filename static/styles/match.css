@@ -152,6 +152,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.5s ease;
 }
 
 .player-image:hover img {
@@ -780,17 +781,37 @@
   margin-bottom: 10px;
 }
 #homeT {
-  position: absolute;
+  position: fixed;
   top: 10px;
   left: 10px;
-  background-color: #570202;
-  color: white;
+  background-color: rgba(41, 9, 25, 0.8);
+  color: rgb(218, 218, 218);
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease; /* Add transition property for background-color */
+  transition: background-color 0.3s ease;
 }
+
 #homeT:hover {
-  background-color: #3d0000;
+  background-color: rgba(32, 0, 16, 0.8);
+}
+
+#profilePic {
+  border-radius: 10px;
+  transition: transform 0.5s ease;
+}
+
+#profilePic:hover {
+  transform: scale(1.1);
+}
+
+.profile-username {
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.profile-username:hover {
+  color: rgba(75, 17, 46, 0.8);
 }

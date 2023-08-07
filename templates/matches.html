@@ -3,6 +3,42 @@
 <head>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/matches.css') }}">
 </head>
+
+
+
+<link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='styles/popup.css') }}"
+    />
+  </head>
+
+  <script src="{{ url_for('static', filename='scripts/popup.js') }}"></script>
+
+  <div class="popup" id="popup-container" style="display: block;">
+    <!-- Top section: Match in progress -->
+    <div class="top-section">
+      <span id="popup-message">Match in progress!</span>
+    </div>
+  
+    <!-- Middle section: Team names -->
+    <div class="middle-section">
+      <div class="team-names">
+        <span id="team-left">pkqk</span>
+        <span id="vs">VS</span>
+        <span id="team-right">Prince-chan</span>
+      </div>
+    </div>
+  
+    <!-- Bottom section: Hyperlink and countdown -->
+    <div class="bottom-section">
+      <a href="#" id="spectate-link"></a>
+      <span id="popup-countdown">5</span>
+    </div>
+  </div>
+
+
+
 <body>
     <button id="back">Back</button>
       <table>

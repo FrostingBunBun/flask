@@ -98,3 +98,40 @@ const facts = [
   setInterval(changeFact, 10000);
 
 
+// Get the element with the class "profile-username"
+const profileUsernameElement = document.querySelector('.profile-username');
+  
+// Check if the element exists
+if (profileUsernameElement) {
+  // Get the text content of the element (which is "testAccount" in this case)
+  const username = profileUsernameElement.textContent;
+  console.log('Username:', username);
+  fetchAvatar(username, 'profilePic');
+} else {
+  console.log('Element with class "profile-username" not found.');
+}
+
+function fetchAvatar(name, imageId) {
+    fetch(`/left-avatar`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `name=${name}`,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.error) {
+          // console.error(data.error);
+          setDefaultAvatar(imageId);
+        } else {
+          const avatarUrl = data.avatar_url;
+          const avatarImage = document.getElementById(imageId);
+          avatarImage.src = avatarUrl;
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        setDefaultAvatar(imageId);
+      });
+  }
