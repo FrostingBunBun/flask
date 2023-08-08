@@ -16,15 +16,26 @@
 
   <script src="{{ url_for('static', filename='scripts/popup.js') }}"></script>
 
-  <div class="popup" id="popup-container">
-    <span id="popup-message"></span>
-    <div class="team-names">
-      <span id="team-left"></span>
-      <span id="vs">VS</span>
-      <span id="team-right"></span>
+  <div class="popup" id="popup-container" style="display: none;">
+    <!-- Top section: Match in progress -->
+    <div class="top-section">
+      <span id="popup-message"></span>
     </div>
-    <div id="spectate-link"></div>
-    <span id="popup-countdown"></span>
+  
+    <!-- Middle section: Team names -->
+    <div class="middle-section">
+      <div class="team-names">
+        <span id="team-left"></span>
+        <span id="vs">VS</span>
+        <span id="team-right"></span>
+      </div>
+    </div>
+  
+    <!-- Bottom section: Hyperlink and countdown -->
+    <div class="bottom-section">
+      <a href="#" id="spectate-link"></a>
+      <span id="popup-countdown"></span>
+    </div>
   </div>
 
   

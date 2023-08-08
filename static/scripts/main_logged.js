@@ -135,3 +135,163 @@ function fetchAvatar(name, imageId) {
         setDefaultAvatar(imageId);
       });
   }
+
+
+// Get the modal element
+const modal = document.getElementById("scrimModal");
+
+// Get the button that opens the modal
+const addScrimBtn = document.getElementById("addScrim");
+
+// Get the date picker input element
+const scrimDateInput = document.getElementById("scrimDate");
+
+// Function to show the modal
+function showModal() {
+  modal.style.display = "block";
+}
+
+// Function to close the modal
+function closeModal() {
+  modal.style.display = "none";
+}
+
+// Event listener for the "ADD" button click
+
+if (addScrimBtn) { // Check if the element exists
+  addScrimBtn.addEventListener("click", showModal);
+}
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const saveScrimButton = document.getElementById("saveScrim");
+
+  if (saveScrimButton) {
+    saveScrimButton.addEventListener("click", function () {
+      const scrimDateInput = document.getElementById("scrimDate"); // Corrected ID
+      const scrimTime = document.getElementById("scrimTime").value;
+      const selectedTimezone = document.getElementById("timezoneSelect").value;
+      const scrimDatetimeString = `${scrimDateInput.value}T${scrimTime}:00`;
+      const selectedPlane = document.getElementById("planeSelect").value;
+
+      // Make a POST request to the backend with the datetime and timezone
+      fetch('/addScrim', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          scrim_datetime: scrimDatetimeString,
+          timezone: selectedTimezone,
+          plane: selectedPlane,
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data); // Response from the backend
+        closeModal();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+  }
+});
+
+
+
+  const cancelScrimButton = document.getElementById("cancelScrim");
+
+  if (cancelScrimButton) { // Check if the element exists
+    cancelScrimButton.addEventListener("click", function () {
+      closeModal();
+    });
+  }
+
+
+
+
+  document.addEventListener("DOMContentLoaded", function () {
+
+    const scrimItems = document.querySelectorAll(".scrims-item");
+  
+    // Create an array to store elements and their scrimmage dates
+    const scrimElements = [];
+  
+    // Iterate through the scrimItems and store their data in the array
+    scrimItems.forEach(function (scrimItem) {
+      const countdownElement = scrimItem.querySelector(".scrim-countdown");
+      const scrimDateElement = scrimItem.querySelector(".scrim-date");
+      const scrimmageDate = new Date(scrimDateElement.textContent).getTime();
+  
+      // Store the element and scrimmage date in the array
+      scrimElements.push({
+        element: scrimItem,
+        scrimmageDate: scrimmageDate
+      });
+  
+      function updateCountdown() {
+        const now = new Date().getTime();
+        const timeDifference = scrimmageDate - now;
+  
+        if (timeDifference > 0) {
+          const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+          const hours = Math.floor(
+            (timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+          );
+          const minutes = Math.floor(
+            (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+          );
+          const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+  
+          countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        } 
+        else {
+          countdownElement.innerHTML = "Scrim in progress";
+        }
+      }
+  
+      updateCountdown(); // Initial call to set the countdown immediately
+      setInterval(updateCountdown, 1000); // Update the countdown every second
+    });
+  
+    // Sort the scrimElements array based on the scrimmage dates
+    scrimElements.sort(function (a, b) {
+      return a.scrimmageDate - b.scrimmageDate;
+    });
+  
+    // Get the parent container to append the sorted elements
+    const parentContainer = document.querySelector(".scrims-list");
+  
+    // Append the sorted elements to the parent container
+    scrimElements.forEach(function (scrimElement) {
+      parentContainer.appendChild(scrimElement.element);
+    });
+  
+
+    const removeButtons = document.querySelectorAll(".remove-button");
+
+    removeButtons.forEach(function (removeButton) {
+      removeButton.addEventListener("click", function () {
+        const scrimItem = removeButton.closest(".scrims-item");
+        const scrimId = scrimItem.querySelector(".scrim-name span:first-child").textContent;
+  
+        // Send an AJAX request to your Flask server to delete the scrim
+        fetch(`/deleteScrim/${scrimId}`, {
+          method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data); // Response from the backend
+          scrimItem.remove(); // Remove the scrim item from the DOM
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      });
+    });
+
+
+
+  });
+  

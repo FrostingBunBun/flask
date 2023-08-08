@@ -18,25 +18,25 @@ href="{{ url_for('static', filename='styles/popup.css') }}"
 <script src="{{ url_for('static', filename='scripts/popup.js') }}"></script>
 
 
-<div class="popup" id="popup-container" style="display: block;">
+<div class="popup" id="popup-container" style="display: none;">
 <!-- Top section: Match in progress -->
 <div class="top-section">
-<span id="popup-message">Match in progress!</span>
+<span id="popup-message"></span>
 </div>
 
 <!-- Middle section: Team names -->
 <div class="middle-section">
 <div class="team-names">
-  <span id="team-left">pkqk</span>
+  <span id="team-left"></span>
   <span id="vs">VS</span>
-  <span id="team-right">Prince-chan</span>
+  <span id="team-right"></span>
 </div>
 </div>
 
 <!-- Bottom section: Hyperlink and countdown -->
 <div class="bottom-section">
 <a href="#" id="spectate-link"></a>
-<span id="popup-countdown">5</span>
+<span id="popup-countdown"></span>
 </div>
 </div>
 
@@ -96,20 +96,39 @@ Register
         </div>
         </div>
    
-        <div class="page-card">
-          <h3>
-            Upcoming Scrims
-            <button class="page-card-info-button">
-              <img src="/static/icons/info-circle.svg" />
-            </button>
-          </h3>
+        <div class="page-card-content">
+          {% if scrims_data %}
+            <ul class="scrims-list">
+              {% for scrim in scrims_data %}
+                <li class="scrims-item">
+                  <div class="scrim-name">
+                    <span>{{ scrim[0] }}</span> Scrim, <span>{{ scrim[3] }}</span>
+                  </div>
+                  <div class="scrim-date" style="display: none;">{{ scrim[1] }}</div>
+                  <div class="scrim-date">UTC+03:00</div>
+                  <div class="scrim-timestamp" style="display: none;">{{ scrim[1] }}</div>
+                  <div class="scrim-countdown"></div>
+                  {% if is_mod %}
+                    <button class="remove-button">Delete</button>
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p>There are none for now</p>
+          {% endif %}
+        </div>
 
-          <div class="page-card-content">There are none for now</div>
+
         </div>
   
 
     </div>
-    <div id="jet"></div>
+
+
+      
+
+
   </main>
 
   <!-- <footer>
@@ -133,6 +152,6 @@ Register
   </footer> -->
 
   <script src="{{ url_for('static', filename='scripts/main.js') }}"></script>
-  <script src="{{ url_for('static', filename='scripts/sidebar.js') }}"></script>
+  <!-- <script src="{{ url_for('static', filename='scripts/sidebar.js') }}"></script> -->
 </body>
 </html>

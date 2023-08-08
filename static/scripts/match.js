@@ -284,19 +284,22 @@ document.addEventListener("DOMContentLoaded", function () {
     const rightMMRElement = rightRatingElement2.querySelector("#rightMMR");
     leftRatingValue = leftMMRElement.textContent;
     rightRatingValue = rightMMRElement.textContent;
+
+
+
     var expected_score =
       1 /
       (1 +
-        Math.pow(10, Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 300));
+        Math.pow(10, Math.abs(leftRatingValue - rightRatingValue) / 300));
     K = 50;
     console.log("========================================================");
-    left_mmr = parseInt(leftRatingValue[0]);
-    right_mmr = parseInt(rightRatingValue[0]);
+    left_mmr = parseInt(leftRatingValue);
+    right_mmr = parseInt(rightRatingValue);
     console.log("left_mmr: ", left_mmr);
     console.log("right_mmr: ", right_mmr);
 
-    left_new_mmr = leftRatingValue[0];
-    right_new_mmr = rightRatingValue[0];
+    left_new_mmr = leftRatingValue;
+    right_new_mmr = rightRatingValue;
 
     if (left_mmr > right_mmr) {
       var shift = Math.round(K * (0 - expected_score));
@@ -402,16 +405,16 @@ document.addEventListener("DOMContentLoaded", function () {
     var expected_score =
       1 /
       (1 +
-        Math.pow(10, Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 300));
+        Math.pow(10, Math.abs(leftRatingValue - rightRatingValue) / 300));
     K = 50;
     console.log("========================================================");
-    left_mmr = parseInt(leftRatingValue[0]);
-    right_mmr = parseInt(rightRatingValue[0]);
+    left_mmr = parseInt(leftRatingValue);
+    right_mmr = parseInt(rightRatingValue);
     console.log("left_mmr: ", left_mmr);
     console.log("right_mmr: ", right_mmr);
 
-    left_new_mmr = leftRatingValue[0];
-    right_new_mmr = rightRatingValue[0];
+    left_new_mmr = leftRatingValue;
+    right_new_mmr = rightRatingValue;
 
     if (left_mmr < right_mmr) {
       var shift = Math.round(K * (0 - expected_score));

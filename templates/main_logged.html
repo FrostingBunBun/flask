@@ -1,99 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GameStats - Home</title>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{{ url_for('static', filename='styles/main_logged.css') }}"
-    />
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GameStats - Home</title>
+
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/main_logged.css') }}" />
 
 
-    
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{{ url_for('static', filename='styles/popup.css') }}"
-    />
-  </head>
 
-  <script src="{{ url_for('static', filename='scripts/popup.js') }}"></script>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/popup.css') }}" />
+</head>
 
-  
-  <div class="popup" id="popup-container" style="display: block;">
-    <!-- Top section: Match in progress -->
-    <div class="top-section">
-      <span id="popup-message">Match in progress!</span>
-    </div>
-  
-    <!-- Middle section: Team names -->
-    <div class="middle-section">
-      <div class="team-names">
-        <span id="team-left">pkqk</span>
-        <span id="vs">VS</span>
-        <span id="team-right">Prince-chan</span>
-      </div>
-    </div>
-  
-    <!-- Bottom section: Hyperlink and countdown -->
-    <div class="bottom-section">
-      <a href="#" id="spectate-link"></a>
-      <span id="popup-countdown">5</span>
+<script src="{{ url_for('static', filename='scripts/popup.js') }}"></script>
+
+
+<div class="popup" id="popup-container" style="display: none;">
+  <!-- Top section: Match in progress -->
+  <div class="top-section">
+    <span id="popup-message"></span>
+  </div>
+
+  <!-- Middle section: Team names -->
+  <div class="middle-section">
+    <div class="team-names">
+      <span id="team-left"></span>
+      <span id="vs">VS</span>
+      <span id="team-right"></span>
     </div>
   </div>
-  
-  
-  
-  
-  
 
-  <body>
-    
-    <div class="sidebar-container">
-      <div class="profile-data">
-        <img class="profile-pic" id="profilePic" src="/static/pics/profile-pic.svg" />
-        <a class="profile-username" href="{{ url_for('views.profile_details_leaderboard', name=username) }}">{{ username }}</a>
-        <span class="profile-mmr" style="color: #f90162; font-weight: 600">{{mod}}</span>
-        {% if is_mod %}
-        <span class="profile-mmr" style="color:#F90162; font-weight: 600;">MOD ACCOUNT</span>
-        {% endif %}
-  
-        <span class="profile-mmr">{{mmr}}</span>
-      </div>
+  <!-- Bottom section: Hyperlink and countdown -->
+  <div class="bottom-section">
+    <a href="#" id="spectate-link"></a>
+    <span id="popup-countdown">5</span>
+  </div>
+</div>
 
-      <nav class="navigaton-container">
-        <button class="navigation-item" id="main">
-          <img src="/static/icons/home.svg" /> Home
-        </button>
-        <button class="navigation-item" id="matchmaking">
-          <img src="/static/icons/matchmaking.svg" /> Matchmaking
-        </button>
-        <button class="navigation-item" id="stats">
-          <img src="/static/icons/stats.svg" /> Statistics
-        </button>
-        <button class="navigation-item" id="matches">
-          <img src="/static/icons/matches.svg" /> Matches
-        </button>
-        <button class="navigation-item" id="leaderboards">
-          <img src="/static/icons/leaderboard.svg" /> Leaderboard
-        </button>
-      </nav>
 
-      <button class="navigation-item" id="logout">
-        <img src="/static/icons/signout.svg" /> Sign Out
-      </button>
+
+
+
+
+<body>
+
+  <div class="sidebar-container">
+    <div class="profile-data">
+      <img class="profile-pic" id="profilePic" src="/static/pics/profile-pic.svg" />
+      <a class="profile-username" href="{{ url_for('views.profile_details_leaderboard', name=username) }}">{{ username
+        }}</a>
+      <span class="profile-mmr" style="color: #f90162; font-weight: 600">{{mod}}</span>
+      
+
+      <span class="profile-mmr">{{mmr}}</span>
     </div>
 
-    <div class="page-container">
-      <div class="page-heading">
-        <img src="/static/icons/plane-heading.png" />
-        <h2>Welcome to Dogfight Club</h2>
-      </div>
-      <div class="page-cards">
-        <div class="page-cards-column">
-               <div class="page-card">
+    <nav class="navigaton-container">
+      <button class="navigation-item" id="main">
+        <img src="/static/icons/home.svg" /> Home
+      </button>
+      <button class="navigation-item" id="matchmaking">
+        <img src="/static/icons/matchmaking.svg" /> Matchmaking
+      </button>
+      <button class="navigation-item" id="stats">
+        <img src="/static/icons/stats.svg" /> Statistics
+      </button>
+      <button class="navigation-item" id="matches">
+        <img src="/static/icons/matches.svg" /> Matches
+      </button>
+      <button class="navigation-item" id="leaderboards">
+        <img src="/static/icons/leaderboard.svg" /> Leaderboard
+      </button>
+    </nav>
+
+    <button class="navigation-item" id="logout">
+      <img src="/static/icons/signout.svg" /> Sign Out
+    </button>
+  </div>
+
+  <div class="page-container">
+    <div class="page-heading">
+      <img src="/static/icons/plane-heading.png" />
+      <h2>Welcome to Dogfight Club</h2>
+    </div>
+    <div class="page-cards">
+      <div class="page-cards-column">
+        <div class="page-card">
           <h3>About Dogfight Club</h3>
           <p>
             Dogfight club is an exclusive hub for competitive dogfighting and
@@ -108,9 +101,9 @@
             to join instance by clicking the link in the scrim-ping channel
             whenever available
           </p>
-        </div>  
+        </div>
         <div class="page-card">
-     <h3>RULES</h3>
+          <h3>RULES</h3>
           <p>1. You don't talk about the dogfight club.</p>
           <p>2. YOU DO NOT TALK ABOUT THE DOGFIGHT CLUB.</p>
           <p>3. Negotiate terms of the dogfight beforehand.</p>
@@ -120,40 +113,123 @@
           <p>7. You back up your words with equivalent actions.</p>
           <p>8. If this is your first night at dogfight club you have to fight.</p>
         </div>
-        </div>
-   
-        <div class="page-card">
-          <h3>
-            Upcoming Scrims
-            <button class="page-card-info-button">
-              <img src="/static/icons/info-circle.svg" />
-            </button>
-            {% if is_mod %}
-            <button id="addScrim">ADD</button>
-            {% endif %}
+      </div>
 
-          </h3>
-          
-          <div class="page-card-content">There are none for now</div>
+      <div class="page-card">
+        <h3>
+          Upcoming Scrims
+          <button class="page-card-info-button">
+            <img src="/static/icons/info-circle.svg" />
+          </button>
+          {% if is_mod %}
+          <button id="addScrim">ADD</button>
+
+
+
+          <div id="scrimModal" class="modal">
+            <div class="modal-content scrim-modal-content">
+              <h2 class="scrim-title">Scrim Details</h2>
+              <!-- Date picker -->
+              <label for="scrimDate" class="scrim-label">Scrim Date:</label>
+              <div class="date-picker">
+                <input type="date" id="scrimDate" class="scrim-input">
+                <div class="date-icon">
+                  <i class="far fa-calendar"></i>
+                </div>
+              </div>
+
+              <!-- Time picker -->
+              <label for="scrimTime" class="scrim-label">Scrim Time:</label>
+              <div class="time-picker">
+                <input type="time" id="scrimTime" class="scrim-input">
+                <div class="time-icon">
+                  <i class="far fa-clock"></i>
+                </div>
+              </div>
+
+              <!-- Plane selection -->
+              <label for="planeSelect" class="scrim-label">Pick a Plane</label>
+              <select id="planeSelect" class="scrim-input">
+                <option value="f-14">F-14</option>
+                <option value="f-18">F-18</option>
+                <option value="viggen">Viggen</option>
+                <option value="mig-29">mig-29</option>
+              </select>
+
+              <!-- Timezone selection -->
+              <label for="timezoneSelect" class="scrim-label">Timezone: (non functional rn, UTC+3 as default)</label>
+              <select id="timezoneSelect" class="scrim-input">
+                <option value="UTC">UTC</option>
+                <option value="GMT">GMT</option>
+                <option value="UTC">UTC</option>
+                <option value="GMT">GMT</option>
+                <option value="EST">Eastern Standard Time</option>
+                <option value="PST">Pacific Standard Time</option>
+                <option value="CET">Central European Time</option>
+                <option value="AEST">Australian Eastern Standard Time</option>
+                <!-- Add more timezone options here -->
+              </select>
+
+              
+
+
+              <button id="saveScrim" class="scrim-button">Save</button>
+              <button id="cancelScrim" class="scrim-button">Cancel</button>
+            </div>
+          </div>
+
+
+          {% endif %}
+        </h3>
+
+        <div class="page-card-content">
+          {% if scrims_data %}
+            <ul class="scrims-list">
+              {% for scrim in scrims_data %}
+                <li class="scrims-item">
+                  <div class="scrim-name">
+                    <span>{{ scrim[0] }}</span> Scrim, <span>{{ scrim[3] }}</span>
+                  </div>
+                  <div class="scrim-date" style="display: none;">{{ scrim[1] }}</div>
+                  <div class="scrim-date">UTC+03:00</div>
+                  <div class="scrim-timestamp" style="display: none;">{{ scrim[1] }}</div>
+                  <div class="scrim-countdown"></div>
+                  {% if is_mod %}
+                    <button class="remove-button">Delete</button>
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p>There are none for now</p>
+          {% endif %}
         </div>
-  
+        
+        
+        
+      </div>
+
+
 
     </div>
-    <div id="jet"></div>
-  </main>
 
-  <!-- <footer>
+  <div id="jet"></div>
+
+    </main>
+
+    <!-- <footer>
     <div class="footer-links">
       <a href="https://discord.gg/k3n6jhmjcg">Discord</a>
       <a href="https://docs.google.com/spreadsheets/d/12P7ayv29VJmKmgqIAlDKqGHmMhLWoqV6K6jNkqMaeJI/edit?usp=sharing">Google Sheets</a>
     </div>
     <p class="footer-text">© 2023 Dogfight Club. No rights reserved.</p>
   </footer> -->
-  
-      </div>
-    </div>
 
-    <script src="{{ url_for('static', filename='scripts/main_logged.js') }}"></script>
-    <script src="{{ url_for('static', filename='scripts/sidebar.js') }}"></script>
-  </body>
+  </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='scripts/main_logged.js') }}"></script>
+  <script src="{{ url_for('static', filename='scripts/sidebar.js') }}"></script>
+</body>
+
 </html>

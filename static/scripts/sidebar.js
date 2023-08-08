@@ -3,9 +3,9 @@ const navigationItems = document.querySelectorAll(".navigation-item");
 
 
 const profileUsername = document.querySelector('.profile-username');
+
 const usernameContent = profileUsername.textContent;
 
-console.log(usernameContent);
 
 // Function to handle navigation item clicks
 function handleNavigationItemClick(event) {

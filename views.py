@@ -272,7 +272,17 @@ def matchmaking():
     cursor = conn.cursor()
 
 
-
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Players (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        player_name TEXT UNIQUE,
+        mmr INTEGER,
+        total_matches INTEGER,
+        wins INTEGER,
+        losses INTEGER,
+        startingMmr INTEGER DEFAULT 600
+    )
+''')
 
 
     cursor.execute('SELECT player_name FROM Players ORDER BY mmr DESC')
@@ -337,6 +347,7 @@ def matchmaking():
     # Execute the SELECT query
     cursor.execute("SELECT mmr FROM Players WHERE player_name = ?", (name,))
     result = cursor.fetchone()
+    mmr = None
     if result:
         mmr = result[0]
         print(f"The MMR for {name} is: {mmr}")
@@ -443,14 +454,16 @@ def process_data():
 
     processed_data = f"{leftName}, {left_new_mmr}, {rightName}, {right_new_mmr} recieved"
 
+    print("processed_data: ", processed_data)
+
     playerLeft_row = wks_mmr.cell(wks_mmr.find(leftName).row, 4).row
     playerRight_row = wks_mmr.cell(wks_mmr.find(rightName).row, 4).row
     print("===================================")
     print("leftName: ", leftName)
-    print("leftMMR: ", left_new_mmr)
+    print("leftMMRnew: ", left_new_mmr)
     print("playerLeft_row: ", playerLeft_row)
     print("rightName: ", rightName)
-    print("rightMMR: ", right_new_mmr)
+    print("rightMMRnew: ", right_new_mmr)
     print("playerRight_row: ", playerRight_row)
     print("===================================")
 
@@ -804,9 +817,61 @@ def main():
         # Close the database connection
         conn.close()
 
-        return render_template("main_logged.html", is_mod=is_mod, username=username, mod=mod, mmr=mmr)
+
+
+
+
+
+
+        conn = sqlite3.connect('./db/scrims.db')
+        cursor = conn.cursor()
+
+        # Create the table if it doesn't exist
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS Scrims (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            date TEXT,
+            timestamp TEXT,
+            plane TEXT
+        )
+        ''')
+
+        # Fetch all rows from the "Scrims" table
+        cursor.execute("SELECT id, date, timestamp, plane FROM Scrims")
+        scrims_data = cursor.fetchall()
+
+        conn.close()
+
+
+ 
+        print("scrims_data: ", scrims_data)
+
+
+        return render_template("main_logged.html", is_mod=is_mod, username=username, mod=mod, mmr=mmr, scrims_data=scrims_data)
     else:
-        return render_template("main.html")
+        conn = sqlite3.connect('./db/scrims.db')
+        cursor = conn.cursor()
+
+        # Create the table if it doesn't exist
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS Scrims (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            date TEXT,
+            timestamp TEXT,
+            plane TEXT
+        )
+        ''')
+
+        # Fetch all rows from the "Scrims" table
+        cursor.execute("SELECT id, date, timestamp, plane FROM Scrims")
+        scrims_data = cursor.fetchall()
+
+        conn.close()
+
+
+ 
+        print("scrims_data: ", scrims_data)
+        return render_template("main.html", scrims_data=scrims_data)
     
 
 
@@ -2124,3 +2189,62 @@ def sse_match_status():
     print("/see-match-status call")
     return Response(generate_match_events(), content_type='text/event-stream')
 
+
+
+@views.route('/addScrim', methods=['POST'])
+def add_scrim():
+    # # Get data from the request body
+    # data = request.json
+    # scrim_date = data.get('scrim_date')
+
+    # Get data from the request body
+    data = request.json
+    scrim_datetime = data.get('scrim_datetime')  # This now includes the selected time
+    timezone = data.get('timezone')
+    plane = data.get('plane')
+    print("DATA: ", data)
+    print("SCRIM_DATETIME: ", scrim_datetime)
+    print("timezone: ", timezone)
+    print("plane: ", plane)
+    # Parse the input datetime string to a datetime object
+    dt_object = datetime.strptime(scrim_datetime, '%Y-%m-%dT%H:%M:%S')
+
+    # Convert the datetime object to the desired format
+    formatted_datetime = dt_object.strftime('%Y-%m-%d %H:%M:%S')
+
+
+
+    # Get current date and time in the 'YYYY-MM-DD HH:MM:SS' format
+    current_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+    conn = sqlite3.connect('./db/scrims.db')
+    cursor = conn.cursor()
+
+
+    # Insert the data into the table using a parameterized query
+    cursor.execute("INSERT INTO Scrims (plane, date, timestamp) VALUES (?, ?, ?)", (plane, formatted_datetime, current_datetime))
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({'message': 'Scrim added successfully.'}), 201
+
+
+
+
+@views.route('/deleteScrim/<int:scrim_id>', methods=['DELETE'])
+def delete_scrim(scrim_id):
+    print("RECIEVED SCRIM ID: ", scrim_id)
+    try:
+        conn = sqlite3.connect('./db/scrims.db')
+        cursor = conn.cursor()
+
+        # Delete the record with the given ID from the "Scrims" table
+        cursor.execute("DELETE FROM Scrims WHERE id = ?", (scrim_id,))
+        conn.commit()
+
+        conn.close()
+
+        return jsonify({'message': 'Scrim deleted successfully'})
+    except Exception as e:
+        return jsonify({'message': 'An error occurred while deleting the scrim'}), 500
