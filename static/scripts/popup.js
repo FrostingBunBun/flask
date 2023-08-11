@@ -1,21 +1,27 @@
 
 
 function showPopup(message, durationInSeconds, nameLeft, nameRight, spectateLink) {
-  const popupContainer = document.getElementById("popup-container");
+  popupContainer = document.getElementById("popup-container");
   const popupMessage = document.getElementById("popup-message");
   const teamLeft = document.getElementById("team-left");
   const teamRight = document.getElementById("team-right");
   const spectateLinkElement = document.getElementById("spectate-link");
 
   // Set the message and team names in the popup
-  popupMessage.textContent = message;
+  popupMessage.textContent= message;
   teamLeft.textContent = nameLeft;
   teamRight.textContent = nameRight;
-  spectateLinkElement.textContent = "";
+  spectateLinkElement.textContent;
   spectateLinkElement.href = spectateLink;
+
+  
 
   // Show the popup
   popupContainer.style.display = "block";
+
+  popupContainer.addEventListener("click", () => {
+    window.location.href = "/matchmaking/match";
+  });
 
   // Countdown timer
   let remainingTime = durationInSeconds;
@@ -52,7 +58,9 @@ eventSource.addEventListener('match_status', function (event) {
     // Check if the current status is "Ongoing"
     if (data.status === "Ongoing") {
       // Show the popup with a 10-second countdown
-      showPopup("Match in progress!", 10, data.nameLeft, data.nameRight, "/spectate");
+      showPopup("Match in progress!", 10, data.nameLeft, data.nameRight, "/matchmaking/match");
     }
   }
+
+
 });

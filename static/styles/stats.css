@@ -550,7 +550,7 @@ body{
 }
 
 .modal-contentPwd {
-  background-color: #f582ae;
+  background-color: rgba(216, 112, 152, 0.8);
   margin: 10% auto;
   padding: 20px;
   border-radius: 8px;

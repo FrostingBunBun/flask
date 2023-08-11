@@ -15,11 +15,12 @@ from collections import defaultdict
 import math
 from flask_socketio import SocketIO, emit
 import time
-
-
+import threading
+from actualDsBot import get_bot_instance
 import numpy as np
 from scipy.interpolate import interp1d
-
+from discord.ext import commands
+import discord
 views = Blueprint(__name__, "views")
 
 
@@ -45,9 +46,6 @@ for i in range(len(flat_names)):
 
 
 match_is_going = False
-
-
-
 
 
 
@@ -489,6 +487,8 @@ def leftWonProcess():
     timestamp = data['timestamp']
     duration = data['duration']
     shift = data['shift']
+    left_mmr = data['left_mmr']
+    right_mmr = data['right_mmr']
     print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
     print(left_name)
     print(right_name)
@@ -524,6 +524,37 @@ def leftWonProcess():
         plane TEXT
     )
 ''')
+    
+
+
+    bot = get_bot_instance()
+
+    if bot:
+        channel_id = 1138618835319136336  # Replace with the channel ID
+        channel = bot.get_channel(channel_id)
+
+
+        print("leftWin")
+
+        if channel:
+            async def send_message():
+                emb = discord.Embed(
+                title = "Change is: " + str(abs(shift)),
+                description = left_name + "({0})".format(left_mmr) + ": " + "**" + "+" + str(abs(shift)) + "**" + "\n" + right_name + "({0})".format(right_mmr) + ": " + "**" + "-" + str(abs(shift)) + "**" + "\n",
+            colour = discord.Color.purple()
+            )
+
+                await channel.send(embed=emb)
+
+            # Use bot.loop to run the asynchronous function
+            bot.loop.create_task(send_message())
+
+
+
+        else:
+            return jsonify({"status": "Channel not found"})
+    else:
+        return jsonify({"status": "Bot instance not available"})
 
     cursor.execute("INSERT INTO Matches (playerLeft, playerRight, winner, loser, timestamp, duration, shift, plane) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                (left_name, right_name, left_name, right_name, timestamp, duration, abs(shift), jet))
@@ -554,6 +585,8 @@ def rightWonProcess():
     timestamp = data['timestamp']
     duration = data['duration']
     shift = data['shift']
+    left_mmr = data['left_mmr']
+    right_mmr = data['right_mmr']
     print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
     print(left_name)
     print(right_name)
@@ -589,6 +622,35 @@ def rightWonProcess():
         plane TEXT
     )
 ''')
+
+
+    bot = get_bot_instance()
+
+    if bot:
+        channel_id = 1138618835319136336  # Replace with the channel ID
+        channel = bot.get_channel(channel_id)
+
+        print("rightWin")
+
+        if channel:
+            async def send_message():
+                emb = discord.Embed(
+                title = "Change is: " + str(abs(shift)),
+                description = right_name + "({0})".format(right_mmr) + ": " + "**" + "+" + str(abs(shift)) + "**" + "\n" + left_name + "({0})".format(left_mmr) + ": " + "**" + "-" + str(abs(shift)) + "**" + "\n",
+                colour = discord.Color.purple()
+            )
+
+                await channel.send(embed=emb)
+
+            # Use bot.loop to run the asynchronous function
+            bot.loop.create_task(send_message())
+
+
+
+        else:
+            return jsonify({"status": "Channel not found"})
+    else:
+        return jsonify({"status": "Bot instance not available"})
 
     cursor.execute("INSERT INTO Matches (playerLeft, playerRight, winner, loser, timestamp, duration, shift, plane) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                (left_name, right_name, right_name, left_name, timestamp, duration, abs(shift), jet))
@@ -1949,7 +2011,45 @@ def clear_database():
         conn.commit()
         conn.close()
 
-        return jsonify({'message': 'Database cleared successfully'})
+
+    
+
+
+
+
+    data = request.get_json()
+    playerLeft = data.get('playerLeft')  # Match the key names
+    left_mmr = data.get('left_mmr')        # Match the key names
+    playerRight = data.get('playerRight')  # Match the key names
+    right_mmr = data.get('right_mmr')        # Match the key names
+    print(f"Left Name: {playerLeft}, Left MMR: {left_mmr}")
+    print(f"Right Name: {playerRight}, Right MMR: {right_mmr}")
+    bot = get_bot_instance()
+
+    if bot:
+        channel_id = 1138618835319136336  # Replace with the channel ID
+        channel = bot.get_channel(channel_id)
+        print("cancel")
+        if channel:
+            async def send_message():
+                emb = discord.Embed(
+                title = "CANCELED:",
+                description = "**{0}** ({2})\nVS\n**{1}** ({3})".format(playerLeft, playerRight, left_mmr, right_mmr),  
+                colour = discord.Color.red(),
+            )
+                await channel.send(embed=emb)
+
+            # Use bot.loop to run the asynchronous function
+            bot.loop.create_task(send_message())
+
+
+
+        else:
+            return jsonify({"status": "Channel not found"})
+    else:
+        return jsonify({"status": "Bot instance not available"})
+
+
 
     return jsonify({'message': 'Invalid request'})
 
@@ -2248,3 +2348,46 @@ def delete_scrim(scrim_id):
         return jsonify({'message': 'Scrim deleted successfully'})
     except Exception as e:
         return jsonify({'message': 'An error occurred while deleting the scrim'}), 500
+
+
+@views.route('/send-discord-message', methods=['POST'])
+def send_discord_message():
+    data = request.get_json()
+    playerLeft = data.get('playerLeft')  # Match the key names
+    left_mmr = data.get('mmrLeft')        # Match the key names
+    playerRight = data.get('playerRight')  # Match the key names
+    right_mmr = data.get('mmrRight')        # Match the key names
+    print(f"Left Name: {playerLeft}, Left MMR: {left_mmr}")
+    print(f"Right Name: {playerRight}, Right MMR: {right_mmr}")
+    bot = get_bot_instance()
+
+    if bot:
+        channel_id = 1138618835319136336  # Replace with the channel ID
+        channel = bot.get_channel(channel_id)
+
+        print("created")
+
+        if channel:
+            async def send_message():
+                # Extracting only the name from playerLeft and playerRight
+                left_name = playerLeft.split("\n")[0]
+                right_name = playerRight.split("\n")[0]
+                emb = discord.Embed(
+                    title="Currently Playing:",
+                    description="**{0}** ({2})\nVS\n**{1}** ({3})".format(left_name, right_name, left_mmr, right_mmr),
+                    colour=discord.Color.blurple()
+                )
+
+                await channel.send(embed=emb)
+
+            # Use bot.loop to run the asynchronous function
+            bot.loop.create_task(send_message())
+
+
+
+        else:
+            return jsonify({"status": "Channel not found"})
+    else:
+        return jsonify({"status": "Bot instance not available"})
+
+    return jsonify({"status": "Message sent to Discord channel!"})

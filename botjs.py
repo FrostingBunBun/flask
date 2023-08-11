@@ -93,7 +93,6 @@ intents.message_content = True
 async def on_ready():
     print("Logged on")
     channel = bot.get_channel(1123815180443340800)
-    await channel.send("nigers")
 
     # Get the list of user objects
     users = bot.users

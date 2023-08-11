@@ -163,6 +163,18 @@ function drop(event) {
   var droppedElement = document.createElement("p");
   droppedElement.textContent = name;
 
+
+  
+  // // Extract the name by finding the index of the first opening parenthesis
+  // var startIndex = name.indexOf("(");
+  // var visualName = name.slice(0, startIndex).trim();
+
+  // var visualDroppedElement = document.createElement("h1");
+  // visualDroppedElement.textContent = visualName;
+
+
+
+
   var droppedElementMmr = document.createElement("span");
   droppedElementMmr.textContent = "(mmr: " + mmr + ")";
 
@@ -171,6 +183,7 @@ function drop(event) {
 
   // Create a container element for name and mmr
   var container = document.createElement("div");
+  // container.appendChild(visualDroppedElement);
   container.appendChild(droppedElement);
   container.appendChild(droppedElementMmr);
   container.appendChild(droppedElementWinRate);
@@ -232,7 +245,7 @@ function drop(event) {
 
   console.log("percentageLeft: ", percentageLeft)
   console.log("percentageRight: ", percentageRight)
-  
+
 
   updateGauge(leftProbability, rightProbability);
 }
@@ -417,6 +430,57 @@ document.addEventListener("DOMContentLoaded", function () {
     ) {
       sendUserInfo();
       console.log("SENT");
+
+
+      // Select the left element by its ID
+      const leftElement = document.querySelector('#field1Small');
+
+      // Get the text content of the <p> element
+      const leftPElement = leftElement.querySelector('p');
+      const leftTextContent = leftPElement.textContent;
+
+      // Extract the name from the text content
+      const leftName = leftTextContent.split(' ')[0];
+
+      // Extract the MMR from the text content (using regular expression)
+      const leftMMRMatch = leftTextContent.match(/\((\d+)\)/);
+      const leftMMR = leftMMRMatch ? parseInt(leftMMRMatch[1]) : null;
+
+      // Select the right element by its ID
+      const rightElement = document.querySelector('#field2Small');
+
+      // Get the text content of the <p> element
+      const rightPElement = rightElement.querySelector('p');
+      const rightTextContent = rightPElement.textContent;
+
+      // Extract the name from the text content
+      const rightName = rightTextContent.split(' ')[0];
+
+      // Extract the MMR from the text content (using regular expression)
+      const rightMMRMatch = rightTextContent.match(/\((\d+)\)/);
+      const rightMMR = rightMMRMatch ? parseInt(rightMMRMatch[1]) : null;
+      console.log("leftName: ", leftName)
+      console.log("leftMMR: ", leftMMR)
+      console.log("rightName: ", rightName)
+      console.log("rightMMR: ", rightMMR)
+
+
+
+
+      fetch('/send-discord-message', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            playerLeft: leftName,
+            mmrLeft: leftMMR,
+            playerRight: rightName,
+            mmrRight: rightMMR
+        }),
+    });
+
+
       window.location.href = "/matchmaking/match/processing";
     }
   });
@@ -720,14 +784,14 @@ checkboxes.forEach(function (checkbox) {
     updateSelectedNamesList();
 
     var selectedNamesList = document.querySelector("#selectedNamesList");
-console.log("selectedNamesList: ", selectedNamesList);
-var checkmarks = selectedNamesList.querySelectorAll(".checkmark");
+    console.log("selectedNamesList: ", selectedNamesList);
+    var checkmarks = selectedNamesList.querySelectorAll(".checkmark");
 
-for (var i = 0; i < checkmarks.length; i++) {
-  var checkmark = checkmarks[i];
-  console.log("checkmark: ", checkmark);
-  checkmark.remove();
-}
+    for (var i = 0; i < checkmarks.length; i++) {
+      var checkmark = checkmarks[i];
+      console.log("checkmark: ", checkmark);
+      checkmark.remove();
+    }
 
 
   });

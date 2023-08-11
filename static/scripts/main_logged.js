@@ -1,4 +1,8 @@
-
+function setDefaultAvatar(imageId) {
+  const defaultImageUrl = "https://my.catgirls.forsale/QukeB047.png"; // Replace with your default image URL
+  const avatarImage = document.getElementById(imageId);
+  avatarImage.src = defaultImageUrl;
+}
 
 
 

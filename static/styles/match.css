@@ -815,3 +815,27 @@
 .profile-username:hover {
   color: rgba(75, 17, 46, 0.8);
 }
+
+
+/* Add this to your existing styles */
+.number-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 20px;
+  text-align: center;
+  display: none;
+}
+
+.big-number {
+  font-size: 3rem;
+  color: green;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.number-container.visible {
+  display: block;
+}

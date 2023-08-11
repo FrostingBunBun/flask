@@ -101,16 +101,45 @@ document.addEventListener("DOMContentLoaded", function () {
   // console.log("rightWinrate: ", rightWinrate);
 
   var toMaking = document.getElementById("toMaking");
+
   toMaking.addEventListener("click", function () {
-    fetch('/clear-database', { method: 'POST' })
+
+
+    // Get player names from HTML
+    const leftPlayerName = document.getElementById('leftNAME').textContent;
+    const rightPlayerName = document.getElementById('rightNAME').textContent;
+    const leftRatingNumber = parseInt(document.getElementById('leftMMR').textContent);
+    const rightRatingNumber = parseInt(document.getElementById('rightMMR').textContent);
+    // Get other data if needed
+
+    // Create an object to hold the data
+    const requestData = {
+      playerLeft: leftPlayerName,
+      playerRight: rightPlayerName,
+      left_mmr: leftRatingNumber,
+      right_mmr: rightRatingNumber,
+      // Include other data here
+    };
+
+    // Make a POST request to the Flask endpoint
+    fetch('/clear-database', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestData)
+    })
       .then(response => response.json())
       .then(data => {
-        console.log(data.message);
+        // console.log(data.message);
         window.location.href = "/matchmaking";
       })
       .catch(error => {
         console.error('Error occurred:', error);
       });
+
+
+
   });
 
   var refreshFlag = sessionStorage.getItem("refreshFlag");
@@ -362,6 +391,8 @@ document.addEventListener("DOMContentLoaded", function () {
       timestamp: currentTimestamp,
       duration: totalSeconds,
       shift: Math.abs(shift),
+      left_mmr: left_mmr,
+      right_mmr: right_mmr,
     };
 
     fetch("/leftWonProcess", {
@@ -386,7 +417,9 @@ document.addEventListener("DOMContentLoaded", function () {
     //
     // ====================================================================================== LEFT WON
     localStorage.setItem('buttonClicked', true);
-    window.location.href = "/matchmaking/match/processing/calculate";
+    setTimeout(function() {
+      window.location.href = "/matchmaking/match/processing/calculate";
+    }, 1000); // 1000 milliseconds = 1 second
   }
 
   function handleRightWin() {
@@ -477,6 +510,8 @@ document.addEventListener("DOMContentLoaded", function () {
       timestamp: currentTimestamp,
       duration: totalSeconds,
       shift: Math.abs(shift),
+      left_mmr: left_mmr,
+      right_mmr: right_mmr,
     };
 
     fetch("/rightWonProcess", {
@@ -498,7 +533,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ====================================================================================== RIGHT WON
     localStorage.setItem('buttonClicked', true);
-    window.location.href = "/matchmaking/match/processing/calculate";
+    setTimeout(function() {
+      window.location.href = "/matchmaking/match/processing/calculate";
+    }, 1000); // 1000 milliseconds = 1 second
   }
 });
 
@@ -752,13 +789,15 @@ function goBack() {
 //   eventSource.close();
 // });
 
-
+let animationTriggered = false;
 
 // Function to update the data in the HTML page
 function updateData(data) {
+
+
+  
   // Check if the status is "Idle"
   if (data.status === "Idle") {
-    // Hide the elements when the status is "Idle"
     document.getElementById("match-container").style.display = "none";
     const containerTimerElement = document.querySelector(".containerTimer");
     const cancelBtn = document.querySelector("bottomPart fade-in")
@@ -769,7 +808,7 @@ function updateData(data) {
       cancelBtn.stlye.display = "none";
     }
     const displayField = document.querySelector(".playerIdle");
-            displayField.style.display = "flex";
+    displayField.style.display = "flex";
 
 
     // Display a message or update the UI to indicate there is no ongoing match
@@ -791,7 +830,7 @@ function updateData(data) {
       cancelBtn.stlye.display = "flex";
     }
     const displayField = document.querySelector(".playerIdle");
-            displayField.style.display = "none";
+    displayField.style.display = "none";
     // Update left side data
     if (data.nameLeft !== null && data.nameLeft !== undefined) {
       document.getElementById('leftNAME').textContent = data.nameLeft;
@@ -830,6 +869,7 @@ function updateData(data) {
       document.getElementById('rightWINRATE').textContent = 'N/A';
     }
   }
+  
 }
 
 
@@ -865,13 +905,13 @@ eventSource.addEventListener('match_status', function (event) {
   fetchAvatar(rightName, '2vsImg');
 
 
-  
+
 
 
 });
 // Get the element with the class "profile-username"
 const profileUsernameElement = document.querySelector('.profile-username');
-  
+
 // Check if the element exists
 if (profileUsernameElement) {
   // Get the text content of the element (which is "testAccount" in this case)
@@ -944,7 +984,49 @@ function setDefaultAvatar(imageId) {
 
 
 var homeBtn = document.getElementById("homeT");
-homeBtn.addEventListener("click", function() {
+homeBtn.addEventListener("click", function () {
 
-    history.back();
+  history.back();
 });
+
+
+
+
+
+// function showBigNumber(winAmount) {
+//   const numberContainer = document.createElement("div");
+//   numberContainer.classList.add("number-container");
+  
+//   const bigNumber = document.createElement("span");
+//   bigNumber.classList.add("big-number");
+//   bigNumber.textContent = "0";
+  
+//   numberContainer.appendChild(bigNumber);
+//   document.body.appendChild(numberContainer);
+
+//   setTimeout(() => {
+//     numberContainer.classList.add("visible");
+//     animateNumber(bigNumber, 0, winAmount, 1000); // Animating number from 0 to winAmount
+//   }, 200); // Delay before showing the big number
+// }
+
+// function animateNumber(element, start, end, duration) {
+//   const startTime = new Date().getTime();
+//   const interval = setInterval(() => {
+//     const currentTime = new Date().getTime();
+//     const elapsedTime = currentTime - startTime;
+    
+//     if (elapsedTime >= duration) {
+//       clearInterval(interval);
+//       element.textContent = end;
+//       setTimeout(() => {
+//         // Here, you can put the code to hide the match container
+//         document.getElementById("match-container").style.display = "none";
+//       }, 1000); // Delay before hiding the match container
+//     } else {
+//       const progress = (elapsedTime / duration);
+//       const currentValue = Math.round(start + (end - start) * progress);
+//       element.textContent = currentValue;
+//     }
+//   }, 30); // Interval for animation
+// }
