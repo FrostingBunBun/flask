@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bimbaMet
+    </title>
+    <style>
+        /* Define the styles for the circles */
+        .container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+
+        .circle {
+            width: 100%;
+            height: 100%;
+            border: 2px solid transparent;
+            border-radius: 50%;
+            position: absolute;
+            animation: scaleAndFade 2s ease-in-out infinite;
+            opacity: 1;
+            box-sizing: border-box;
+        }
+
+        .inner-circle {
+            width: 50px;
+            height: 50px;
+            border: 2px solid black;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes scaleAndFade {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+                border-color: black;
+            }
+            100% {
+                transform: scale(2);
+                opacity: 0;
+                border-color: transparent;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Create the container for the circles -->
+    <div class="container">
+        <!-- Create the animated hollow circle -->
+        <div class="circle" id="circle1"></div>
+
+        <!-- Create the static inner circle -->
+        <div class="inner-circle"></div>
+    </div>
+
+    <script>
+        // Function to add and animate the second circle
+        function addSecondCircle() {
+            // Create a new container for the circles
+            const container = document.createElement("div");
+            container.className = "container";
+
+            // Create the animated hollow circle
+            const circle2 = document.createElement("div");
+            circle2.className = "circle";
+
+            // Create the static inner circle
+            const innerCircle = document.createElement("div");
+            innerCircle.className = "inner-circle";
+
+            // Append the circles to the container
+            container.appendChild(circle2);
+            container.appendChild(innerCircle);
+
+            // Add the container to the body
+            document.body.appendChild(container);
+        }
+
+        // Add the second circle when the page loads
+        window.addEventListener("load", addSecondCircle);
+    </script>
+</body>
+</html>

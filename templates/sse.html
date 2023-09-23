@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SSE Example</title>
+</head>
+<body>
+    <h1>Server-Sent Events Example</h1>
+    <div id="sse-data"></div>
+
+    <script>
+        const eventSource = new EventSource('/sse');
+
+        eventSource.onmessage = function (event) {
+            const sseData = document.getElementById('sse-data');
+            sseData.innerHTML += 'Received: ' + event.data + '<br>';
+        };
+
+        eventSource.onerror = function (error) {
+            console.error('SSE Error:', error);
+            eventSource.close();
+        };
+    </script>
+</body>
+</html>

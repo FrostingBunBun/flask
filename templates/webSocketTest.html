@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Test</title>
+</head>
+<body>
+    <h1>Match Status</h1>
+    <table>
+        <tr>
+            <th>Status</th>
+            <th>Left Team</th>
+            <th>Right Team</th>
+            <th>MMR Left</th>
+            <th>MMR Right</th>
+            <th>Winrate Left</th>
+            <th>Winrate Right</th>
+            <th>Date</th>
+        </tr>
+        <tr>
+            <td id="status"></td>
+            <td id="leftTeam"></td>
+            <td id="rightTeam"></td>
+            <td id="mmrLeft"></td>
+            <td id="mmrRight"></td>
+            <td id="winrateLeft"></td>
+            <td id="winrateRight"></td>
+            <td id="date"></td>
+        </tr>
+    </table>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+
+    <script>
+        var socket = io.connect();  // Connect to the server that serves this HTML page
+    
+        socket.on('connect', function () {
+            console.log('Connected to WebSocket server');
+    
+            // Send a request for match status when connected (optional)
+            socket.emit('request_match_status');
+        });
+    
+        socket.on('disconnect', function () {
+            console.log('Disconnected from WebSocket server');
+        });
+    
+        // Handle the "match_status" event sent by the server
+        socket.on('match_status', function (match_data) {
+            // Handle the received match data
+            console.log('Received match status:', match_data);
+    
+            // Update the user interface with the received match data
+            document.getElementById('status').innerText = match_data.status;
+            document.getElementById('leftTeam').innerText = match_data.nameLeft;
+            document.getElementById('rightTeam').innerText = match_data.nameRight;
+            document.getElementById('mmrLeft').innerText = match_data.mmrLeft;
+            document.getElementById('mmrRight').innerText = match_data.mmrRight;
+            document.getElementById('winrateLeft').innerText = match_data.winrateLeft + "%";
+            document.getElementById('winrateRight').innerText = match_data.winrateRight + "%";
+            document.getElementById('date').innerText = match_data.date;
+        });
+    
+        // Function to fetch and update match status
+        function updateMatchStatus() {
+            socket.emit('request_match_status');
+        }
+    
+        // Initially, call the function to fetch and display match status
+        updateMatchStatus();
+    
+        // Set up an interval to periodically fetch and display match status every 2 seconds
+        setInterval(updateMatchStatus, 2000); // 2000 milliseconds = 2 seconds
+    </script>
+    
+</body>
+</html>

@@ -21,6 +21,10 @@ import numpy as np
 from scipy.interpolate import interp1d
 from discord.ext import commands
 import discord
+
+from socketio_instance import socketio  # Import the SocketIO instance
+
+
 views = Blueprint(__name__, "views")
 
 
@@ -536,26 +540,26 @@ def leftWonProcess():
 
         print("leftWin")
 
-        if channel:
-            async def send_message():
-                emb = discord.Embed(
-                title = "Change is: " + str(abs(shift)),
-                description = left_name + "({0})".format(left_mmr) + ": " + "**" + "+" + str(abs(shift)) + "**" + "\n" + right_name + "({0})".format(right_mmr) + ": " + "**" + "-" + str(abs(shift)) + "**" + "\n",
-            colour = discord.Color.purple()
-            )
+    #     if channel:
+    #         async def send_message():
+    #             emb = discord.Embed(
+    #             title = "Change is: " + str(abs(shift)),
+    #             description = left_name + "({0})".format(left_mmr) + ": " + "**" + "+" + str(abs(shift)) + "**" + "\n" + right_name + "({0})".format(right_mmr) + ": " + "**" + "-" + str(abs(shift)) + "**" + "\n",
+    #         colour = discord.Color.purple()
+    #         )
 
-                await channel.send(embed=emb)
+    #             await channel.send(embed=emb)
 
-            # Use bot.loop to run the asynchronous function
-            bot.loop.create_task(send_message())
+    #         # Use bot.loop to run the asynchronous function
+    #         bot.loop.create_task(send_message())
 
 
 
-        else:
-            return jsonify({"status": "Channel not found"})
-    else:
-        return jsonify({"status": "Bot instance not available"})
-
+    #     else:
+    #         return jsonify({"status": "Channel not found"})
+    # else:
+    #     return jsonify({"status": "Bot instance not available"})
+    print("777777777777777777777777777777777777777777777777777777777777777 LEFT")
     cursor.execute("INSERT INTO Matches (playerLeft, playerRight, winner, loser, timestamp, duration, shift, plane) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                (left_name, right_name, left_name, right_name, timestamp, duration, abs(shift), jet))
 
@@ -632,26 +636,26 @@ def rightWonProcess():
 
         print("rightWin")
 
-        if channel:
-            async def send_message():
-                emb = discord.Embed(
-                title = "Change is: " + str(abs(shift)),
-                description = right_name + "({0})".format(right_mmr) + ": " + "**" + "+" + str(abs(shift)) + "**" + "\n" + left_name + "({0})".format(left_mmr) + ": " + "**" + "-" + str(abs(shift)) + "**" + "\n",
-                colour = discord.Color.purple()
-            )
+    #     if channel:
+    #         async def send_message():
+    #             emb = discord.Embed(
+    #             title = "Change is: " + str(abs(shift)),
+    #             description = right_name + "({0})".format(right_mmr) + ": " + "**" + "+" + str(abs(shift)) + "**" + "\n" + left_name + "({0})".format(left_mmr) + ": " + "**" + "-" + str(abs(shift)) + "**" + "\n",
+    #             colour = discord.Color.purple()
+    #         )
 
-                await channel.send(embed=emb)
+    #             await channel.send(embed=emb)
 
-            # Use bot.loop to run the asynchronous function
-            bot.loop.create_task(send_message())
+    #         # Use bot.loop to run the asynchronous function
+    #         bot.loop.create_task(send_message())
 
 
 
-        else:
-            return jsonify({"status": "Channel not found"})
-    else:
-        return jsonify({"status": "Bot instance not available"})
-
+    #     else:
+    #         return jsonify({"status": "Channel not found"})
+    # else:
+    #     return jsonify({"status": "Bot instance not available"})
+    print("777777777777777777777777777777777777777777777777777777777777777 RIGHT")
     cursor.execute("INSERT INTO Matches (playerLeft, playerRight, winner, loser, timestamp, duration, shift, plane) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                (left_name, right_name, right_name, left_name, timestamp, duration, abs(shift), jet))
 
@@ -2024,30 +2028,30 @@ def clear_database():
     right_mmr = data.get('right_mmr')        # Match the key names
     print(f"Left Name: {playerLeft}, Left MMR: {left_mmr}")
     print(f"Right Name: {playerRight}, Right MMR: {right_mmr}")
-    bot = get_bot_instance()
+    # bot = get_bot_instance()
 
-    if bot:
-        channel_id = 1138618835319136336  # Replace with the channel ID
-        channel = bot.get_channel(channel_id)
-        print("cancel")
-        if channel:
-            async def send_message():
-                emb = discord.Embed(
-                title = "CANCELED:",
-                description = "**{0}** ({2})\nVS\n**{1}** ({3})".format(playerLeft, playerRight, left_mmr, right_mmr),  
-                colour = discord.Color.red(),
-            )
-                await channel.send(embed=emb)
+    # if bot:
+    #     channel_id = 1138618835319136336  # Replace with the channel ID
+    #     channel = bot.get_channel(channel_id)
+    #     print("cancel")
+    #     if channel:
+    #         async def send_message():
+    #             emb = discord.Embed(
+    #             title = "CANCELED:",
+    #             description = "**{0}** ({2})\nVS\n**{1}** ({3})".format(playerLeft, playerRight, left_mmr, right_mmr),  
+    #             colour = discord.Color.red(),
+    #         )
+    #             await channel.send(embed=emb)
 
-            # Use bot.loop to run the asynchronous function
-            bot.loop.create_task(send_message())
+    #         # Use bot.loop to run the asynchronous function
+    #         bot.loop.create_task(send_message())
 
 
 
-        else:
-            return jsonify({"status": "Channel not found"})
-    else:
-        return jsonify({"status": "Bot instance not available"})
+    #     else:
+    #         return jsonify({"status": "Channel not found"})
+    # else:
+    #     return jsonify({"status": "Bot instance not available"})
 
 
 
@@ -2059,7 +2063,11 @@ def clear_database():
 
 
 
+@views.route("/bimba")
+def bimba():
 
+
+    return render_template("bimba.html")
 
 
 @views.route("/matchmaking/match", methods=['GET', 'POST'])
@@ -2219,13 +2227,17 @@ ongoing_match = {
     "date": None,
 }
 
-def generate_match_events():
-    event_name = "match_status"  # Event name for all match status updates
 
+@views.route("/wst")
+def wst():
+    # Emit the request to update match status
+    socketio.emit('request_match_status')
+
+    return render_template("webSocketTest.html")
+
+def generate_match_events():
     while True:
-        # Replace this with your actual data retrieval mechanism from the database
-        # For demo purposes, we'll use SQLite to fetch data from the database.
-        # Adjust the database path and query as per your actual database setup.
+
         conn = sqlite3.connect('./db/current_match.db')
         cursor = conn.cursor()
 
@@ -2273,10 +2285,9 @@ def generate_match_events():
             "date": ongoing_match["date"],
         }
 
-        
-        # Convert the dictionary to JSON and yield it as an SSE event
-        # print(match_data)
-        yield f"event: {event_name}\ndata: {json.dumps(match_data)}\n\n"
+        # Emit the match data to connected WebSocket clients
+        emit('match_status', match_data, broadcast=True)
+
         time.sleep(1)
 
 
@@ -2284,10 +2295,6 @@ def generate_match_events():
 
 
 
-@views.route('/sse-match-status')
-def sse_match_status():
-    print("/see-match-status call")
-    return Response(generate_match_events(), content_type='text/event-stream')
 
 
 
@@ -2359,35 +2366,124 @@ def send_discord_message():
     right_mmr = data.get('mmrRight')        # Match the key names
     print(f"Left Name: {playerLeft}, Left MMR: {left_mmr}")
     print(f"Right Name: {playerRight}, Right MMR: {right_mmr}")
-    bot = get_bot_instance()
+    # bot = get_bot_instance()
 
-    if bot:
-        channel_id = 1138618835319136336  # Replace with the channel ID
-        channel = bot.get_channel(channel_id)
+    # if bot:
+    #     channel_id = 1138618835319136336  # Replace with the channel ID
+    #     channel = bot.get_channel(channel_id)
 
-        print("created")
+    #     print("created")
 
-        if channel:
-            async def send_message():
-                # Extracting only the name from playerLeft and playerRight
-                left_name = playerLeft.split("\n")[0]
-                right_name = playerRight.split("\n")[0]
-                emb = discord.Embed(
-                    title="Currently Playing:",
-                    description="**{0}** ({2})\nVS\n**{1}** ({3})".format(left_name, right_name, left_mmr, right_mmr),
-                    colour=discord.Color.blurple()
-                )
+    #     if channel:
+    #         async def send_message():
+    #             # Extracting only the name from playerLeft and playerRight
+    #             left_name = playerLeft.split("\n")[0]
+    #             right_name = playerRight.split("\n")[0]
+    #             emb = discord.Embed(
+    #                 title="Currently Playing:",
+    #                 description="**{0}** ({2})\nVS\n**{1}** ({3})".format(left_name, right_name, left_mmr, right_mmr),
+    #                 colour=discord.Color.blurple()
+    #             )
 
-                await channel.send(embed=emb)
+    #             await channel.send(embed=emb)
 
-            # Use bot.loop to run the asynchronous function
-            bot.loop.create_task(send_message())
+    #         # Use bot.loop to run the asynchronous function
+    #         bot.loop.create_task(send_message())
 
 
 
-        else:
-            return jsonify({"status": "Channel not found"})
-    else:
-        return jsonify({"status": "Bot instance not available"})
+    #     else:
+    #         return jsonify({"status": "Channel not found"})
+    # else:
+    #     return jsonify({"status": "Bot instance not available"})
 
     return jsonify({"status": "Message sent to Discord channel!"})
+
+
+
+
+# SSE endpoint
+@views.route('/sseTest')
+def sse():
+    def event_stream():
+        # Simulate sending SSE events (replace with your data)
+        for i in range(10):
+            yield 'data: {}\n\n'.format(i)
+            time.sleep(1)
+
+    return Response(event_stream(), content_type='text/event-stream')
+
+
+
+
+
+
+
+
+
+
+
+
+def get_match_data():
+    # Replace this with your actual data retrieval mechanism from the database
+    # For demo purposes, we'll use SQLite to fetch data from the database.
+    # Adjust the database path and query as per your actual database setup.
+    conn = sqlite3.connect('./db/current_match.db')
+    cursor = conn.cursor()
+
+    # Replace this query with your actual database query to retrieve match data
+    cursor.execute('SELECT id, nameLeft, nameRight, mmrLeft, mmrRight, winrateLeft, winrateRight, date FROM Matches ORDER BY id DESC LIMIT 1;')
+    row = cursor.fetchone()
+    conn.close()
+
+    # Check if there are any matches in the database and update the status accordingly
+    if row:
+        ongoing_match["status"] = "Ongoing"
+        (
+            ongoing_match["id"],
+            ongoing_match["nameLeft"],
+            ongoing_match["nameRight"],
+            ongoing_match["mmrLeft"],
+            ongoing_match["mmrRight"],
+            ongoing_match["winrateLeft"],
+            ongoing_match["winrateRight"],
+            ongoing_match["date"],
+        ) = row
+    else:
+        ongoing_match["status"] = "Idle"
+        # If there is no match data, set default values
+        (
+            ongoing_match["id"],
+            ongoing_match["nameLeft"],
+            ongoing_match["nameRight"],
+            ongoing_match["mmrLeft"],
+            ongoing_match["mmrRight"],
+            ongoing_match["winrateLeft"],
+            ongoing_match["winrateRight"],
+            ongoing_match["date"],
+        ) = None, None, None, None, None, None, None, None
+
+    # Create a dictionary containing all the match data fields
+    match_data = {
+        "status": ongoing_match["status"],
+        "nameLeft": ongoing_match["nameLeft"],
+        "nameRight": ongoing_match["nameRight"],
+        "mmrLeft": ongoing_match["mmrLeft"],
+        "mmrRight": ongoing_match["mmrRight"],
+        "winrateLeft": ongoing_match["winrateLeft"],
+        "winrateRight": ongoing_match["winrateRight"],
+        "date": ongoing_match["date"],
+    }
+
+    return match_data
+
+
+
+
+# Custom event handler to send match status data
+@socketio.on('match_status')
+def handle_match_status():
+    match_data = get_match_data()
+
+    # Broadcast the match status data to all connected clients
+    socketio.emit('match_status', match_data, room=None)

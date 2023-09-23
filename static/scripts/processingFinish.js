@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function reloadOnce() {
+
+
+  
   
       console.log('Success');
 // =================================================

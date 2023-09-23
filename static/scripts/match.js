@@ -1,5 +1,9 @@
 window.onload = function () {
-  localStorage.removeItem('buttonClicked');
+  if (!localStorage.getItem('pageReloaded')) {
+    localStorage.setItem('pageReloaded', 'true');
+    location.reload();
+  }
+  localStorage.removeItem("buttonClicked");
 };
 
 // window.addEventListener("load", function () {
@@ -105,11 +109,17 @@ document.addEventListener("DOMContentLoaded", function () {
   toMaking.addEventListener("click", function () {
 
 
+
+    
     // Get player names from HTML
-    const leftPlayerName = document.getElementById('leftNAME').textContent;
-    const rightPlayerName = document.getElementById('rightNAME').textContent;
-    const leftRatingNumber = parseInt(document.getElementById('leftMMR').textContent);
-    const rightRatingNumber = parseInt(document.getElementById('rightMMR').textContent);
+    const leftPlayerName = document.getElementById("leftNAME").textContent;
+    const rightPlayerName = document.getElementById("rightNAME").textContent;
+    const leftRatingNumber = parseInt(
+      document.getElementById("leftMMR").textContent
+    );
+    const rightRatingNumber = parseInt(
+      document.getElementById("rightMMR").textContent
+    );
     // Get other data if needed
 
     // Create an object to hold the data
@@ -122,24 +132,21 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // Make a POST request to the Flask endpoint
-    fetch('/clear-database', {
-      method: 'POST',
+    fetch("/clear-database", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(requestData)
+      body: JSON.stringify(requestData),
     })
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         // console.log(data.message);
         window.location.href = "/matchmaking";
       })
-      .catch(error => {
-        console.error('Error occurred:', error);
+      .catch((error) => {
+        console.error("Error occurred:", error);
       });
-
-
-
   });
 
   var refreshFlag = sessionStorage.getItem("refreshFlag");
@@ -302,8 +309,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
   function handleLeftWin() {
-
-    if (localStorage.getItem('buttonClicked')) {
+    if (localStorage.getItem("buttonClicked")) {
       return;
     }
     // ====================================================================================== LEFT WON
@@ -314,12 +320,9 @@ document.addEventListener("DOMContentLoaded", function () {
     leftRatingValue = leftMMRElement.textContent;
     rightRatingValue = rightMMRElement.textContent;
 
-
-
     var expected_score =
       1 /
-      (1 +
-        Math.pow(10, Math.abs(leftRatingValue - rightRatingValue) / 300));
+      (1 + Math.pow(10, Math.abs(leftRatingValue - rightRatingValue) / 300));
     K = 50;
     console.log("========================================================");
     left_mmr = parseInt(leftRatingValue);
@@ -416,14 +419,14 @@ document.addEventListener("DOMContentLoaded", function () {
     // HERE
     //
     // ====================================================================================== LEFT WON
-    localStorage.setItem('buttonClicked', true);
-    setTimeout(function() {
+    localStorage.setItem("buttonClicked", true);
+    setTimeout(function () {
       window.location.href = "/matchmaking/match/processing/calculate";
     }, 1000); // 1000 milliseconds = 1 second
   }
 
   function handleRightWin() {
-    if (localStorage.getItem('buttonClicked')) {
+    if (localStorage.getItem("buttonClicked")) {
       return;
     }
     // ====================================================================================== RIGHT WON
@@ -437,8 +440,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     var expected_score =
       1 /
-      (1 +
-        Math.pow(10, Math.abs(leftRatingValue - rightRatingValue) / 300));
+      (1 + Math.pow(10, Math.abs(leftRatingValue - rightRatingValue) / 300));
     K = 50;
     console.log("========================================================");
     left_mmr = parseInt(leftRatingValue);
@@ -532,19 +534,206 @@ document.addEventListener("DOMContentLoaded", function () {
     // +++++++++++++++++++++++++++++++++++++++++ DATABASE STUFF
 
     // ====================================================================================== RIGHT WON
-    localStorage.setItem('buttonClicked', true);
-    setTimeout(function() {
+    localStorage.setItem("buttonClicked", true);
+    setTimeout(function () {
       window.location.href = "/matchmaking/match/processing/calculate";
     }, 1000); // 1000 milliseconds = 1 second
   }
 });
 
+
+
+
+
+
+
+
+
+var data; // Declare the global data variable
+
+var socket = io(); // Connect to the server that serves this HTML page
+
+
+
+socket.on("connect", function () {
+  console.log("Connected to WebSocket server");
+
+  // Send a request for match status when connected (optional)
+  socket.emit("request_match_status");
+
+
+});
+
+socket.on("disconnect", function () {
+  console.log("Disconnected from WebSocket server");
+  
+});
+
+// Handle the "match_status" event sent by the server
+socket.on("match_status", function (match_data) {
+  // Handle the received match data
+  console.log("Received match status:", match_data);
+
+  // Update the user interface with the received match data
+  // document.getElementById('status').innerText = match_data.status;
+  document.getElementById("leftNAME").innerText = match_data.nameLeft;
+  document.getElementById("rightNAME").innerText = match_data.nameRight;
+  document.getElementById("leftMMR").innerText = match_data.mmrLeft;
+  document.getElementById("rightMMR").innerText = match_data.mmrRight;
+  document.getElementById("leftWINRATE").innerText = match_data.winrateLeft;
+  document.getElementById("rightWINRATE").innerText = match_data.winrateRight;
+  // document.getElementById('date').innerText = match_data.date;
+
+  // Update the global data variable
+  data = {
+    status: match_data.status,
+    nameLeft: match_data.nameLeft,
+    nameRight: match_data.nameRight,
+    mmrLeft: match_data.mmrLeft,
+    mmrRight: match_data.mmrRight,
+    date: match_data.date,
+    winrateLeft: match_data.winrateLeft,
+    winrateRight: match_data.winrateRight
+  };
+
+
+
+  
+
+
+  //===================
+
+
+
+
+  updateData(data);
+
+
+  const leftName = data.nameLeft;
+  const rightName = data.nameRight;
+
+  fetchAvatar(leftName, '1vsImg');
+  fetchAvatar(rightName, '2vsImg');
+
+
+  // Update the start timestamp only if it's not null or undefined
+  if (data.date !== null && data.date !== undefined) {
+
+    startTimestamp = new Date(data.date);
+  }
+
+
+
+
+
+  //====================
+});
+
+function updateData(data) {
+  // console.log("NEW DATA: ", data);
+  // Check if the status is "Idle"
+  
+  if (data.status === "Idle") {
+    document.getElementById("match-container").style.display = "none";
+    const containerTimerElement = document.querySelector(".containerTimer");
+    const cancelBtn = document.querySelector("bottomPart fade-in");
+    if (containerTimerElement) {
+      containerTimerElement.style.display = "none";
+    }
+    if (cancelBtn) {
+      cancelBtn.stlye.display = "none";
+    }
+    const displayField = document.querySelector(".playerIdle");
+    displayField.style.display = "flex";
+
+    // Display a message or update the UI to indicate there is no ongoing match
+    const noMatchMessage = "There is no currently ongoing match.";
+    const noMatchElement = document.createElement("div");
+    noMatchElement.textContent = noMatchMessage;
+    const matchInfoElement = document.getElementById("matchInfo");
+    matchInfoElement.innerHTML = "";
+    matchInfoElement.appendChild(noMatchElement);
+  } 
+  else {
+    // Unhide the elements when the status is not "Idle"
+    document.getElementById("match-container").style.display = "flex";
+    const containerTimerElement = document.querySelector(".containerTimer");
+    const cancelBtn = document.querySelector("bottomPart fade-in");
+    if (containerTimerElement) {
+      containerTimerElement.style.display = "flex";
+    }
+    if (cancelBtn) {
+      cancelBtn.stlye.display = "flex";
+    }
+    const displayField = document.querySelector(".playerIdle");
+    displayField.style.display = "none";
+    // Update left side data
+    if (data.nameLeft !== null && data.nameLeft !== undefined) {
+      document.getElementById("leftNAME").textContent = data.nameLeft;
+    } else {
+      document.getElementById("leftNAME").textContent = "N/A";
+    }
+
+    if (data.mmrLeft !== null && data.mmrLeft !== undefined) {
+      document.getElementById("leftMMR").textContent = data.mmrLeft;
+    } else {
+      document.getElementById("leftMMR").textContent = "N/A";
+    }
+
+    if (data.winrateLeft !== null && data.winrateLeft !== undefined) {
+      document.getElementById("leftWINRATE").textContent = data.winrateLeft;
+    } else {
+      document.getElementById("leftWINRATE").textContent = "N/A";
+    }
+
+    // Update right side data
+    if (data.nameRight !== null && data.nameRight !== undefined) {
+      document.getElementById("rightNAME").textContent = data.nameRight;
+    } else {
+      document.getElementById("rightNAME").textContent = "N/A";
+    }
+
+    if (data.mmrRight !== null && data.mmrRight !== undefined) {
+      document.getElementById("rightMMR").textContent = data.mmrRight;
+    } else {
+      document.getElementById("rightMMR").textContent = "N/A";
+    }
+
+    if (data.winrateRight !== null && data.winrateRight !== undefined) {
+      document.getElementById("rightWINRATE").textContent = data.winrateRight;
+    } else {
+      document.getElementById("rightWINRATE").textContent = "N/A";
+    }
+  }
+}
+
+
+
+
+
+
+
+
+// // Function to fetch and update match status
+// function updateMatchStatus() {
+  // socket.emit("request_match_status");
+// }
+
+// // Initially, call the function to fetch and display match status
+// updateMatchStatus();
+
+// // Set up an interval to periodically fetch and display match status every 2 seconds
+// setInterval(updateMatchStatus, 5000); // 2000 milliseconds = 2 seconds
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
+  
   const maxAttempts = 10; // Maximum number of attempts
   let attempts = 0;
 
   function tryAccessElements() {
-    console.log("try to fetch data: ", attempts)
+    console.log("try to fetch data: ", attempts);
     // Check if the maximum number of attempts has been reached
     if (attempts >= maxAttempts) {
       console.error("Failed to access elements after multiple attempts.");
@@ -571,7 +760,10 @@ document.addEventListener("DOMContentLoaded", function () {
       var expected_score_left =
         1 /
         (1 +
-          Math.pow(10, Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 300));
+          Math.pow(
+            10,
+            Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 300
+          ));
       K = 50;
       if (left_mmr < right_mmr) {
         var shift_left = Math.abs(Math.round(K * (1 - expected_score_left)));
@@ -586,7 +778,10 @@ document.addEventListener("DOMContentLoaded", function () {
       var expected_score_right =
         1 /
         (1 +
-          Math.pow(10, Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 300));
+          Math.pow(
+            10,
+            Math.abs(leftRatingValue[0] - rightRatingValue[0]) / 300
+          ));
       K = 50;
       if (left_mmr > right_mmr) {
         var shift_right = Math.abs(Math.round(K * (1 - expected_score_right)));
@@ -597,7 +792,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       var newMMRwin1 = document.querySelector(".newMMRwin1");
       newMMRwin1.innerHTML = `<p>Win case:</p> <span>+${shift_left}</span>`;
-
 
       var newMMRlose1 = document.querySelector(".newMMRlose1");
       newMMRlose1.innerHTML = `<p>Lose case:</p> <span>-${shift_right}</span>`;
@@ -695,6 +889,7 @@ const matchDurationElement = document.getElementById("match-duration");
 const startTime = new Date();
 
 // Update the match duration every second
+console.log("UpdateDuration Call 1")
 setInterval(updateMatchDuration, 1000);
 
 
@@ -705,8 +900,6 @@ function padZero(number) {
 function goBack() {
   history.back();
 }
-
-
 
 // Function to handle SSE events
 // function handleSSE(event) {
@@ -735,8 +928,6 @@ function goBack() {
 //       nameRightElement.innerText = eventData.nameRight;
 //       mmrRightElement.innerText = `(${eventData.mmrRight})`;
 //       winrateRightElement.innerText = eventData.winrateRight;
-
-
 
 //       // You can also show or hide buttons based on the match status if needed.
 //       // For example:
@@ -782,8 +973,6 @@ function goBack() {
 //   console.error('SSE Error:', event);
 // };
 
-
-
 // // Add event listener to close the SSE connection when the page is being unloaded
 // window.addEventListener('beforeunload', function () {
 //   eventSource.close();
@@ -792,137 +981,33 @@ function goBack() {
 let animationTriggered = false;
 
 // Function to update the data in the HTML page
-function updateData(data) {
-
-
-  
-  // Check if the status is "Idle"
-  if (data.status === "Idle") {
-    document.getElementById("match-container").style.display = "none";
-    const containerTimerElement = document.querySelector(".containerTimer");
-    const cancelBtn = document.querySelector("bottomPart fade-in")
-    if (containerTimerElement) {
-      containerTimerElement.style.display = "none";
-    }
-    if (cancelBtn) {
-      cancelBtn.stlye.display = "none";
-    }
-    const displayField = document.querySelector(".playerIdle");
-    displayField.style.display = "flex";
-
-
-    // Display a message or update the UI to indicate there is no ongoing match
-    const noMatchMessage = "There is no currently ongoing match.";
-    const noMatchElement = document.createElement("div");
-    noMatchElement.textContent = noMatchMessage;
-    const matchInfoElement = document.getElementById("matchInfo");
-    matchInfoElement.innerHTML = '';
-    matchInfoElement.appendChild(noMatchElement);
-  } else {
-    // Unhide the elements when the status is not "Idle"
-    document.getElementById("match-container").style.display = "flex";
-    const containerTimerElement = document.querySelector(".containerTimer");
-    const cancelBtn = document.querySelector("bottomPart fade-in")
-    if (containerTimerElement) {
-      containerTimerElement.style.display = "flex";
-    }
-    if (cancelBtn) {
-      cancelBtn.stlye.display = "flex";
-    }
-    const displayField = document.querySelector(".playerIdle");
-    displayField.style.display = "none";
-    // Update left side data
-    if (data.nameLeft !== null && data.nameLeft !== undefined) {
-      document.getElementById('leftNAME').textContent = data.nameLeft;
-    } else {
-      document.getElementById('leftNAME').textContent = 'N/A';
-    }
-
-    if (data.mmrLeft !== null && data.mmrLeft !== undefined) {
-      document.getElementById('leftMMR').textContent = data.mmrLeft;
-    } else {
-      document.getElementById('leftMMR').textContent = 'N/A';
-    }
-
-    if (data.winrateLeft !== null && data.winrateLeft !== undefined) {
-      document.getElementById('leftWINRATE').textContent = data.winrateLeft;
-    } else {
-      document.getElementById('leftWINRATE').textContent = 'N/A';
-    }
-
-    // Update right side data
-    if (data.nameRight !== null && data.nameRight !== undefined) {
-      document.getElementById('rightNAME').textContent = data.nameRight;
-    } else {
-      document.getElementById('rightNAME').textContent = 'N/A';
-    }
-
-    if (data.mmrRight !== null && data.mmrRight !== undefined) {
-      document.getElementById('rightMMR').textContent = data.mmrRight;
-    } else {
-      document.getElementById('rightMMR').textContent = 'N/A';
-    }
-
-    if (data.winrateRight !== null && data.winrateRight !== undefined) {
-      document.getElementById('rightWINRATE').textContent = data.winrateRight;
-    } else {
-      document.getElementById('rightWINRATE').textContent = 'N/A';
-    }
-  }
-  
-}
-
-
-
-// Set up the SSE connection
-const eventSource = new EventSource('/sse-match-status');
-
-// Initialize a variable to store the start timestamp received from SSE
-let startTimestamp;
-
-// Listen for SSE messages and call the handleSSE function
-eventSource.addEventListener('match_status', function (event) {
-  // Parse the data sent from the server (assuming it's a JSON string)
-  const data = JSON.parse(event.data);
-
-  // Log the received SSE data to the console
-  // console.log('Received SSE data:', data);
-
-  // Update the start timestamp only if it's not null or undefined
-  if (data.date !== null && data.date !== undefined) {
-    // Store the start timestamp received from SSE
-    startTimestamp = new Date(data.date);
-  }
-
-  // Call the function to update the page with the received data
-  updateData(data);
-
-  // Fetch avatars with the updated names from SSE data
-  const leftName = data.nameLeft;
-  const rightName = data.nameRight;
-
-  fetchAvatar(leftName, '1vsImg');
-  fetchAvatar(rightName, '2vsImg');
 
 
 
 
-
-});
 // Get the element with the class "profile-username"
-const profileUsernameElement = document.querySelector('.profile-username');
+const profileUsernameElement = document.querySelector(".profile-username");
 
 // Check if the element exists
 if (profileUsernameElement) {
   // Get the text content of the element (which is "testAccount" in this case)
   const username = profileUsernameElement.textContent;
-  console.log('Username:', username);
-  fetchAvatar(username, 'profilePic');
+  console.log("Username:", username);
+  fetchAvatar(username, "profilePic");
 } else {
   console.log('Element with class "profile-username" not found.');
 }
 // Update the match duration every second
+console.log("UpdateDuration Call 2")
 setInterval(updateMatchDuration, 1000);
+
+
+  // Initialize a variable to store the start timestamp received from SSE
+  let startTimestamp;
+
+
+
+
 
 function updateMatchDuration() {
   if (!startTimestamp) return; // Don't update if startTimestamp is not available
@@ -940,11 +1025,13 @@ function updateMatchDuration() {
 
   // Function to format time with leading zeros
   function padZero(num) {
-    return num.toString().padStart(2, '0');
+    return num.toString().padStart(2, "0");
   }
 
   // Format the time with leading zeros
-  const formattedTime = `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
+  const formattedTime = `${padZero(hours)}:${padZero(minutes)}:${padZero(
+    seconds
+  )}`;
 
   // Update the match duration element
   const matchDurationElement = document.getElementById("match-duration");
@@ -953,9 +1040,9 @@ function updateMatchDuration() {
 
 function fetchAvatar(name, imageId) {
   fetch(`/left-avatar`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      "Content-Type": "application/x-www-form-urlencoded",
     },
     body: `name=${name}`,
   })
@@ -982,25 +1069,19 @@ function setDefaultAvatar(imageId) {
   avatarImage.src = defaultImageUrl;
 }
 
-
 var homeBtn = document.getElementById("homeT");
 homeBtn.addEventListener("click", function () {
-
   history.back();
 });
-
-
-
-
 
 // function showBigNumber(winAmount) {
 //   const numberContainer = document.createElement("div");
 //   numberContainer.classList.add("number-container");
-  
+
 //   const bigNumber = document.createElement("span");
 //   bigNumber.classList.add("big-number");
 //   bigNumber.textContent = "0";
-  
+
 //   numberContainer.appendChild(bigNumber);
 //   document.body.appendChild(numberContainer);
 
@@ -1015,7 +1096,7 @@ homeBtn.addEventListener("click", function () {
 //   const interval = setInterval(() => {
 //     const currentTime = new Date().getTime();
 //     const elapsedTime = currentTime - startTime;
-    
+
 //     if (elapsedTime >= duration) {
 //       clearInterval(interval);
 //       element.textContent = end;

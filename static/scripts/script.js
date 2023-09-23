@@ -336,6 +336,7 @@ function transformString(str) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+  
   // Check if the page has been refreshed before
   if (!localStorage.getItem("pageRefreshed")) {
     // Set the flag in localStorage to indicate the page has been refreshed
@@ -417,6 +418,26 @@ document.addEventListener("DOMContentLoaded", function () {
     request.send();
   }
 
+
+
+  
+  // Establish a connection to the server
+  var socket = io();
+
+
+
+  window.onload = function () {
+    // Get the match data (you might need to fetch it from your data source)
+
+
+    // Emit the 'match_status' event with the match data
+    socket.emit('match_status');
+};
+
+
+
+
+
   confirmYes.addEventListener("click", function () {
     sessionStorage.removeItem("refreshFlag");
     var leftField = document.getElementById("field1Small");
@@ -480,10 +501,24 @@ document.addEventListener("DOMContentLoaded", function () {
         }),
     });
 
+    //HERE1
+    
 
-      window.location.href = "/matchmaking/match/processing";
+    var match_data;
+
+    
+    
+    // Redirect to the processing page (if needed)
+    window.location.href = "/matchmaking/match/processing";
+
+      // Emit the 'match_status' event to the server
+      socket.emit('match_status', match_data);
     }
   });
+
+
+
+
 
   // Event listener to handle the retrieved values
   // document.addEventListener("valuesRetrieved", function (event) {
